@@ -17,7 +17,7 @@ class CameraTest extends FlameGame with HasKeyboardHandlerComponents {
           ),
         );
 
-  MovableObject object = new MovableObject();
+  MovableObject object = MovableObject();
   final Vector2 viewportResolution;
 
   @override
@@ -55,7 +55,6 @@ class MovableObject extends Object<CameraTest>
 
   @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    bool handled = true;
     if (event.logicalKey == LogicalKeyboardKey.keyA) {
       velocity.x = -1;
       velocity.y = 0;
@@ -71,15 +70,8 @@ class MovableObject extends Object<CameraTest>
     } else if (event.logicalKey == LogicalKeyboardKey.keyX) {
       velocity.x = 0;
       velocity.y = 0;
-    } else {
-      handled = false;
     }
-
-    if (handled) {
-      return !handled;
-    }
-
-    return super.onKeyEvent(event, keysPressed);
+    return false;
   }
 }
 
