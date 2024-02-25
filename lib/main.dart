@@ -5,6 +5,8 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:talacare/widgets/overlays/pause_button.dart';
+import 'package:talacare/widgets/overlays/pause_menu.dart';
 
 class CollidableAnimationExample extends FlameGame with HasCollisionDetection {
   static const description = '''
@@ -118,5 +120,19 @@ class AnimatedComponent extends SpriteAnimationComponent
 }
 
 void main() => runApp(GameWidget(
-      game: CollidableAnimationExample(),
-    ));
+        game: CollidableAnimationExample(),
+        initialActiveOverlays: const [
+          PauseButton.ID
+        ],
+        overlayBuilderMap: {
+          PauseButton.ID:
+              (BuildContext context, CollidableAnimationExample gameRef) =>
+                  PauseButton(
+                    gameRef: gameRef,
+                  ),
+          PauseMenu.ID:
+              (BuildContext context, CollidableAnimationExample gameRef) =>
+                  PauseMenu(
+                    gameRef: gameRef,
+                  )
+        }));
