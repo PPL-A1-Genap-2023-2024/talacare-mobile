@@ -15,8 +15,8 @@ void main() {
 
     // Mark down camera position before moving
     final cameraPositionBefore = game.camera.viewfinder.position;
-    await simulateKeyDownEvent(LogicalKeyboardKey.keyA);
     final gamePositionBefore = game.object.position;
+    await simulateKeyDownEvent(LogicalKeyboardKey.keyA);
 
     // Update game state
     await tester.pump(const Duration(seconds: 2));
