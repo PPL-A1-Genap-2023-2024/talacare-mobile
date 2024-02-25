@@ -40,7 +40,46 @@ class _MySpawnPageState extends State<MySpawnPage> {
         title: Text(widget.title),
       ),
       body: Center(
-        Text('SKELETON')
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Activity activity = Activity('x');
+                gameMap.spawnActivity(activity, 8);
+                setState(() {}); // Update UI after spawning activity
+              },
+              child: Text('Game Start : Spawn Activity'),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Map Status:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            // Display map status
+            for (int i = 0; i < gameMap.numRows; i++)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int j = 0; j < gameMap.numCols; j++)
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                      ),
+                      child: Center(
+                        child: Text(
+                          gameMap.grid[i][j]?.name ?? '-',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -57,6 +96,44 @@ class Map {
 
   void initializeMap() {
     grid = List.generate(numRows, (row) => List.filled(numCols, null));
+  }
+
+  void spawnActivity(Activity activity, int numCells) {
+
+    final randomCells = selectRandomCells(numCells);
+    clearMap();
+    for (final cell in randomCells) {
+      final row = cell[0];
+      final col = cell[1];
+
+      grid[row][col] = activity;
+      print('Spawned ${activity.name} at cell ($row, $col)');
+    }
+  }
+
+  void clearMap(){
+    for(int i=0;i<numRows;i++){
+      for(int j=0;j<numCols;j++){
+        grid[i][j]=Activity('');
+      }
+    }
+  }
+
+  List<List<int>> selectRandomCells(int numCells) {
+    final random = Random();
+    final selectedCells = <List<int>>[];
+
+    while (selectedCells.length < numCells) {
+      final row = random.nextInt(numRows);
+      final col = random.nextInt(numCols);
+      final cell = [row, col];
+
+      if (!selectedCells.contains(cell)) {
+        selectedCells.add(cell);
+      }
+    }
+
+    return selectedCells;
   }
 
   bool isValidCell(int row, int col) {
