@@ -47,6 +47,9 @@ class _DPadButtonState extends State<DPadButton> {
                   onTapUp: (_) {
                     _updateDirection(Direction.none);
                   },
+                  onTapCancel: () {
+                    _updateDirection(Direction.none);
+                  },
                   child: Image.asset(
                     _currentDirection == Direction.up
                         ? 'assets/images/Up-Pressed.png'
@@ -67,6 +70,9 @@ class _DPadButtonState extends State<DPadButton> {
                   onTapUp: (_) {
                     _updateDirection(Direction.none);
                   },
+                  onTapCancel: () {
+                    _updateDirection(Direction.none);
+                  },
                   child: Image.asset(
                     _currentDirection == Direction.left
                         ? 'assets/images/Left-Pressed.png'
@@ -80,6 +86,9 @@ class _DPadButtonState extends State<DPadButton> {
                     _updateDirection(Direction.right);
                   },
                   onTapUp: (_) {
+                    _updateDirection(Direction.none);
+                  },
+                  onTapCancel: () {
                     _updateDirection(Direction.none);
                   },
                   child: Image.asset(
@@ -101,6 +110,9 @@ class _DPadButtonState extends State<DPadButton> {
                     _updateDirection(Direction.down);
                   },
                   onTapUp: (_) {
+                    _updateDirection(Direction.none);
+                  },
+                  onTapCancel: () {
                     _updateDirection(Direction.none);
                   },
                   child: Image.asset(
