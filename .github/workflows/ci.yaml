@@ -14,6 +14,9 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.19.0'
+          
+      - name: Run Flutter doctor
+        run: flutter doctor -v
 
       - name: Install dependencies
         run: flutter pub get
