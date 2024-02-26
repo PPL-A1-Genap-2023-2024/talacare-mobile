@@ -42,5 +42,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Coverage
+# SonarQube & Code Coverage
 coverage/
+tests.output
+.scannerwork/
+analysis_options.yaml.sonar
+analysis_options.yaml
