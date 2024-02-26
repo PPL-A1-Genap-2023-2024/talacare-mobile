@@ -9,14 +9,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.19.0'
-          
-      - name: Run Flutter doctor
-        run: flutter doctor -v
 
       - name: Install dependencies
         run: flutter pub get
@@ -24,8 +23,19 @@ jobs:
       - name: Run tests and collect coverage
         run: flutter test --machine --coverage > tests.output
       
-      - name: Scan code with Sonarqube
-        uses: sonarsource/sonarqube-scan-action@master
+      - name: Scan with SonarQube
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_SCANNER_VER: sonar-scanner-cli-5.0.1.3006-linux
+          SONAR_SCANNER_PATH: sonar-scanner-5.0.1.3006-linux/bin
+        run: |
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+          unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+          $SONAR_SCANNER_PATH/sonar-scanner -v
+          $SONAR_SCANNER_PATH/sonar-scanner \
+            -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+            -Dsonar.projectKey=talacare \
+            -Dsonar.projectName=talacare \
+            -Dsonar.sources=lib \
+            -Dsonar.tests=test \
+            -Dsonar.sourceEncoding=UTF-8
