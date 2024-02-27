@@ -39,3 +39,4 @@ jobs:
             -Dsonar.sources=lib \
             -Dsonar.tests=test \
             -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.branch.name=#{{ github.ref_name }}
