@@ -9,7 +9,6 @@ class Object<T extends FlameGame> extends SpriteComponent
           anchor: Anchor.center,
         );
 
-  @mustCallSuper
   @override
   Future<void> onLoad() async {
     sprite = await game.loadSprite(
