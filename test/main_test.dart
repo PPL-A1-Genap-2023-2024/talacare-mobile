@@ -36,6 +36,7 @@ void main() {
       final myGame = CollidableAnimationExample();
       final pauseButton = PauseButton(gameRef: myGame);
       final pauseMenu = PauseMenu(gameRef: myGame);
+      final GlobalKey pauseButtonKey = pauseButton.getPauseButtonKey();
       final GlobalKey resumeButtonKey = pauseMenu.getResumeButtonKey();
       await tester
           .pumpWidget(GameWidget(game: myGame, initialActiveOverlays: const [
@@ -49,8 +50,7 @@ void main() {
                 pauseMenu
       }));
       await tester.pump();
-      final pauseButtonIcon = find.byWidgetPredicate((widget) =>
-          widget is IconButton && (widget.icon as Icon).icon == Icons.pause);
+      final pauseButtonIcon = find.byKey(pauseButtonKey);
       await tester.tap(pauseButtonIcon);
       await tester.pump();
       expect(myGame.overlays.isActive(PauseButton.id), false);
