@@ -11,8 +11,10 @@ class DPadArrow extends SpriteComponent with TapCallbacks, HasGameRef<BlankGame>
 
   DPadArrow({required this.arrowDirection, required this.defaultSprite, required this.pressedSprite});
 
+
+
   @override
-  void onTapUp(_) {
+  void onTapUp(TapUpEvent event) {
     // Do something in response to a tap event
     sprite = defaultSprite;
     game.changeDirection(Direction.none);
@@ -20,7 +22,7 @@ class DPadArrow extends SpriteComponent with TapCallbacks, HasGameRef<BlankGame>
   }
 
   @override
-  void onTapCancel(_) {
+  void onTapCancel(TapCancelEvent event) {
     // Do something in response to a tap event
     sprite = defaultSprite;
     game.changeDirection(Direction.none);
@@ -28,7 +30,7 @@ class DPadArrow extends SpriteComponent with TapCallbacks, HasGameRef<BlankGame>
   }
 
   @override
-  void onTapDown(_) {
+  void onTapDown(TapDownEvent event) {
     // Do something in response to a tap event
     sprite = pressedSprite;
     game.changeDirection(arrowDirection);
