@@ -15,7 +15,6 @@ class TalaCare extends FlameGame with HasCollisionDetection, TapDetector {
   final activitySize = 300.0;
   late double screenWidth;
   late double screenHeight;
-  late Activity activeActivity;
   var isDoingActivity = false;
   var score = 0;
 
@@ -29,45 +28,52 @@ class TalaCare extends FlameGame with HasCollisionDetection, TapDetector {
         screenWidth / 2 - playerWidth / 2,
         screenHeight / 3.25 - playerHeight / 2
       ),
-      Vector2(playerWidth, playerHeight)
+      Vector2(playerWidth, playerHeight),
+      "blob"
     ));
     add(Point(
       Vector2(
         screenWidth / 2 - pointSize / 2,
         screenHeight / 1.25 - pointSize / 2
       ),
-      Vector2(pointSize, pointSize)
+      Vector2(pointSize, pointSize),
+      "drawing"
     ));
   }
 
-  // activity event, currently using sprite component and tap detector
-  void onActivityTrigger() {
-    activeActivity = Activity(
-      Vector2(
-        screenWidth / 2 - activitySize / 2,
-        screenHeight / 2 - activitySize / 2
-      ),
-      Vector2(activitySize, activitySize)
-    );
-    add(activeActivity);
-    isDoingActivity = true;
-    score += 1;
+  // when activity is active: halt other components' updates,
+  // remove point, add score, and show event animation
+  Future<void> onActivityTrigger(Point point) async {
+    if (!isDoingActivity) {
+      remove(point);
+      add(Activity(
+        Vector2(
+          screenWidth / 2 - activitySize / 2,
+          screenHeight / 2 - activitySize / 2
+        ),
+        Vector2(activitySize, activitySize),
+        point.variant
+      ));
+      isDoingActivity = true;
+      score += 1;
+    } 
   }
 
-  // for experimentation, event is set to end by tapping the screen
-  @override
-  void onTap() {
+  // when activity ends: resume other components' updates
+  // and remove event animation
+  void onActivityEnd(Activity activity) {
     if (isDoingActivity) {
-      remove(activeActivity);
+      remove(activity);
       isDoingActivity = false;
     }
   }
 }
 
-// placeholder player, currently one variation and no animation
-class Player extends SpriteComponent with CollisionCallbacks, HasGameRef<TalaCare> {
-  var velocity = 100.0;
-  Player(position, size): super(
+// placeholder player, currently no animation
+class Player extends SpriteComponent with HasGameRef<TalaCare> {
+  String variant;
+
+  Player(position, size, this.variant): super(
     position: position,
     size: size
   );
@@ -75,29 +81,24 @@ class Player extends SpriteComponent with CollisionCallbacks, HasGameRef<TalaCar
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    sprite = await game.loadSprite('player.png');
+    sprite = await game.loadSprite('player_idle_front_$variant.png');
     add(RectangleHitbox());
   }
 
-  // for experimentation, player is set to move down until it reaches activity point
+  // for experimentation, player is set to move down when activity isn't active
   @override
   void update(double dt) {
     super.update(dt);
-    y += velocity * dt;
+    if (!game.isDoingActivity) {
+      y += 75.0 * dt;
+    }
   }
-
-  @override
-  void onCollision(intersectionPoints, other) {
-    super.onCollision(intersectionPoints, other);
-    velocity = 0;
-    game.onActivityTrigger();
-  }
-
 }
 
-// placeholder activity point, currently one variation
 class Point extends SpriteComponent with CollisionCallbacks, HasGameRef<TalaCare> {
-  Point(position, size): super(
+  String variant;
+  
+  Point(position, size, this.variant): super(
     position: position,
     size: size
   );
@@ -105,22 +106,25 @@ class Point extends SpriteComponent with CollisionCallbacks, HasGameRef<TalaCare
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    sprite = await game.loadSprite('point.png');
+    sprite = await game.loadSprite('point_$variant.png');
     add(RectangleHitbox());
   }
 
-  // point is set to disappear after colliding with player
+  // activity is set to start upon collision between player and point
   @override
   void onCollision(intersectionPoints, other) {
     super.onCollision(intersectionPoints, other);
-    removeFromParent();
+    if (other is Player) {
+      game.onActivityTrigger(this);
+    }
   }
-
 }
 
-// placeholder activity splash art, currently one variation and no animation
-class Activity extends SpriteComponent with HasGameRef<TalaCare> {
-  Activity(position, size): super(
+class Activity extends SpriteAnimationComponent with HasGameRef<TalaCare> {
+  String variant;
+  var timeElapsed = 0.0;
+  
+  Activity(position, size, this.variant): super(
     position: position,
     size: size
   );
@@ -128,6 +132,21 @@ class Activity extends SpriteComponent with HasGameRef<TalaCare> {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    sprite = await game.loadSprite('activity.png');
+    var data = SpriteAnimationData.sequenced(
+      textureSize: Vector2.all(300),
+      amount: 2,
+      stepTime: 0.5
+    );
+    animation = await game.loadSpriteAnimation('activity_$variant.png', data);
+  }
+
+  // activity is set to end after 3 seconds
+  @override
+  void update(double dt) {
+    super.update(dt);
+    timeElapsed += dt;
+    if (timeElapsed >= 3) {
+      game.onActivityEnd(this);
+    }
   }
 }
