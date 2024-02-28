@@ -25,7 +25,7 @@ class Player extends SpriteAnimationComponent
     updatePosition(dt);
   }
 
-  updatePosition(double dt) {
+  void updatePosition(double dt) {
     switch (direction) {
       case Direction.up:
         position.y -= maxSpeed;
