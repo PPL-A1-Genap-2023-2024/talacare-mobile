@@ -4,7 +4,7 @@ import 'package:talacare/main.dart';
 import 'pause_menu.dart';
 
 class PauseButton extends StatelessWidget {
-  static const String ID = 'PauseButton';
+  static const String id = 'PauseButton';
   final CollidableAnimationExample gameRef;
   const PauseButton({super.key, required this.gameRef});
 
@@ -21,8 +21,8 @@ class PauseButton extends StatelessWidget {
           ),
           onPressed: () {
             gameRef.pauseEngine();
-            gameRef.overlays.add(PauseMenu.ID);
-            gameRef.overlays.remove(PauseButton.ID);
+            gameRef.overlays.add(PauseMenu.id);
+            gameRef.overlays.remove(PauseButton.id);
           },
         ));
   }

@@ -122,15 +122,15 @@ class AnimatedComponent extends SpriteAnimationComponent
 void main() => runApp(GameWidget(
         game: CollidableAnimationExample(),
         initialActiveOverlays: const [
-          PauseButton.ID
+          PauseButton.id
         ],
         overlayBuilderMap: {
-          PauseButton.ID:
+          PauseButton.id:
               (BuildContext context, CollidableAnimationExample gameRef) =>
                   PauseButton(
                     gameRef: gameRef,
                   ),
-          PauseMenu.ID:
+          PauseMenu.id:
               (BuildContext context, CollidableAnimationExample gameRef) =>
                   PauseMenu(
                     gameRef: gameRef,

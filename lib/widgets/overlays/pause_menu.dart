@@ -3,7 +3,7 @@ import 'package:talacare/main.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 
 class PauseMenu extends StatelessWidget {
-  static const String ID = 'PauseMenu';
+  static const String id = 'PauseMenu';
   final CollidableAnimationExample gameRef;
   final GlobalKey _exitButtonKey = GlobalKey();
   final GlobalKey _resumeButtonKey = GlobalKey();
@@ -84,8 +84,8 @@ class PauseMenu extends StatelessWidget {
                                 icon: const Icon(Icons.play_arrow),
                                 onPressed: () {
                                   gameRef.resumeEngine();
-                                  gameRef.overlays.remove(PauseMenu.ID);
-                                  gameRef.overlays.add(PauseButton.ID);
+                                  gameRef.overlays.remove(PauseMenu.id);
+                                  gameRef.overlays.add(PauseButton.id);
                                 },
                               ),
                               const Text(

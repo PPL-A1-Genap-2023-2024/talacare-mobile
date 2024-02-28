@@ -15,20 +15,20 @@ void main() {
       final pauseMenu = PauseMenu(gameRef: myGame);
       await tester
           .pumpWidget(GameWidget(game: myGame, initialActiveOverlays: const [
-        PauseButton.ID
+        PauseButton.id
       ], overlayBuilderMap: {
-        PauseButton.ID:
+        PauseButton.id:
             (BuildContext context, CollidableAnimationExample gameRef) =>
                 pauseButton,
-        PauseMenu.ID:
+        PauseMenu.id:
             (BuildContext context, CollidableAnimationExample gameRef) =>
                 pauseMenu
       }));
       await tester.pump();
       expect(myGame.isLoaded, true);
       expect(myGame.paused, false);
-      expect(myGame.overlays.isActive(PauseButton.ID), true);
-      expect(myGame.overlays.isActive(PauseMenu.ID), false);
+      expect(myGame.overlays.isActive(PauseButton.id), true);
+      expect(myGame.overlays.isActive(PauseMenu.id), false);
     });
     testWidgets('Pause Functionality', (tester) async {
       tester.view.physicalSize = const Size(1080, 1920);
@@ -39,12 +39,12 @@ void main() {
       final GlobalKey resumeButtonKey = pauseMenu.getResumeButtonKey();
       await tester
           .pumpWidget(GameWidget(game: myGame, initialActiveOverlays: const [
-        PauseButton.ID
+        PauseButton.id
       ], overlayBuilderMap: {
-        PauseButton.ID:
+        PauseButton.id:
             (BuildContext context, CollidableAnimationExample gameRef) =>
                 pauseButton,
-        PauseMenu.ID:
+        PauseMenu.id:
             (BuildContext context, CollidableAnimationExample gameRef) =>
                 pauseMenu
       }));
@@ -53,13 +53,13 @@ void main() {
           widget is IconButton && (widget.icon as Icon).icon == Icons.pause);
       await tester.tap(pauseButtonIcon);
       await tester.pump();
-      expect(myGame.overlays.isActive(PauseButton.ID), false);
-      expect(myGame.overlays.isActive(PauseMenu.ID), true);
+      expect(myGame.overlays.isActive(PauseButton.id), false);
+      expect(myGame.overlays.isActive(PauseMenu.id), true);
       expect(myGame.paused, true);
       final resumeButtonIcon = find.byKey(resumeButtonKey);
       await tester.tap(resumeButtonIcon);
-      expect(myGame.overlays.isActive(PauseButton.ID), true);
-      expect(myGame.overlays.isActive(PauseMenu.ID), false);
+      expect(myGame.overlays.isActive(PauseButton.id), true);
+      expect(myGame.overlays.isActive(PauseMenu.id), false);
       expect(myGame.paused, false);
     });
   });
