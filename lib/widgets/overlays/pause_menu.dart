@@ -9,10 +9,6 @@ class PauseMenu extends StatelessWidget {
   final GlobalKey _resumeButtonKey = GlobalKey();
   PauseMenu({super.key, required this.gameRef});
 
-  GlobalKey getExitButtonKey() {
-    return _exitButtonKey;
-  }
-
   GlobalKey getResumeButtonKey() {
     return _resumeButtonKey;
   }
