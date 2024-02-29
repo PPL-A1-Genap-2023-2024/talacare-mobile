@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/talacare.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Flame.device.fullScreen();
-  Flame.device.setPortrait();
+  await Flame.device.fullScreen();
+  await Flame.device.setPortrait();
 
 
   TalaCare game = TalaCare();
