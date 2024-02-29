@@ -1,3 +1,4 @@
+import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/level.dart';
@@ -56,6 +57,26 @@ void main() {
         game.update(0.2);
         expect(player.position.x, leftWallXPosition);
         expect(player.position.y, initialPosition.y);
+      },
+    );
+    testWithGame<TalaCare>(
+      'Player does not move through outer walls of house',
+      TalaCare.new,
+      (game) async {
+        await game.ready();
+        // Place player next to right wall
+        final level = game.children.query<Level>().first;
+        final player = level.player;
+        const rightWallXPosition = 352;
+        player.position.x = rightWallXPosition-player.width;
+        // Attempt to move player through the wall
+        player.position.x += 20; // Simulate moving right into a wall
+
+        // Process the movement
+        game.update(0.1);
+        
+        // Verify player has not moved through the wall
+        expect(player.position.x, lessThanOrEqualTo(rightWallXPosition));
       },
     );
   });
