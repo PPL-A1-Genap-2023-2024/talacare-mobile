@@ -95,6 +95,15 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Ke
   void _checkCollisions() {
     for (final block in collisionBlocks) {
       if (checkCollision(this, block)) {
+        // Colliding without moving
+        if (velocity.x == 0 && velocity.y == 0) {
+          if (block.position.x == 0 && block.height == 640) position.x = block.x + block.width;
+          else if (block.position.y == 0 && block.width == 368) position.y = block.y + block.height;
+          else if (block.position.x == 352 && block.height == 640) position.x = block.x - width;
+          else if (block.position.y == 624 && block.width == 368) position.y = block.y - height;
+          else position = Vector2(176, 576);
+        }
+
         // Colliding while moving right
         if (velocity.x > 0) {
           position.x = block.x - width;
@@ -120,5 +129,4 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Ke
     }
   }
 
-  
 }
