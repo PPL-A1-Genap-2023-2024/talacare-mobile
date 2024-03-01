@@ -32,16 +32,14 @@ class BlankGame extends FlameGame {
 
     final Image dPadImage = await images.load('D-Pad.png');
     dPad = SpriteComponent()..sprite = Sprite(dPadImage);
-    camera.viewport.add(AlignComponent(
-      child: dPad,
-      alignment: Anchor.bottomCenter,
-    ));
+
 
     // Buttons
     final Image leftImage = await images.load('Left.png');
     final Image leftPressedImage = await images.load('Left-Pressed.png');
     leftButton = DPadArrow(arrowDirection: Direction.left, defaultSprite: Sprite(leftImage), pressedSprite: Sprite(leftPressedImage))
       ..sprite = Sprite(leftImage);
+
 
     final Image rightImage = await images.load('Right.png');
     final Image rightPressedImage = await images.load('Right-Pressed.png');
@@ -58,33 +56,29 @@ class BlankGame extends FlameGame {
     upButton = DPadArrow(arrowDirection: Direction.up, defaultSprite: Sprite(upImage), pressedSprite: Sprite(upPressedImage))
       ..sprite = Sprite(upImage);
 
-    camera.viewport.add(AlignComponent(
+    dPad.add(AlignComponent(
       child:leftButton,
-      alignment: Anchor.bottomCenter,
-      heightFactor: 21.4,
-      widthFactor: 8.2
+      alignment: Anchor.centerLeft,
     ));
-    camera.viewport.add(AlignComponent(
+    dPad.add(AlignComponent(
       child:rightButton,
-      alignment: Anchor.bottomCenter,
-      heightFactor: 21.4,
-        widthFactor: 14.3
+      alignment: Anchor.centerRight,
     ));
-    camera.viewport.add(AlignComponent(
+    dPad.add(AlignComponent(
       child:upButton,
-      alignment: Anchor.bottomCenter,
-      heightFactor: 19.8
+      alignment: Anchor.topCenter,
     ));
-    camera.viewport.add(AlignComponent(
+    dPad.add(AlignComponent(
       child:downButton,
       alignment: Anchor.bottomCenter,
     ));
 
-
-
+    camera.viewport.add(AlignComponent(
+      child: dPad,
+      alignment: Anchor.bottomCenter,
+    ));
 
     world.add(player);
-    // camera.viewport.add(joystick);
   }
 
   void changeDirection(Direction direction) {
