@@ -1,9 +1,9 @@
 import 'package:flame/events.dart';
 import 'package:flame/components.dart';
-import 'blank_game.dart';
-import 'helpers/directions.dart';
+import 'package:talacare/talacare.dart';
+import '../helpers/directions.dart';
 
-class DPadArrow extends SpriteComponent with TapCallbacks, HasGameRef<BlankGame> {
+class DPadArrow extends SpriteComponent with TapCallbacks, HasGameRef<TalaCare> {
   Direction arrowDirection;
   Sprite defaultSprite;
   Sprite pressedSprite;
