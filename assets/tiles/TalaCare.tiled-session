@@ -1,0 +1,61 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Level-01.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "House Adventure.tsx": {
+            "scaleInDock": 1.6041,
+            "scaleInEditor": 1
+        },
+        "Level-01.tmx": {
+            "expandedObjectLayers": [
+                3,
+                2
+            ],
+            "scale": 0.8313,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 172.62119571755082,
+                "y": 297.72645254420786
+            }
+        },
+        "Level-02.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1.171171875,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 210.47295043692884,
+                "y": 328.3036488559802
+            }
+        }
+    },
+    "last.imagePath": "/Users/alanna/Documents/sem6/ppl/talacare-mobile/assets/images/Interiors_free/16x16",
+    "map.height": 40,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 23,
+    "openFiles": [
+        "House Adventure.tsx",
+        "Level-01.tmx",
+        "Level-02.tmx"
+    ],
+    "project": "TalaCare.tiled-project",
+    "recentFiles": [
+        "House Adventure.tsx",
+        "Level-02.tmx",
+        "Level-01.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
