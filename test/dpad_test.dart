@@ -3,6 +3,7 @@ import 'package:flame/game.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:talacare/components/dpad_arrow.dart';
+import 'package:talacare/helpers/arrow_state.dart';
 import 'package:talacare/talacare.dart';
 
 
@@ -11,11 +12,11 @@ void main() {
 
     testWithGame<TalaCare>('Left Movement', TalaCare.new, (game) async {
       await game.ready();
-      final DPadArrow leftButton = game.leftButton;
+      final DPadArrow leftButton = game.dPad.leftButton;
       Vector2 initialPosition = Vector2(0,0);
       game.player.position.copyInto(initialPosition);
       leftButton.onTapDown(createTapDownEvents(game: game));
-      expect(leftButton.tapped, true);
+      expect(leftButton.current, ArrowState.pressed);
       final delta = 5.0;
       game.update(delta);
       expect(game.player.position.x, initialPosition.x - game.player.moveSpeed * delta);
@@ -24,11 +25,11 @@ void main() {
 
     testWithGame<TalaCare>('Right Movement', TalaCare.new, (game) async {
       await game.ready();
-      final DPadArrow rightButton = game.rightButton;
+      final DPadArrow rightButton = game.dPad.rightButton;
       Vector2 initialPosition = Vector2(0,0);
       game.player.position.copyInto(initialPosition);
       rightButton.onTapDown(createTapDownEvents(game: game));
-      expect(rightButton.tapped, true);
+      expect(rightButton.current, ArrowState.pressed);
       final delta = 5.0;
       game.update(delta);
       expect(game.player.position.x, initialPosition.x + game.player.moveSpeed * delta);
@@ -39,11 +40,11 @@ void main() {
 
     testWithGame<TalaCare>('Down Movement', TalaCare.new, (game) async {
       await game.ready();
-      final DPadArrow downButton = game.downButton;
+      final DPadArrow downButton = game.dPad.downButton;
       Vector2 initialPosition = Vector2(0,0);
       game.player.position.copyInto(initialPosition);
       downButton.onTapDown(createTapDownEvents(game: game));
-      expect(downButton.tapped, true);
+      expect(downButton.current, ArrowState.pressed);
       final delta = 5.0;
       game.update(delta);
       expect(game.player.position.x, initialPosition.x);
@@ -52,11 +53,11 @@ void main() {
 
     testWithGame<TalaCare>('Up Movement', TalaCare.new, (game) async {
       await game.ready();
-      final DPadArrow upButton = game.upButton;
+      final DPadArrow upButton = game.dPad.upButton;
       Vector2 initialPosition = Vector2(0,0);
       game.player.position.copyInto(initialPosition);
       upButton.onTapDown(createTapDownEvents(game: game));
-      expect(upButton.tapped, true);
+      expect(upButton.current, ArrowState.pressed);
       final delta = 5.0;
       game.update(delta);
       expect(game.player.position.x, initialPosition.x);
@@ -65,11 +66,11 @@ void main() {
 
     testWithGame<TalaCare>('Tap Release', TalaCare.new, (game) async {
       await game.ready();
-      final DPadArrow component = game.upButton;
+      final DPadArrow component = game.dPad.upButton;
       Vector2 initialPosition = Vector2(0,0);
       game.player.position.copyInto(initialPosition);
       component.onTapUp(createTapUpEvents(game: game));
-      expect(component.tapped, false);
+      expect(component.current, ArrowState.unpressed);
       final delta = 5.0;
       game.update(delta);
       expect(game.player.position.x, initialPosition.x);
@@ -78,11 +79,11 @@ void main() {
 
     testWithGame<TalaCare>('Tap Cancel', TalaCare.new, (game) async {
       await game.ready();
-      final DPadArrow component = game.upButton;
+      final DPadArrow component = game.dPad.upButton;
       Vector2 initialPosition = Vector2(0,0);
       game.player.position.copyInto(initialPosition);
       component.onTapCancel(createTapCancelEvents(game));
-      expect(component.tapped, false);
+      expect(component.current, ArrowState.unpressed);
       final delta = 5.0;
       game.update(delta);
       expect(game.player.position.x, initialPosition.x);
