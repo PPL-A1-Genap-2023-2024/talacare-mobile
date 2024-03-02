@@ -1,22 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
-import 'camera.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:talacare/talacare.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Flame.device.fullScreen();
+  await Flame.device.setPortrait();
 
-  runApp(const CameraTestWidget());
-}
 
-class CameraTestWidget extends StatelessWidget {
-  const CameraTestWidget({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Talacare',
-      home: GameWidget<CameraTest>(
-        game: CameraTest(viewportResolution: Vector2(1500, 2000)),
-      ),
-    );
-  }
+  TalaCare game = TalaCare();
+  runApp(GameWidget(game: kDebugMode ? TalaCare() : game));
 }
