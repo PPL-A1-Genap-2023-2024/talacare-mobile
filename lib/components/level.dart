@@ -41,12 +41,14 @@ class Level extends World {
           position: Vector2(collision.x, collision.y),
           size: Vector2(collision.width, collision.height)
         );
+        if (collision.class_ == "Outer") {
+          wall.type = WallTypes.values[int.parse(collision.name)];
+        }
         collisionBlocks.add(wall);
         add(wall);
       }
     } 
     player.collisionBlocks = collisionBlocks;
-    print(parent);
     return super.onLoad();
   }
 }
