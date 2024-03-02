@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level-01.tmx",
+    "activeFile": "Level-02.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -14,25 +14,26 @@
         },
         "Level-01.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
             "scale": 0.8313,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 172.62119571755082,
-                "y": 297.72645254420786
+                "x": 184.6505473354986,
+                "y": 320.58222061830867
             }
         },
         "Level-02.tmx": {
             "expandedObjectLayers": [
-                2
+                2,
+                3
             ],
             "scale": 1.171171875,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 210.47295043692884,
-                "y": 328.3036488559802
+                "x": 108.01147355079715,
+                "y": 242.91908478420387
             }
         }
     },
@@ -50,8 +51,8 @@
     "project": "TalaCare.tiled-project",
     "recentFiles": [
         "House Adventure.tsx",
-        "Level-02.tmx",
-        "Level-01.tmx"
+        "Level-01.tmx",
+        "Level-02.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
