@@ -18,7 +18,6 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare> {
   double horizontalMovement = 0;
   double verticalMovement = 0;
   Direction direction = Direction.none;
-  bool playerFlipped = false;
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
   List<CollisionBlock> collisionBlocks = [];
