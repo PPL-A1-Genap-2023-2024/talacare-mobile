@@ -7,20 +7,19 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
     super.priority = 5,
   });
 
-  late Timer countDown;
-  int lifeTime = 10;
+  int lifeTime = 10; // Health lifetime in seconds
   bool timerStarted = false;
+  Timer countDown = Timer(1, repeat: true);
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    timerStarted = true;
-    countDown = Timer(1, onTick: (){
-      if (lifeTime > 0){
+    countDown.onTick = () {
+      if (lifeTime > 0) {
         lifeTime -= 1;
       }
-    }, repeat: true);
+    };
 
     for (var i = 1; i <= game.playerHealth; i++) {
       final positionX = game.cam.visibleWorldRect.width - 45;
@@ -34,6 +33,8 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
         ),
       );
     }
+
+    timerStarted = true;
   }
 
   @override
