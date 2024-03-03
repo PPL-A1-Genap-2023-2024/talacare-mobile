@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -24,15 +25,15 @@ class TalaCare extends FlameGame with HasKeyboardHandlerComponents {
 
     final world = Level(player: player, levelName: 'Level-01');
 
-    cam = CameraComponent.withFixedResolution(
-        world: world, width: 200, height: 400);
-    cam.viewfinder.anchor = Anchor.bottomCenter;
+    cam = CameraComponent(world: world);
+    cam.viewfinder.anchor = Anchor.center;
+    cam.viewport = FixedSizeViewport(300, 600);
     cam.follow(player);
 
     final Image dPadImage = await images.load('D_Pad/D-Pad.png');
     dPad = DPad()
       ..sprite = Sprite(dPadImage)
-      ..anchor = Anchor.center;
+      ..anchor = Anchor.bottomCenter;
 
     cam.viewport.add(AlignComponent(
       child: dPad,
