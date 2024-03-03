@@ -1,0 +1,1 @@
+enum ArrowState { pressed, unpressed }
