@@ -48,18 +48,6 @@ void main() {
           expect(target.countDown.limit, 1);
         }
     );
-
-    testWithGame<TalaCare>(
-        '',
-        TalaCare.new,
-            (game) async {
-          await game.ready();
-          Hud test = Hud();
-          expect(test.lifeTime, isNotNull);
-          expect(test.timerStarted, true);
-          expect(test.countDown.limit, 1);
-        }
-    );
   });
 
 }

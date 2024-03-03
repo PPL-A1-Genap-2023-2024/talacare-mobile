@@ -6,19 +6,14 @@ enum HeartState {
   unavailable,
 }
 
-class HeartHealthComponent extends SpriteGroupComponent<HeartState>
+class HealthComponent extends SpriteGroupComponent<HeartState>
     with HasGameReference<TalaCare> {
-  // Health Component Behavior
-  late Timer countDown;
-  int lifetime;
-  bool timerStarted = false;
   final int heartNumber;
 
-  HeartHealthComponent({
+  HealthComponent({
     required this.heartNumber,
     required super.position,
     required super.size,
-    required this.lifetime,
     super.scale,
     super.angle,
     super.anchor,
@@ -28,13 +23,14 @@ class HeartHealthComponent extends SpriteGroupComponent<HeartState>
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+
     final availableSprite = await game.loadSprite(
-      'heart.png',
+      'Overlays/health.png',
       srcSize: Vector2.all(32),
     );
 
     final unavailableSprite = await game.loadSprite(
-      'heart_half.png',
+      'Overlays/health_off.png',
       srcSize: Vector2.all(32),
     );
 
@@ -43,33 +39,18 @@ class HeartHealthComponent extends SpriteGroupComponent<HeartState>
       HeartState.unavailable: unavailableSprite,
     };
 
-    // Timer
     current = HeartState.available;
-    timerStarted = true;
-    countDown = Timer(1, onTick: () {
-      if (lifetime > 0) {
-        lifetime -= 1;
-        print(lifetime);
-      }
-    }, repeat: true);
   }
 
   @override
   void update(double dt) {
-    if (lifetime == 0) {
-      game.playerHealth--;
+    if (game.playerHealth < heartNumber) {
       current = HeartState.unavailable;
     }
-
-    if (game.playerHealth < heartNumber) {
-    } else {
+    else {
       current = HeartState.available;
     }
 
     super.update(dt);
-
-    if (timerStarted && lifetime > 0) {
-      countDown.update(dt);
-    }
   }
 }
