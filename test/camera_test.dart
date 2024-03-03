@@ -1,15 +1,9 @@
-import 'package:flame/camera.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/talacare.dart';
-import 'package:flame/events.dart';
-import 'package:flame/game.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:talacare/components/dpad_arrow.dart';
-import 'package:talacare/helpers/arrow_state.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
