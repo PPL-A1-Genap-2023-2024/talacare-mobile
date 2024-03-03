@@ -1,39 +1,39 @@
+import 'dart:async';
 import 'package:flame/events.dart';
 import 'package:flame/components.dart';
+import 'package:talacare/helpers/arrow_state.dart';
 import 'package:talacare/talacare.dart';
 import '../helpers/directions.dart';
 
-class DPadArrow extends SpriteComponent with TapCallbacks, HasGameRef<TalaCare> {
+class DPadArrow extends SpriteGroupComponent<ArrowState> with TapCallbacks, HasGameRef<TalaCare> {
   Direction arrowDirection;
-  Sprite defaultSprite;
-  Sprite pressedSprite;
-  bool tapped = false;
 
-  DPadArrow({required this.arrowDirection, required this.defaultSprite, required this.pressedSprite});
+  DPadArrow({required this.arrowDirection});
 
 
+  @override
+  FutureOr<void> onLoad() {
+    current = ArrowState.unpressed;
+  }
 
   @override
   void onTapUp(TapUpEvent event) {
     // Do something in response to a tap event
-    sprite = defaultSprite;
+    current = ArrowState.unpressed;
     game.changeDirection(Direction.none);
-    tapped = false;
   }
 
   @override
   void onTapCancel(TapCancelEvent event) {
     // Do something in response to a tap event
-    sprite = defaultSprite;
+    current = ArrowState.unpressed;
     game.changeDirection(Direction.none);
-    tapped = false;
   }
 
   @override
   void onTapDown(TapDownEvent event) {
     // Do something in response to a tap event
-    sprite = pressedSprite;
+    current = ArrowState.pressed;
     game.changeDirection(arrowDirection);
-    tapped = true;
   }
 }
