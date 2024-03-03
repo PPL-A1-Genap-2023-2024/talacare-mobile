@@ -15,7 +15,7 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
 
   @override
   Future<void> onLoad() async {
-    for (var i = 1; i <= game.health; i++) {
+    for (var i = 1; i <= game.playerHealth; i++) {
       final positionX = 40 * i;
       await add(
         HeartHealthComponent(

@@ -1,31 +1,34 @@
-import 'package:flame/game.dart';
+import 'dart:async';
 import 'package:flame/components.dart';
-import 'actors/karakter.dart';
-import 'overlays/hud.dart';
+import 'package:flame/events.dart';
+import 'package:flame/game.dart';
+import 'package:flame/input.dart';
+import 'package:talacare/components/player.dart';
+import 'package:talacare/components/level.dart';
+import 'package:talacare/overlays/hud.dart';
 
-class TalaCare extends FlameGame {
-  int starsCollected = 0;
-  int health = 3;
-  late Karakter _karakter;
+class TalaCare extends FlameGame with HasKeyboardHandlerComponents {
+
+  late final CameraComponent cam;
+  Player player = Player(character: 'Adam');
+  int playerHealth = 5;
 
   @override
-  Future<void> onLoad() async {
-    await images.loadAll([
-      'block.png',
-      'ember.png',
-      'ground.png',
-      'heart_half.png',
-      'heart.png',
-      'star.png',
-      'water_enemy.png',
-    ]);
+  FutureOr<void> onLoad() async {
+    // Load all images into cache
+    await images.loadAllImages();
 
-    camera.viewfinder.anchor = Anchor.topLeft;
-    _karakter = Karakter(
-      position: Vector2(128, canvasSize.y - 70),
+    final world = Level(
+      player: player,
+      levelName: 'Level-01'
     );
-    world.add(_karakter);
-    camera.viewport.add(Hud());
+
+    cam = CameraComponent.withFixedResolution(world: world, width: 360, height: 640);
+    cam.viewfinder.anchor = Anchor.topLeft;
+    addAll([cam, world]);
+
+    cam.viewport.add(Hud());
+
+    return super.onLoad();
   }
 }
-

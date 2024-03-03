@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   flame: ^1.16.0
   flame_tiled: ^1.19.0
+  flame_test: ^1.16.0
 
 dev_dependencies:
   flutter_test:
@@ -55,16 +56,16 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-  assets:
-    - assets/images/
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
+  assets:
+    - assets/images/Overlays/
+    - assets/images/Interiors_free/16x16/
+    - assets/images/Characters_free/
+    - assets/tiles/
   # To add assets to your application, add an assets section, like this:
-  # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
