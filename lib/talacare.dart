@@ -11,7 +11,7 @@ import 'package:talacare/components/level.dart';
 import 'package:flame/image_composition.dart';
 import 'helpers/directions.dart';
 
-class TalaCare extends FlameGame with HasKeyboardHandlerComponents {
+class TalaCare extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
 
   late final CameraComponent cam;
   Player player = Player(character: 'Adam');

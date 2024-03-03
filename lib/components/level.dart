@@ -3,12 +3,16 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:talacare/components/collision_block.dart';
+import 'package:talacare/components/event.dart';
 import 'package:talacare/components/player.dart';
+import 'package:talacare/components/point.dart';
 
 class Level extends World {
   final String levelName;
   late TiledComponent level;
   final Player player;
+  int score = 0;
+  bool eventIsActive = false;
   List<CollisionBlock> collisionBlocks = [];
   
   Level({required this.levelName, required this.player});
@@ -33,6 +37,11 @@ class Level extends World {
       }
     }
 
+    // dummy point, edit when merged with activity-point-spawn
+    final point = ActivityPoint(variant: "drawing");
+    point.position = Vector2(200, 200);
+    add(point);
+
     final collisionLayer = level.tileMap.getLayer<ObjectGroup>('Collisions');
 
     if (collisionLayer != null) {
@@ -48,5 +57,23 @@ class Level extends World {
     player.collisionBlocks = collisionBlocks;
     print(parent);
     return super.onLoad();
+  }
+
+  Future<void> onActivityStart(ActivityPoint point) async {
+    if (!eventIsActive) {
+      remove(point);
+      final event = ActivityEvent(variant: point.variant);
+      event.position = Vector2(30, 170);
+      add(event);
+      eventIsActive = true;
+      score += 1;
+    }
+  }
+
+  void onActivityEnd(ActivityEvent event) {
+    if (eventIsActive) {
+      remove(event);
+      eventIsActive = false;
+    }
   }
 }
