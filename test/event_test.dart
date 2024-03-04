@@ -2,7 +2,12 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:talacare/main.dart';
+import 'package:talacare/talacare.dart';
+import 'package:talacare/components/event.dart';
+import 'package:talacare/components/level.dart';
+import 'package:talacare/components/player.dart';
+import 'package:talacare/components/point.dart';
+import 'package:talacare/helpers/directions.dart';
 
 void main() {
 TestWidgetsFlutterBinding.ensureInitialized();
@@ -12,11 +17,12 @@ TestWidgetsFlutterBinding.ensureInitialized();
       TalaCare.new,
       (game) async {
         await game.ready();
-        expect(game.children.query<Player>(), isNotEmpty);
-        expect(game.children.query<Point>(), isNotEmpty);
-        expect(game.children.query<Activity>(), isEmpty);
-        expect(game.isDoingActivity, false);
-        expect(game.score, 0);
+        final level = game.children.query<Level>().first;
+        expect(level.children.query<Player>(), isNotEmpty);
+        expect(level.children.query<ActivityPoint>(), isNotEmpty);
+        expect(level.children.query<ActivityEvent>(), isEmpty);
+        expect(level.eventIsActive, false);
+        expect(level.score, 0);
       }
     );
     testWithGame<TalaCare>(
@@ -25,14 +31,15 @@ TestWidgetsFlutterBinding.ensureInitialized();
       (game) async {
         final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
         await game.ready();
-        final player = game.children.query<Player>().first;
-        final point = game.children.query<Point>().first;
+        final level = game.children.query<Level>().first;
+        final player = level.children.query<Player>().first;
+        final point = level.children.query<ActivityPoint>().first;
         point.onCollision(intersection, player);
         await game.ready();
-        expect(game.children.query<Point>(), isEmpty);
-        expect(game.children.query<Activity>(), isNotEmpty);
-        expect(game.isDoingActivity, true);
-        expect(game.score, 1);
+        expect(level.children.query<ActivityPoint>(), isEmpty);
+        expect(level.children.query<ActivityEvent>(), isNotEmpty);
+        expect(level.eventIsActive, true);
+        expect(level.score, 1);
       }
     );
     testWithGame<TalaCare>(
@@ -41,15 +48,16 @@ TestWidgetsFlutterBinding.ensureInitialized();
       (game) async {
         final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
         await game.ready();
-        final player = game.children.query<Player>().first;
-        final point = game.children.query<Point>().first;
+        final level = game.children.query<Level>().first;
+        final player = level.children.query<Player>().first;
+        final point = level.children.query<ActivityPoint>().first;
         point.onCollision(intersection, player);
         await game.ready();
-        final activity = game.children.query<Activity>().first;
-        activity.update(3);
+        final event = level.children.query<ActivityEvent>().first;
+        event.update(3);
         await game.ready();
-        expect(game.children.query<Activity>(), isEmpty);
-        expect(game.isDoingActivity, false);
+        expect(level.children.query<ActivityEvent>(), isEmpty);
+        expect(level.eventIsActive, false);
       }
     );
     testWithGame<TalaCare>(
@@ -59,8 +67,10 @@ TestWidgetsFlutterBinding.ensureInitialized();
         var playerPositionBefore = Vector2(0.0, 0.0);
         var playerPositionAfter = Vector2(0.0, 0.0);
         await game.ready();
-        final player = game.children.query<Player>().first;
+        final level = game.children.query<Level>().first;
+        final player = level.children.query<Player>().first;
         player.position.copyInto(playerPositionBefore);
+        player.direction = Direction.up;
         player.update(1);
         player.position.copyInto(playerPositionAfter);
         expect(playerPositionBefore, isNot(equals(playerPositionAfter)));
@@ -74,11 +84,13 @@ TestWidgetsFlutterBinding.ensureInitialized();
         var playerPositionAfter = Vector2(0.0, 0.0);
         final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
         await game.ready();
-        final player = game.children.query<Player>().first;
-        final point = game.children.query<Point>().first;
+        final level = game.children.query<Level>().first;
+        final player = level.children.query<Player>().first;
+        final point = level.children.query<ActivityPoint>().first;
         point.onCollision(intersection, player);
         await game.ready();
         player.position.copyInto(playerPositionBefore);
+        player.direction = Direction.up;
         player.update(1);
         player.position.copyInto(playerPositionAfter);
         expect(playerPositionBefore, equals(playerPositionAfter));
@@ -92,14 +104,16 @@ TestWidgetsFlutterBinding.ensureInitialized();
         var playerPositionAfter = Vector2(0.0, 0.0);
         final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
         await game.ready();
-        final player = game.children.query<Player>().first;
-        final point = game.children.query<Point>().first;
+        final level = game.children.query<Level>().first;
+        final player = level.children.query<Player>().first;
+        final point = level.children.query<ActivityPoint>().first;
         point.onCollision(intersection, player);
         await game.ready();
-        final activity = game.children.query<Activity>().first;
-        activity.update(3);
+        final event = level.children.query<ActivityEvent>().first;
+        event.update(3);
         await game.ready();
         player.position.copyInto(playerPositionBefore);
+        player.direction = Direction.up;
         player.update(1);
         player.position.copyInto(playerPositionAfter);
         expect(playerPositionBefore, isNot(equals(playerPositionAfter)));
