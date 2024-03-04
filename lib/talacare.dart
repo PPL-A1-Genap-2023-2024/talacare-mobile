@@ -27,7 +27,9 @@ class TalaCare extends FlameGame with HasKeyboardHandlerComponents {
 
     cam = CameraComponent(world: world);
     cam.viewfinder.anchor = Anchor.center;
-    cam.viewport = FixedSizeViewport(300, 600);
+    cam.viewfinder.zoom = 3;
+    cam.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
+    
     cam.follow(player);
 
     final Image dPadImage = await images.load('D_Pad/D-Pad.png');
