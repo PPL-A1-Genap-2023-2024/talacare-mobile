@@ -3,13 +3,13 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level-02.tmx",
+    "activeFile": "Level-01.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "fileStates": {
         "House Adventure.tsx": {
-            "scaleInDock": 1.6041,
+            "scaleInDock": 3.1055,
             "scaleInEditor": 1
         },
         "Level-01.tmx": {
@@ -17,23 +17,22 @@
                 2,
                 3
             ],
-            "scale": 0.8313,
+            "scale": 1.0662,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 184.6505473354986,
-                "y": 320.58222061830867
+                "x": 184.29938097917838,
+                "y": 319.358469330332
             }
         },
         "Level-02.tmx": {
             "expandedObjectLayers": [
-                2,
-                3
+                2
             ],
             "scale": 1.171171875,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 108.01147355079715,
-                "y": 242.91908478420387
+                "x": 183.1498899339604,
+                "y": 319.7651924488026
             }
         }
     },
@@ -51,8 +50,8 @@
     "project": "TalaCare.tiled-project",
     "recentFiles": [
         "House Adventure.tsx",
-        "Level-01.tmx",
-        "Level-02.tmx"
+        "Level-02.tmx",
+        "Level-01.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
