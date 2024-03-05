@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:talacare/components/activity.dart';
 import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/player.dart';
 
@@ -10,7 +11,8 @@ class Level extends World {
   late TiledComponent level;
   final Player player;
   List<CollisionBlock> collisionBlocks = [];
-  // List<Activity> activityPoints = [];
+  List<Activity> activityPoints = [];
+  List<Activity> selectedActivity = [];
   
   Level({required this.levelName, required this.player});
 
@@ -28,9 +30,17 @@ class Level extends World {
             player.position = Vector2(spawnPoint.x, spawnPoint.y);
             add(player);
             break;
+          case 'Activity':
+            final activity = Activity(character: 'Bob', position: Vector2(spawnPoint.x, spawnPoint.y));
+            activityPoints.add(activity);
           default:
         }
       }
+      selectedActivity = _addRandomActivities(activityPoints, 8);
+      for (final activity in selectedActivity) {
+        add(activity);
+      }
+
     }
 
     final collisionLayer = level.tileMap.getLayer<ObjectGroup>('Collisions');
@@ -48,5 +58,17 @@ class Level extends World {
     player.collisionBlocks = collisionBlocks;
     print(parent);
     return super.onLoad();
+  }
+  List<Activity> _addRandomActivities(List<Activity> activityPoints, int count) {
+    activityPoints.shuffle();
+    int manyActivity = count;
+    if (activityPoints.length < manyActivity) {
+      manyActivity = activityPoints.length;
+    }
+    List<Activity> selectedActivityPoints = [];
+    for (int i = 0; i < manyActivity; i++) {
+      selectedActivityPoints.add(activityPoints[i]);
+    }
+    return selectedActivityPoints;
   }
 }

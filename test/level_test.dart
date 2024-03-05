@@ -37,7 +37,7 @@ void main() {
       (game) async {
         await game.ready();
         final level = game.children.query<Level>().first;
-        final numberOfActivityPoints = level.activityPoints.length;
+        final numberOfActivityPoints = level.selectedActivity.length;
         expect(numberOfActivityPoints, 8);
       }
     );
