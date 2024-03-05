@@ -1,7 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:talacare/main.dart';
+import 'package:talacare/talacare.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 import 'package:talacare/widgets/overlays/pause_menu.dart';
 
@@ -10,19 +10,15 @@ void main() {
     testWidgets('Initial Condition', (tester) async {
       tester.view.physicalSize = const Size(1080, 1920);
       tester.view.devicePixelRatio = 1.0;
-      final myGame = CollidableAnimationExample();
+      final myGame = TalaCare(isWidgetTesting: true);
       final pauseButton = PauseButton(gameRef: myGame);
       final pauseMenu = PauseMenu(gameRef: myGame);
       await tester
           .pumpWidget(GameWidget(game: myGame, initialActiveOverlays: const [
         PauseButton.id
       ], overlayBuilderMap: {
-        PauseButton.id:
-            (BuildContext context, CollidableAnimationExample gameRef) =>
-                pauseButton,
-        PauseMenu.id:
-            (BuildContext context, CollidableAnimationExample gameRef) =>
-                pauseMenu
+        PauseButton.id: (BuildContext context, TalaCare gameRef) => pauseButton,
+        PauseMenu.id: (BuildContext context, TalaCare gameRef) => pauseMenu
       }));
       await tester.pump();
       expect(myGame.isLoaded, true);
@@ -33,7 +29,7 @@ void main() {
     testWidgets('Pause Functionality', (tester) async {
       tester.view.physicalSize = const Size(1080, 1920);
       tester.view.devicePixelRatio = 1.0;
-      final myGame = CollidableAnimationExample();
+      final myGame = TalaCare(isWidgetTesting: true);
       final pauseButton = PauseButton(gameRef: myGame);
       final pauseMenu = PauseMenu(gameRef: myGame);
       final GlobalKey pauseButtonKey = pauseButton.getPauseButtonKey();
@@ -42,12 +38,8 @@ void main() {
           .pumpWidget(GameWidget(game: myGame, initialActiveOverlays: const [
         PauseButton.id
       ], overlayBuilderMap: {
-        PauseButton.id:
-            (BuildContext context, CollidableAnimationExample gameRef) =>
-                pauseButton,
-        PauseMenu.id:
-            (BuildContext context, CollidableAnimationExample gameRef) =>
-                pauseMenu
+        PauseButton.id: (BuildContext context, TalaCare gameRef) => pauseButton,
+        PauseMenu.id: (BuildContext context, TalaCare gameRef) => pauseMenu
       }));
       await tester.pump();
       final pauseButtonIcon = find.byKey(pauseButtonKey);

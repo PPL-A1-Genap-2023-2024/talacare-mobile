@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:talacare/main.dart';
+import 'package:talacare/talacare.dart';
 
 import 'pause_menu.dart';
 
 class PauseButton extends StatelessWidget {
   static const String id = 'PauseButton';
-  final CollidableAnimationExample gameRef;
+  final TalaCare gameRef;
   final GlobalKey _pauseButtonKey = GlobalKey();
   PauseButton({super.key, required this.gameRef});
 
