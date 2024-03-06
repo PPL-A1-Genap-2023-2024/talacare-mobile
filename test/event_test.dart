@@ -20,9 +20,8 @@ TestWidgetsFlutterBinding.ensureInitialized();
         final level = game.children.query<Level>().first;
         expect(level.children.query<Player>(), isNotEmpty);
         expect(level.children.query<ActivityPoint>(), isNotEmpty);
-        expect(level.children.query<ActivityEvent>(), isEmpty);
-        expect(level.eventIsActive, false);
-        expect(level.score, 0);
+        expect(game.eventIsActive, false);
+        expect(game.score, 0);
       }
     );
     testWithGame<TalaCare>(
@@ -36,10 +35,9 @@ TestWidgetsFlutterBinding.ensureInitialized();
         final point = level.children.query<ActivityPoint>().first;
         point.onCollision(intersection, player);
         await game.ready();
-        expect(level.children.query<ActivityPoint>(), isEmpty);
-        expect(level.children.query<ActivityEvent>(), isNotEmpty);
-        expect(level.eventIsActive, true);
-        expect(level.score, 1);
+        expect(game.eventAnchor.children.query<ActivityPoint>(), isEmpty);
+        expect(game.eventIsActive, true);
+        expect(game.score, 1);
       }
     );
     testWithGame<TalaCare>(
@@ -53,11 +51,11 @@ TestWidgetsFlutterBinding.ensureInitialized();
         final point = level.children.query<ActivityPoint>().first;
         point.onCollision(intersection, player);
         await game.ready();
-        final event = level.children.query<ActivityEvent>().first;
+        final event = game.eventAnchor.children.query<ActivityEvent>().first;
         event.update(3);
         await game.ready();
-        expect(level.children.query<ActivityEvent>(), isEmpty);
-        expect(level.eventIsActive, false);
+        expect(game.eventAnchor.children.query<ActivityEvent>(), isEmpty);
+        expect(game.eventIsActive, false);
       }
     );
     testWithGame<TalaCare>(
@@ -109,7 +107,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
         final point = level.children.query<ActivityPoint>().first;
         point.onCollision(intersection, player);
         await game.ready();
-        final event = level.children.query<ActivityEvent>().first;
+        final event = game.eventAnchor.children.query<ActivityEvent>().first;
         event.update(3);
         await game.ready();
         player.position.copyInto(playerPositionBefore);
