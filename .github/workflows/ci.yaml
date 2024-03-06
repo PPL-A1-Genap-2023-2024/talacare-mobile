@@ -3,7 +3,8 @@ name: CI/CD
 on: [push, pull_request]
 
 jobs:
-  test:
+  scan:
+    name: Scan with SonarQube
     runs-on: ubuntu-latest
 
     steps:
@@ -40,3 +41,44 @@ jobs:
             -Dsonar.tests=test \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.branch.name=${{ github.ref_name }}
+
+  deploy:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging' || github.event_name == 'pull_request' && github.base_ref == 'refs/heads/staging'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.0'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v.0.0.x
+          release_name: Release v.0.0.${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+      - name: Upload APK to Release
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/app/outputs/flutter-apk/app-release.apk
+          asset_name: app-release-${{ github.run_number }}.apk
+          asset_content_type: application/vnd.android.package-archive
