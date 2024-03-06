@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
@@ -20,19 +21,21 @@ class TalaCare extends FlameGame {
     // Load all images into cache
     await images.loadAllImages();
 
-    final world = Level(
-      player: player,
-      levelName: 'Level-01'
-    );
+    final world = Level(player: player, levelName: 'Level-01');
 
-    cam = CameraComponent.withFixedResolution(world: world, width: 360, height: 640);
-    cam.viewfinder.anchor = Anchor.topLeft;
+
+    cam = CameraComponent(world: world);
+    cam.viewfinder.anchor = Anchor.center;
+    cam.viewfinder.zoom = 3;
+    cam.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
+    
+    cam.follow(player);
 
     dPad = DPad()
-      ..sprite = await loadSprite('D_Pad/D-Pad.png');
+    ..sprite = await loadSprite('D_Pad/D-Pad.png');
 
     cam.viewport.add(AlignComponent(
-      child:dPad,
+      child: dPad,
       alignment: Anchor.bottomCenter,
     ));
 
