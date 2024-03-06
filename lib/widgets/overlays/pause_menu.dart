@@ -28,15 +28,15 @@ class PauseMenu extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(15)),
                 ),
                 height: MediaQuery.of(context).size.height * 60 / 100,
-                width: MediaQuery.of(context).size.width * 80 / 100,
+                width: MediaQuery.of(context).size.width * 70 / 100,
                 child: Column(
                   children: [
                     const Padding(
-                        padding: EdgeInsets.only(top: 35, bottom: 35),
+                        padding: EdgeInsets.only(top: 25, bottom: 25),
                         child: Text(
                           'Game is Paused',
                           style: TextStyle(
-                            fontSize: 40.0,
+                            fontSize: 30.0,
                             color: Colors.black,
                           ),
                         )),
@@ -44,19 +44,19 @@ class PauseMenu extends StatelessWidget {
                       decoration: const BoxDecoration(
                         color: Colors.amber,
                       ),
-                      height: MediaQuery.of(context).size.height * 25 / 100,
-                      width: MediaQuery.of(context).size.width * 50 / 100,
+                      height: MediaQuery.of(context).size.height * 20 / 100,
+                      width: MediaQuery.of(context).size.width * 40 / 100,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(15),
                           child: Column(
                             children: [
                               IconButton(
                                 key: _exitButtonKey,
-                                iconSize: 70,
+                                iconSize: 60,
                                 splashColor: Colors.white,
                                 icon: const Icon(Icons.house),
                                 onPressed: () {},
@@ -70,12 +70,12 @@ class PauseMenu extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(15),
                           child: Column(
                             children: [
                               IconButton(
                                 key: _resumeButtonKey,
-                                iconSize: 70,
+                                iconSize: 60,
                                 splashColor: Colors.white,
                                 icon: const Icon(Icons.play_arrow),
                                 onPressed: () {
