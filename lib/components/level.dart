@@ -10,6 +10,7 @@ class Level extends World {
   final String levelName;
   late TiledComponent level;
   final Player player;
+  final int taken = 8;
   List<CollisionBlock> collisionBlocks = [];
   List<Activity> activityPoints = [];
   List<Activity> selectedActivity = [];
@@ -36,7 +37,7 @@ class Level extends World {
           default:
         }
       }
-      selectedActivity = _addRandomActivities(activityPoints, 8);
+      selectedActivity = _addRandomActivities(activityPoints, taken);
       for (final activity in selectedActivity) {
         add(activity);
       }
@@ -62,9 +63,6 @@ class Level extends World {
   List<Activity> _addRandomActivities(List<Activity> activityPoints, int count) {
     activityPoints.shuffle();
     int manyActivity = count;
-    if (activityPoints.length < manyActivity) {
-      manyActivity = activityPoints.length;
-    }
     List<Activity> selectedActivityPoints = [];
     for (int i = 0; i < manyActivity; i++) {
       selectedActivityPoints.add(activityPoints[i]);

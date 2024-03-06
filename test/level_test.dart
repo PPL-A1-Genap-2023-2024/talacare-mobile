@@ -32,13 +32,13 @@ void main() {
       }
     );
     testWithGame<TalaCare>(
-      'Activity Spawn Points size is eight',
+      'Activity Spawn Points size is taken',
       TalaCare.new,
       (game) async {
         await game.ready();
         final level = game.children.query<Level>().first;
         final numberOfActivityPoints = level.selectedActivity.length;
-        expect(numberOfActivityPoints, 8);
+        expect(numberOfActivityPoints, level.taken);
       }
     );
 
