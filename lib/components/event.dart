@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:talacare/talacare.dart';
-import 'package:talacare/components/level.dart';
 
-class ActivityEvent extends SpriteAnimationComponent with HasGameRef<TalaCare>, ParentIsA<Level> {
+class ActivityEvent extends SpriteAnimationComponent with HasGameRef<TalaCare> {
+  double timeElapsed = 0.0;
   String variant;
-  var timeElapsed = 0.0;
 
-  ActivityEvent({super.position, this.variant = 'drawing'});
+  ActivityEvent({this.variant = 'drawing'});
   
   @override
   FutureOr<void> onLoad() {
@@ -26,7 +25,7 @@ class ActivityEvent extends SpriteAnimationComponent with HasGameRef<TalaCare>, 
     super.update(dt);
     timeElapsed += dt;
     if (timeElapsed >= 3) {
-      parent.onActivityEnd(this);
+      game.onActivityEnd(this);
     }
   }
 }

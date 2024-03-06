@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:talacare/components/level.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/talacare.dart';
 
-class ActivityPoint extends SpriteComponent with CollisionCallbacks, HasGameRef<TalaCare>, ParentIsA<Level> {
+class ActivityPoint extends SpriteComponent with CollisionCallbacks, HasGameRef<TalaCare> {
   String variant;
 
   ActivityPoint({super.position, this.variant = 'drawing'});
@@ -20,7 +19,7 @@ class ActivityPoint extends SpriteComponent with CollisionCallbacks, HasGameRef<
   @override
   void onCollision(intersectionPoints, other) {
     if (other is Player) {
-      parent.onActivityStart(this);
+      game.onActivityStart(this);
     }
     super.onCollision(intersectionPoints, other);
   }

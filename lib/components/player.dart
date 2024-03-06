@@ -35,7 +35,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
   @override
   void update(double dt) {
     _updatePlayerState();
-    if (!parent.eventIsActive) {
+    if (!game.eventIsActive) {
       _updatePlayerMovement(dt);
       _checkCollisions();
     }
