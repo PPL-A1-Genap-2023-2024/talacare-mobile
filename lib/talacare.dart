@@ -17,6 +17,7 @@ import 'helpers/directions.dart';
 class TalaCare extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
   late final CameraComponent cam;
   late final DPad dPad;
+  @override
   late final World world;
   late AlignComponent eventAnchor;
   Player player = Player(character: 'Adam');
