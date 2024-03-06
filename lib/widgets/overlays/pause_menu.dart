@@ -27,7 +27,7 @@ class PauseMenu extends StatelessWidget {
                   border: Border.all(color: Colors.white),
                   borderRadius: const BorderRadius.all(Radius.circular(15)),
                 ),
-                height: MediaQuery.of(context).size.height * 60 / 100,
+                height: MediaQuery.of(context).size.height * 55 / 100,
                 width: MediaQuery.of(context).size.width * 70 / 100,
                 child: Column(
                   children: [
