@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
@@ -32,7 +33,8 @@ class TalaCare extends FlameGame {
     cam.follow(player);
 
     dPad = DPad()
-    ..sprite = await loadSprite('D_Pad/D-Pad.png');
+    ..sprite = await loadSprite('D_Pad/D-Pad.png')
+    ..setColor(Color.fromRGBO(255, 255, 255, 0.3));
 
     cam.viewport.add(AlignComponent(
       child: dPad,
