@@ -1,13 +1,15 @@
 import 'dart:async';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/services.dart';
 import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/utils.dart';
 import 'package:talacare/talacare.dart';
 
+import '../helpers/directions.dart';
+
 enum PlayerState { idle, running }
 
-class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, KeyboardHandler {
+class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare> {
   String character;
   Player({super.position, this.character = 'Adam'});
 
@@ -16,6 +18,8 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Ke
   final double stepTime = 0.1;
   double horizontalMovement = 0;
   double verticalMovement = 0;
+  Direction direction = Direction.none;
+  bool playerFlipped = false;
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
   List<CollisionBlock> collisionBlocks = [];
@@ -32,23 +36,6 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Ke
     _updatePlayerMovement(dt);
     _checkCollisions();
     super.update(dt);
-  }
-
-  @override
-  bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
-    horizontalMovement = 0;
-    verticalMovement = 0;
-
-    final isLeftKeyPressed = keysPressed.contains(LogicalKeyboardKey.arrowLeft);
-    final isRightKeyPressed = keysPressed.contains(LogicalKeyboardKey.arrowRight);
-    final isUpKeyPressed = keysPressed.contains(LogicalKeyboardKey.arrowUp);
-    final isDownKeyPressed = keysPressed.contains(LogicalKeyboardKey.arrowDown);
-
-    horizontalMovement += (isLeftKeyPressed ? -1 : 0);
-    horizontalMovement += (isRightKeyPressed ? 1 : 0);
-    verticalMovement += (isUpKeyPressed ? -1 : 0);
-    verticalMovement += (isDownKeyPressed ? 1 : 0);
-    return super.onKeyEvent(event, keysPressed);
   }
 
   void _loadAllAnimations() {
@@ -86,6 +73,13 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Ke
   }
 
   void _updatePlayerMovement(double dt) {
+    horizontalMovement = 0;
+    verticalMovement = 0;
+    horizontalMovement += (direction == Direction.left ? -1 : 0);
+    horizontalMovement += (direction == Direction.right ? 1 : 0);
+    verticalMovement += (direction == Direction.up ? -1 : 0);
+    verticalMovement += (direction == Direction.down ? 1 : 0);
+
     velocity.x = horizontalMovement * moveSpeed;
     velocity.y = verticalMovement * moveSpeed;
     position.x += velocity.x * dt;
@@ -97,11 +91,21 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Ke
       if (checkCollision(this, block)) {
         // Colliding without moving
         if (velocity.x == 0 && velocity.y == 0) {
-          if (block.position.x == 0 && block.height == 640) position.x = block.x + block.width;
-          else if (block.position.y == 0 && block.width == 368) position.y = block.y + block.height;
-          else if (block.position.x == 352 && block.height == 640) position.x = block.x - width;
-          else if (block.position.y == 624 && block.width == 368) position.y = block.y - height;
-          else position = Vector2(176, 576);
+          if (block.position.x == 0 && block.height == 640){
+            position.x = block.x + block.width;
+          }
+          else if (block.position.y == 0 && block.width == 368) {
+            position.y = block.y + block.height;
+          }
+          else if (block.position.x == 352 && block.height == 640) {
+            position.x = block.x - width;
+          }
+          else if (block.position.y == 624 && block.width == 368) {
+            position.y = block.y - height;
+          }
+          else {
+            position = Vector2(176, 576);
+          }
         }
 
         // Colliding while moving right

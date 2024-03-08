@@ -43,7 +43,7 @@ void main() {
             (game) async {
           await game.ready();
           Hud target = game.cam.viewport.children.query<Hud>().first;
-          expect(target.lifeTime, isNotNull);
+          expect(target.healthDurationChecker, isNotNull);
           expect(target.timerStarted, isTrue);
           expect(target.countDown.limit, 1);
         }

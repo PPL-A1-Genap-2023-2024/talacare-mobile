@@ -1,6 +1,7 @@
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/level.dart';
+import 'package:talacare/helpers/directions.dart';
 import 'package:talacare/talacare.dart';
 
 void main() {
@@ -43,9 +44,7 @@ void main() {
         final initialPosition = player.position.clone();
         
         // Simulate player movement to the left
-        player.horizontalMovement = -1;
-        player.velocity.x = player.horizontalMovement * player.moveSpeed;
-        player.velocity.y = 0;
+        player.direction = Direction.left;
 
         // Process movement until before left wall
         const leftWallXPosition = 16;

@@ -7,31 +7,34 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
     super.priority = 5,
   });
 
+  final int healthDuration = 10; // in second
+
   late Timer countDown;
-  // int lifeTime = 30; // production
-  int lifeTime = 10; // staging
+  late int healthDurationChecker;
   bool timerStarted = false;
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
+    healthDurationChecker = healthDuration;
     timerStarted = true;
     countDown = Timer(1, onTick: (){
-      if (lifeTime > 0){
-        lifeTime -= 1;
+      if (healthDurationChecker > 0){
+        healthDurationChecker -= 1;
       }
     }, repeat: true);
 
     for (var i = 1; i <= game.playerHealth; i++) {
-      final positionX = game.cam.visibleWorldRect.width - 45;
-      final positionY = game.cam.visibleWorldRect.height / 20;
-      final gap = 30;
+      final healthSize = 48;
+      final gap = healthSize;
+      final positionX = game.canvasSize.x - healthSize * 2;
+      final positionY = game.canvasSize.y / healthSize;
       await add(
         HealthComponent(
           heartNumber: i,
           position: Vector2(positionX, positionY + (gap.toDouble() * i)),
-          size: Vector2.all(32),
+          size: Vector2.all(healthSize.toDouble()),
         ),
       );
     }
@@ -39,18 +42,24 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
 
   @override
   void update(double dt) {
+    _updateTimer(dt);
+    _updateHealthDuration();
+  }
 
-    if (timerStarted && lifeTime > 0){
+  void _updateTimer(dt){
+    if (timerStarted && healthDurationChecker > 0){
       countDown.update(dt);
-    }
-
-    if (lifeTime == 0){
-      game.playerHealth -= 1;
-      lifeTime = 10;
     }
 
     if (game.playerHealth == 1){
       timerStarted = false;
+    }
+  }
+
+  void _updateHealthDuration(){
+    if (healthDurationChecker == 0){
+      game.playerHealth -= 1;
+      healthDurationChecker = healthDuration;
     }
   }
 }
