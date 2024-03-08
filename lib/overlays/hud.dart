@@ -43,7 +43,7 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
   @override
   void update(double dt) {
     _updateTimer(dt);
-    _updateHealthDuration();
+    _updatePlayerHealth();
   }
 
   void _updateTimer(dt){
@@ -51,15 +51,21 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
       countDown.update(dt);
     }
 
-    if (game.playerHealth == 1){
+    if (game.playerHealth == 1 && healthDurationChecker < 1){
       timerStarted = false;
     }
   }
 
-  void _updateHealthDuration(){
-    if (healthDurationChecker == 0){
+  void _updatePlayerHealth(){
+    if (healthDurationChecker == 0 && game.playerHealth > 1){
       game.playerHealth -= 1;
+      _updatePlayerMoveSpeed();
       healthDurationChecker = healthDuration;
     }
+  }
+
+  void _updatePlayerMoveSpeed(){
+    double currentSpeed = game.player.moveSpeed;
+    game.player.moveSpeed = currentSpeed - (currentSpeed * 25/100);
   }
 }

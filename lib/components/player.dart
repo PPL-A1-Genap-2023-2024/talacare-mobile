@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/utils.dart';

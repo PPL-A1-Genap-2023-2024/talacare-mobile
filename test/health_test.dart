@@ -38,14 +38,66 @@ void main() {
 
   group('Health Timer', () {
     testWithGame<TalaCare>(
-        'Health Timer Set Up Correctly',
+        'Ensure the Health Timer set up correctly',
         TalaCare.new,
             (game) async {
           await game.ready();
           Hud target = game.cam.viewport.children.query<Hud>().first;
           expect(target.healthDurationChecker, isNotNull);
           expect(target.timerStarted, isTrue);
-          expect(target.countDown.limit, 1);
+          expect(target.countDown.limit,  1);
+        }
+    );
+
+    testWithGame<TalaCare>(
+        'Health Timer should be working',
+        TalaCare.new,
+            (game) async {
+          await game.ready();
+          Hud target = game.cam.viewport.children.query<Hud>().first;
+          final initHealthDurationChecker = target.healthDurationChecker;
+
+          // Do 1 tick
+          target.update(1);
+          // HealthDurationChecker should've reduced after 1 tick
+          expect(target.healthDurationChecker, isNot(initHealthDurationChecker));
+        }
+    );
+
+    testWithGame<TalaCare>(
+        'healthDurationChecker refreshed after 1 duration of healthDuration',
+        TalaCare.new,
+            (game) async {
+          await game.ready();
+          Hud target = game.cam.viewport.children.query<Hud>().first;
+          final initHealthDurationChecker = target.healthDurationChecker;
+
+          target.update(target.healthDuration.toDouble());
+          expect(target.healthDurationChecker, initHealthDurationChecker);
+        }
+    );
+
+    testWithGame<TalaCare>(
+        'Health Timer stop when 1 health remaining',
+        TalaCare.new,
+            (game) async {
+          await game.ready();
+          Hud target = game.cam.viewport.children.query<Hud>().first;
+          final initHealth = game.playerHealth;
+
+          // Left the Player with 1 health
+          for (int i = 0; i < initHealth - 1; i++) {
+            target.update(target.healthDuration.toDouble());
+          }
+
+          // The timer should still count for the last health
+          expect(game.playerHealth, 1);
+          expect(target.timerStarted, true);
+          target.update(target.healthDuration.toDouble());
+
+          // The timer should've stop and the player still has 1 health
+          expect(game.playerHealth, 1);
+          expect(target.timerStarted, false);
         }
     );
   });
@@ -72,11 +124,16 @@ void main() {
           await game.ready();
           Hud target = game.cam.viewport.children.query<Hud>().first;
           final initHealth = game.playerHealth;
-          late double lastMoveSpeed = game.player.moveSpeed;
-          for (int i = 0; i < initHealth; i++) {
+
+          for (int i = 1; i <= initHealth; i++) {
+            final lastMoveSpeed = game.player.moveSpeed;
             target.update(target.healthDuration.toDouble());
-            double currentMoveSpeed = game.player.moveSpeed;
-            expect(currentMoveSpeed, lastMoveSpeed * 75/100);
+
+            if (i == initHealth){
+              expect(game.player.moveSpeed, lastMoveSpeed);
+            } else {
+              expect(game.player.moveSpeed, lastMoveSpeed - (lastMoveSpeed * 25/100));
+            }
           }
         }
     );
