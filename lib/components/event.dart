@@ -11,7 +11,7 @@ class ActivityEvent extends SpriteAnimationComponent with HasGameRef<TalaCare> {
   @override
   FutureOr<void> onLoad() {
     var data = SpriteAnimationData.sequenced(
-      textureSize: Vector2.all(300),
+      textureSize: Vector2.all(350),
       amount: 2,
       stepTime: 0.5
     );
