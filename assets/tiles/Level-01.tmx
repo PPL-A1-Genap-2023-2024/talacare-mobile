@@ -47,19 +47,19 @@
  </layer>
  <objectgroup id="2" name="Spawnpoints">
   <object id="5" name="Player" type="Player" x="176" y="576" width="22.6048" height="21.7354"/>
-  <object id="34" name="Activity #1" type="Activity" x="44.4586" y="591.124" width="22.6048" height="21.7354"/>
-  <object id="35" name="Activity #2" type="Activity" x="33.0788" y="195.107" width="22.6048" height="21.7354"/>
-  <object id="36" name="Activity #3" type="Activity" x="42.1827" y="336.216" width="22.6048" height="21.7354"/>
-  <object id="37" name="Activity #4" type="Activity" x="320.988" y="191.693" width="22.6048" height="21.7354"/>
-  <object id="38" name="Activity #5" type="Activity" x="297.09" y="72.2048" width="22.6048" height="21.7354"/>
-  <object id="39" name="Activity #6" type="Activity" x="46.7346" y="75.6188" width="22.6048" height="21.7354"/>
-  <object id="40" name="Activity #7" type="Activity" x="154.843" y="188.279" width="22.6048" height="21.7354"/>
-  <object id="41" name="Activity #8" type="Activity" x="291.4" y="450.014" width="22.6048" height="21.7354"/>
-  <object id="42" name="Activity #9" type="Activity" x="216.294" y="318.009" width="22.6048" height="21.7354"/>
-  <object id="43" name="Activity #9" type="Activity" x="31.9408" y="504.637" width="22.6048" height="21.7354"/>
-  <object id="44" name="Activity #10" type="Activity" x="160.533" y="417.013" width="22.6048" height="21.7354"/>
-  <object id="46" name="Activity #11" type="Activity" x="141.187" y="113.172" width="22.6048" height="21.7354"/>
-  <object id="47" name="Activity #12" type="Activity" x="313.022" y="585.434" width="22.6048" height="21.7354"/>
+  <object id="34" name="Drawing" type="Activity" x="44.4586" y="591.124" width="15" height="15"/>
+  <object id="35" name="Drawing" type="Activity" x="33.0788" y="195.107" width="15" height="15"/>
+  <object id="36" name="Drawing" type="Activity" x="42.1827" y="336.216" width="15" height="15"/>
+  <object id="37" name="Drawing" type="Activity" x="320.988" y="191.693" width="15" height="15"/>
+  <object id="38" name="Drawing" type="Activity" x="297.09" y="72.2048" width="15" height="15"/>
+  <object id="39" name="Drawing" type="Activity" x="46.7346" y="75.6188" width="15" height="15"/>
+  <object id="40" name="Drawing" type="Activity" x="154.843" y="188.279" width="15" height="15"/>
+  <object id="41" name="Drawing" type="Activity" x="291.4" y="450.014" width="15" height="15"/>
+  <object id="42" name="Drawing" type="Activity" x="216.294" y="318.009" width="15" height="15"/>
+  <object id="43" name="Drawing" type="Activity" x="31.9408" y="504.637" width="15" height="15"/>
+  <object id="44" name="Drawing" type="Activity" x="160.533" y="417.013" width="15" height="15"/>
+  <object id="46" name="Drawing" type="Activity" x="141.187" y="113.172" width="15" height="15"/>
+  <object id="47" name="Drawing" type="Activity" x="313.022" y="585.434" width="15" height="15"/>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
   <object id="9" name="Up" type="Outer" x="0" y="0" width="368" height="32"/>
