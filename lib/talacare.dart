@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -10,7 +9,6 @@ import 'package:talacare/components/level.dart';
 import 'helpers/directions.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
-import 'package:flame/image_composition.dart';
 
 class TalaCare extends FlameGame with HasCollisionDetection {
   late final CameraComponent cam;
