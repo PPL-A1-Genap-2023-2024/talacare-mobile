@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:talacare/components/activity.dart';
 import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/player.dart';
+import 'package:talacare/components/point.dart';
 
 class Level extends World {
   final String levelName;
@@ -12,8 +12,8 @@ class Level extends World {
   final Player player;
   final int taken = 8;
   List<CollisionBlock> collisionBlocks = [];
-  List<Activity> activityPoints = [];
-  List<Activity> selectedActivity = [];
+  List<ActivityPoint> activityPoints = [];
+  List<ActivityPoint> selectedActivity = [];
   
   Level({required this.levelName, required this.player});
 
@@ -32,7 +32,10 @@ class Level extends World {
             add(player);
             break;
           case 'Activity':
-            final activity = Activity(character: 'Bob', position: Vector2(spawnPoint.x, spawnPoint.y));
+            final activity = ActivityPoint(
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              variant: spawnPoint.name.toLowerCase()
+            );
             activityPoints.add(activity);
           default:
         }
@@ -41,7 +44,6 @@ class Level extends World {
       for (final activity in selectedActivity) {
         add(activity);
       }
-
     }
 
     final collisionLayer = level.tileMap.getLayer<ObjectGroup>('Collisions');
@@ -57,13 +59,12 @@ class Level extends World {
       }
     } 
     player.collisionBlocks = collisionBlocks;
-    print(parent);
     return super.onLoad();
   }
-  List<Activity> _addRandomActivities(List<Activity> activityPoints, int count) {
+  List<ActivityPoint> _addRandomActivities(List<ActivityPoint> activityPoints, int count) {
     activityPoints.shuffle();
     int manyActivity = count;
-    List<Activity> selectedActivityPoints = [];
+    List<ActivityPoint> selectedActivityPoints = [];
     for (int i = 0; i < manyActivity; i++) {
       selectedActivityPoints.add(activityPoints[i]);
     }
