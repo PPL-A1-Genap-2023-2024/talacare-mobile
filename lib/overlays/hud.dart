@@ -26,15 +26,16 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
     }, repeat: true);
 
     for (var i = 1; i <= game.playerHealth; i++) {
-      final healthSize = 48;
-      final gap = healthSize;
-      final positionX = game.canvasSize.x - healthSize * 2;
-      final positionY = game.canvasSize.y / healthSize;
+      final healthComponentSize = 48;
+      final gap = healthComponentSize;
+      final positionX = 0.toDouble();
+      print(positionX);
+      final positionY = game.canvasSize.y / healthComponentSize;
       await add(
         HealthComponent(
           heartNumber: i,
           position: Vector2(positionX, positionY + (gap.toDouble() * i)),
-          size: Vector2.all(healthSize.toDouble()),
+          size: Vector2.all(healthComponentSize.toDouble()),
         ),
       );
     }
