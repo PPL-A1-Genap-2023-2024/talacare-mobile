@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:talacare/components/collision_block.dart';
+import 'package:talacare/components/level.dart';
 import 'package:talacare/components/utils.dart';
 import 'package:talacare/talacare.dart';
 
@@ -9,7 +11,7 @@ import '../helpers/directions.dart';
 
 enum PlayerState { idle, running }
 
-class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare> {
+class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, ParentIsA<Level> {
   String character;
   Player({super.position, this.character = 'Adam'});
 
@@ -26,14 +28,17 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare> {
   @override
   FutureOr<void> onLoad() {
     _loadAllAnimations();
+    add(RectangleHitbox());
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
     _updatePlayerState();
-    _updatePlayerMovement(dt);
-    _checkCollisions();
+    if (!game.eventIsActive) {
+      _updatePlayerMovement(dt);
+      _checkCollisions();
+    }
     super.update(dt);
   }
 
