@@ -19,31 +19,34 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   Player player = Player(character: 'Adam');
   bool eventIsActive = false;
   int score = 0;
+  
+  final bool isWidgetTesting;
+  TalaCare({this.isWidgetTesting = false});
 
   @override
   FutureOr<void> onLoad() async {
-    // Load all images into cache
-    await images.loadAllImages();
+    if (!isWidgetTesting) {
+      // Load all images into cache
+      await images.loadAllImages();
 
-    world = Level(player: player, levelName: 'Level-01');
+      world = Level(player: player, levelName: 'Level-01');
+      cam = CameraComponent(world: world);
+      cam.viewfinder.anchor = Anchor.center;
+      cam.viewfinder.zoom = 3;
+      cam.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
 
+      cam.follow(player);
 
-    cam = CameraComponent(world: world);
-    cam.viewfinder.anchor = Anchor.center;
-    cam.viewfinder.zoom = 3;
-    cam.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
-    
-    cam.follow(player);
+      dPad = DPad()
+      ..sprite = await loadSprite('D_Pad/D-Pad.png');
 
-    dPad = DPad()
-    ..sprite = await loadSprite('D_Pad/D-Pad.png');
+      cam.viewport.add(AlignComponent(
+        child: dPad,
+        alignment: Anchor.bottomCenter,
+      ));
+      addAll([cam, world]);
+    }
 
-    cam.viewport.add(AlignComponent(
-      child: dPad,
-      alignment: Anchor.bottomCenter,
-    ));
-
-    addAll([cam, world]);
 
     return super.onLoad();
   }
