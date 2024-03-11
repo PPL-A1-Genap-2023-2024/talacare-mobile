@@ -55,9 +55,8 @@ class TalaCare extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
         alignment: Anchor.bottomCenter,
       ));
       addAll([cam, world]);
+      cam.viewport.add(Hud());
     }
-
-    cam.viewport.add(Hud());
 
     return super.onLoad();
   }
