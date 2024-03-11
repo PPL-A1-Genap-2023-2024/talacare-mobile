@@ -9,7 +9,7 @@ import 'package:flame/layout.dart';
 import 'package:talacare/components/dpad.dart';
 import 'package:talacare/components/event.dart';
 import 'package:talacare/components/level.dart';
-import 'package:talacare/overlays/hud.dart';
+import 'package:talacare/components/hud/hud.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 import 'package:flame/image_composition.dart';

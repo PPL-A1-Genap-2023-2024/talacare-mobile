@@ -1,6 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:talacare/talacare.dart';
-import 'package:talacare/overlays/health.dart';
+import 'package:talacare/components/hud/health.dart';
 
 class Hud extends PositionComponent with HasGameReference<TalaCare> {
   Hud({
@@ -29,7 +29,6 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
       final healthComponentSize = 48;
       final gap = healthComponentSize;
       final positionX = 0.toDouble();
-      print(positionX);
       final positionY = game.canvasSize.y / healthComponentSize;
       await add(
         HealthComponent(
