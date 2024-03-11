@@ -26,31 +26,36 @@ class TalaCare extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
   late AlignComponent eventAnchor;
   bool eventIsActive = false;
   int score = 0;
+  
+  final bool isWidgetTesting;
+  TalaCare({this.isWidgetTesting = false});
 
   @override
   FutureOr<void> onLoad() async {
-    // Load all images into cache
-    await images.loadAllImages();
+    if (!isWidgetTesting) {
+      // Load all images into cache
+      await images.loadAllImages();
 
-    world = Level(player: player, levelName: 'Level-01');
+      world = Level(player: player, levelName: 'Level-01');
 
-    cam = CameraComponent(world: world);
-    cam.viewfinder.anchor = Anchor.center;
-    cam.viewfinder.zoom = 3;
-    cam.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
-    
-    cam.follow(player);
+      cam = CameraComponent(world: world);
+      cam.viewfinder.anchor = Anchor.center;
+      cam.viewfinder.zoom = 3;
+      cam.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
 
-    final Image dPadImage = await images.load('D_Pad/D-Pad.png');
-    dPad = DPad()
-      ..sprite = Sprite(dPadImage)
-      ..anchor = Anchor.bottomCenter;
+      cam.follow(player);
 
-    cam.viewport.add(AlignComponent(
-      child: dPad,
-      alignment: Anchor.bottomCenter,
-    ));
-    addAll([cam, world]);
+      final Image dPadImage = await images.load('D_Pad/D-Pad.png');
+      dPad = DPad()
+        ..sprite = Sprite(dPadImage)
+        ..anchor = Anchor.bottomCenter;
+
+      cam.viewport.add(AlignComponent(
+        child: dPad,
+        alignment: Anchor.bottomCenter,
+      ));
+      addAll([cam, world]);
+    }
 
     cam.viewport.add(Hud());
 
