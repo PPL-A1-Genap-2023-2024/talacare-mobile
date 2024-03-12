@@ -42,7 +42,6 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
     super.update(dt);
   }
 
-
   void _loadAllAnimations() {
     idleAnimation = _spriteAnimation('idle_anim', 24);
     runningAnimation = _spriteAnimation('run', 24);
@@ -59,15 +58,15 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
 
   SpriteAnimation _spriteAnimation(String state, int amount) {
     return SpriteAnimation.fromFrameData(
-      game.images.fromCache('Characters_free/${character}_${state}_16x16.png'), 
-      SpriteAnimationData.sequenced(
-        amount: amount, 
-        stepTime: stepTime, 
-        textureSize: Vector2(16, 32)
-      )
+        game.images.fromCache('Characters_free/${character}_${state}_16x16.png'),
+        SpriteAnimationData.sequenced(
+            amount: amount,
+            stepTime: stepTime,
+            textureSize: Vector2(16, 32)
+        )
     );
   }
-  
+
   void _updatePlayerState() {
     PlayerState playerState = PlayerState.idle;
 
@@ -90,7 +89,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
     position.x += velocity.x * dt;
     position.y += velocity.y * dt;
   }
-  
+
   void _checkCollisions() {
     for (final block in collisionBlocks) {
       if (checkCollision(this, block)) {

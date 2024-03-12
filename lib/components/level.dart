@@ -51,13 +51,13 @@ class Level extends World {
     if (collisionLayer != null) {
       for (final collision in collisionLayer.objects) {
         final wall = CollisionBlock(
-          position: Vector2(collision.x, collision.y),
-          size: Vector2(collision.width, collision.height)
+            position: Vector2(collision.x, collision.y),
+            size: Vector2(collision.width, collision.height)
         );
         collisionBlocks.add(wall);
         add(wall);
       }
-    } 
+    }
     player.collisionBlocks = collisionBlocks;
     return super.onLoad();
   }
