@@ -63,7 +63,6 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
   }
 
   SpriteAnimation _spriteAnimation(String state, int start) {
-
     final spriteSheet = SpriteSheet.fromColumnsAndRows(
         image: game.images.fromCache('Characters_free/${character}_${state}_16x16.png'),
         columns: 24,

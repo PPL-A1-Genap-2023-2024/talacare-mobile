@@ -7,16 +7,19 @@ import 'package:talacare/components/dpad.dart';
 import 'package:talacare/components/event.dart';
 import 'package:talacare/components/level.dart';
 import 'helpers/directions.dart';
+import 'package:talacare/components/hud/hud.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 
 class TalaCare extends FlameGame with HasCollisionDetection {
   late final CameraComponent cam;
+  Player player = Player(character: 'Adam');
+  int playerHealth = 4;
+
   late final DPad dPad;
   @override
   late final World world;
   late AlignComponent eventAnchor;
-  Player player = Player(character: 'Adam');
   bool eventIsActive = false;
   int score = 0;
   
@@ -45,6 +48,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
         alignment: Anchor.bottomCenter,
       ));
       addAll([cam, world]);
+      cam.viewport.add(Hud());
     }
 
 
