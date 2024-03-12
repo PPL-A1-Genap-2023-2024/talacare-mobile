@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/sprite.dart';
 import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/level.dart';
 import 'package:talacare/components/utils.dart';
@@ -20,7 +21,6 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
   double horizontalMovement = 0;
   double verticalMovement = 0;
   Direction direction = Direction.none;
-  bool playerFlipped = false;
   double moveSpeed = 100;
   Vector2 velocity = Vector2.zero();
   List<CollisionBlock> collisionBlocks = [];
@@ -43,27 +43,35 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
   }
 
   void _loadAllAnimations() {
-    idleAnimation = _spriteAnimation('idle_anim', 24);
-    runningAnimation = _spriteAnimation('run', 24);
 
     // List of all animations
     animations = {
-      PlayerState.idle: idleAnimation,
-      PlayerState.running: runningAnimation,
+      (PlayerState.idle, Direction.right): _spriteAnimation('idle_anim', 0),
+      (PlayerState.running, Direction.right): _spriteAnimation('run', 0),
+      (PlayerState.idle, Direction.up): _spriteAnimation('idle_anim', 6),
+      (PlayerState.running, Direction.up): _spriteAnimation('run', 6),
+      (PlayerState.idle, Direction.left): _spriteAnimation('idle_anim', 12),
+      (PlayerState.running, Direction.left): _spriteAnimation('run', 12),
+      (PlayerState.idle, Direction.down): _spriteAnimation('idle_anim', 18),
+      (PlayerState.running, Direction.down): _spriteAnimation('run', 18),
+      (PlayerState.idle, Direction.none): _spriteAnimation('idle_anim', 18),
+      (PlayerState.running, Direction.none): _spriteAnimation('run', 18),
     };
 
     // Set current animation
-    current = PlayerState.idle;
+    current = (PlayerState.idle, Direction.none);
   }
 
-  SpriteAnimation _spriteAnimation(String state, int amount) {
-    return SpriteAnimation.fromFrameData(
-        game.images.fromCache('Characters_free/${character}_${state}_16x16.png'),
-        SpriteAnimationData.sequenced(
-            amount: amount,
-            stepTime: stepTime,
-            textureSize: Vector2(16, 32)
-        )
+  SpriteAnimation _spriteAnimation(String state, int start) {
+    final spriteSheet = SpriteSheet.fromColumnsAndRows(
+        image: game.images.fromCache('Characters_free/${character}_${state}_16x16.png'),
+        columns: 24,
+        rows: 1);
+    return spriteSheet.createAnimation(
+        row: 0,
+        stepTime: stepTime,
+        from: start,
+        to: start + 5
     );
   }
 
@@ -73,7 +81,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
     if (velocity.x != 0 || velocity.y != 0) {
       playerState = PlayerState.running;
     }
-    current = playerState;
+    current = (playerState, direction);
   }
 
   void _updatePlayerMovement(double dt) {

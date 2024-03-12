@@ -1,21 +1,17 @@
 import 'dart:async';
-
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
-import 'package:flame/events.dart';
 import 'package:flame/game.dart';
-import 'package:flame/input.dart';
 import 'package:flame/layout.dart';
 import 'package:talacare/components/dpad.dart';
 import 'package:talacare/components/event.dart';
 import 'package:talacare/components/level.dart';
+import 'helpers/directions.dart';
 import 'package:talacare/components/hud/hud.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
-import 'package:flame/image_composition.dart';
-import 'helpers/directions.dart';
 
-class TalaCare extends FlameGame with HasCollisionDetection, HasKeyboardHandlerComponents {
+class TalaCare extends FlameGame with HasCollisionDetection {
   late final CameraComponent cam;
   Player player = Player(character: 'Adam');
   int playerHealth = 4;
@@ -37,7 +33,6 @@ class TalaCare extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
       await images.loadAllImages();
 
       world = Level(player: player, levelName: 'Level-01');
-
       cam = CameraComponent(world: world);
       cam.viewfinder.anchor = Anchor.center;
       cam.viewfinder.zoom = 3;
@@ -45,10 +40,8 @@ class TalaCare extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
 
       cam.follow(player);
 
-      final Image dPadImage = await images.load('D_Pad/D-Pad.png');
       dPad = DPad()
-        ..sprite = Sprite(dPadImage)
-        ..anchor = Anchor.bottomCenter;
+      ..sprite = await loadSprite('D_Pad/D-Pad.png');
 
       cam.viewport.add(AlignComponent(
         child: dPad,
@@ -57,6 +50,7 @@ class TalaCare extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
       addAll([cam, world]);
       cam.viewport.add(Hud());
     }
+
 
     return super.onLoad();
   }
@@ -85,4 +79,5 @@ class TalaCare extends FlameGame with HasCollisionDetection, HasKeyboardHandlerC
       eventIsActive = false;
     }
   }
+
 }
