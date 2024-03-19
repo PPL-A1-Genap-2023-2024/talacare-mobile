@@ -2,6 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/collision_block.dart';
+import 'package:talacare/components/hospital_door.dart';
 import 'package:talacare/components/level.dart';
 import 'package:talacare/helpers/directions.dart';
 import 'package:talacare/talacare.dart';
@@ -236,6 +237,24 @@ void main() {
 
         expect(player.position, initialPosition);
       },
+    );
+  });
+
+
+  group('Game 2 Integration Test', () {
+    testWithGame<TalaCare>(
+        'Change Level when enter door',
+        TalaCare.new,
+        (game) async {
+          await game.ready();
+          final level = game.children.query<Level>().first;
+          final player = level.player;
+
+          final door = level.children.query<HospitalDoor>().first;
+          door.onCollision({Vector2(0.0,0.0), Vector2(0.0,0.0)}, player);
+          game.update(1);
+          expect(game.level, 2);
+        }
     );
   });
 }
