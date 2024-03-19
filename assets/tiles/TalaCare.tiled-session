@@ -9,19 +9,19 @@
     ],
     "fileStates": {
         "House Adventure.tsx": {
-            "scaleInDock": 1.6041,
+            "scaleInDock": 3.1055,
             "scaleInEditor": 1
         },
         "Level-01.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                2,
+                3
             ],
-            "scale": 0.8313,
-            "selectedLayer": 2,
+            "scale": 1.0662,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 172.62119571755082,
-                "y": 297.72645254420786
+                "x": 184.29938097917838,
+                "y": 319.358469330332
             }
         },
         "Level-02.tmx": {
@@ -31,8 +31,8 @@
             "scale": 1.171171875,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 210.47295043692884,
-                "y": 328.3036488559802
+                "x": 183.1498899339604,
+                "y": 319.7651924488026
             }
         }
     },
