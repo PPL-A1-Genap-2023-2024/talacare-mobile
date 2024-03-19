@@ -16,11 +16,13 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   Player player = Player(character: 'Adam');
   int playerHealth = 4;
 
+
   late final DPad dPad;
   @override
   late final World world;
   late AlignComponent eventAnchor;
   bool eventIsActive = false;
+  int level = 1;
   int score = 0;
   
   final bool isWidgetTesting;
@@ -32,7 +34,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
       // Load all images into cache
       await images.loadAllImages();
 
-      world = Level(player: player, levelName: 'Level-01');
+      world = Level(player: player, levelName: 'Level-0$level');
       cam = CameraComponent(world: world);
       cam.viewfinder.anchor = Anchor.center;
       cam.viewfinder.zoom = 3;
@@ -78,6 +80,10 @@ class TalaCare extends FlameGame with HasCollisionDetection {
       cam.viewport.remove(eventAnchor);
       eventIsActive = false;
     }
+  }
+
+  void enterDoor() {
+    level = 2;
   }
 
 }

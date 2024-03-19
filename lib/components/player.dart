@@ -17,6 +17,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
 
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
+  Vector2 initialSpawn = Vector2(0,0);
   final double stepTime = 0.1;
   double horizontalMovement = 0;
   double verticalMovement = 0;
@@ -121,7 +122,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
           }
           else {
             // Back to spawn point
-            position = Vector2(176, 576);
+            position = initialSpawn;
           }
         }
 
@@ -143,8 +144,10 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
         }
         // Colliding while moving up
         else if (velocity.y < 0) {
+
           position.y = block.y + block.height;
           velocity.y = 0;
+
         }
       }
     }

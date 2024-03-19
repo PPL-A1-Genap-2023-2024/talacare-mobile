@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:talacare/components/collision_block.dart';
+import 'package:talacare/components/hospital_door.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 
@@ -28,7 +29,7 @@ class Level extends World {
       for (final spawnPoint in spawnPointsLayer.objects) {
         switch (spawnPoint.class_) {
           case 'Player':
-            player.position = Vector2(spawnPoint.x, spawnPoint.y);
+            player.initialSpawn = player.position = Vector2(spawnPoint.x, spawnPoint.y);
             add(player);
             break;
           case 'Activity':
@@ -37,6 +38,10 @@ class Level extends World {
               variant: spawnPoint.name.toLowerCase()
             );
             activityPoints.add(activity);
+          case 'Hospital':
+            final hospitalDoor = HospitalDoor();
+            hospitalDoor.position = Vector2(spawnPoint.x, spawnPoint.y);
+            add(hospitalDoor);
           default:
         }
       }
