@@ -85,7 +85,13 @@ class TalaCare extends FlameGame with HasCollisionDetection {
 
   Future<void> enterDoor() async {
     level = 2;
-    cam.viewport.add(ItemContainer());
+    final double screenWidth = cam.viewport.size.x;
+
+    ItemContainer itemContainer = ItemContainer(
+      size: Vector2(screenWidth * 9 / 10, 100)
+    );
+
+    cam.viewport.add(itemContainer);
   }
 
 }
