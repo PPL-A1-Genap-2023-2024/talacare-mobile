@@ -4,6 +4,7 @@ import 'package:flame/palette.dart';
 import 'package:talacare/components/item.dart';
 
 class ItemContainer extends RectangleComponent {
+  @override
   final paint = BasicPalette.lightPink.paint();
 
   ItemContainer({super.size});
