@@ -8,6 +8,7 @@ import 'package:talacare/components/event.dart';
 import 'package:talacare/components/level.dart';
 import 'helpers/directions.dart';
 import 'package:talacare/components/hud/hud.dart';
+import 'package:talacare/components/item_container.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 
@@ -82,8 +83,9 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     }
   }
 
-  void enterDoor() {
+  Future<void> enterDoor() async {
     level = 2;
+    cam.viewport.add(ItemContainer());
   }
 
 }
