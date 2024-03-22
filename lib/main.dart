@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 import 'package:talacare/widgets/overlays/pause_menu.dart';
+import 'package:talacare/widgets/homepage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,9 +16,12 @@ void main() async {
   runApp(GameWidget(
       game: kDebugMode ? TalaCare() : game,
       initialActiveOverlays: const [
-        PauseButton.id
+        HomePage.id
       ],
       overlayBuilderMap: {
+        HomePage.id: (BuildContext context, TalaCare gameRef) => HomePage(
+              gameRef: gameRef,
+            ),
         PauseButton.id: (BuildContext context, TalaCare gameRef) => PauseButton(
               gameRef: gameRef,
             ),
