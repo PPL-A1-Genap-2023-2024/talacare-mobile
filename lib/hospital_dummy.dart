@@ -41,11 +41,12 @@ class DraggableObject extends HospitalObject with DragCallbacks {
   late bool isActive;
 
   DraggableObject(
-      {required super.position, required Vector2 size, required Vector2 target})
+      {required super.position,
+      required Vector2 size,
+      required Vector2 this.target})
       : super(size: size) {
-    this.target = target;
-    this.hitboxRadius = size.length / 2;
-    this.isActive = true;
+    hitboxRadius = size.length / 2;
+    isActive = true;
   }
 
   @override
@@ -69,8 +70,8 @@ class DraggableObject extends HospitalObject with DragCallbacks {
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
     if (position.distanceTo(target) <= hitboxRadius) {
-      this.removeFromParent();
-      this.isActive = false;
+      removeFromParent();
+      isActive = false;
     } else {
       position.setFrom(lastPosition);
     }
