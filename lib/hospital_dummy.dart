@@ -19,7 +19,8 @@ class HospitalObject<T extends FlameGame> extends SpriteComponent
 }
 
 class DragCallbacksExample extends FlameGame {
-  DraggableObject syringe = DraggableObject(position: Vector2(0, 200));
+  DraggableObject syringe =
+      DraggableObject(position: Vector2(0, 200), size: Vector2(100, 100));
 
   @override
   Future<void> onLoad() async {
@@ -31,7 +32,7 @@ class DragCallbacksExample extends FlameGame {
 class DraggableObject extends HospitalObject with DragCallbacks {
   late Vector2 lastPosition;
 
-  DraggableObject({super.position}) : super(size: Vector2.all(100));
+  DraggableObject({super.position, required Vector2 size}) : super(size: size);
 
   @override
   void update(double dt) {
