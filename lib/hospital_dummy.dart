@@ -41,9 +41,7 @@ class DraggableObject extends HospitalObject with DragCallbacks {
   late bool isActive;
 
   DraggableObject(
-      {required super.position,
-      required Vector2 size,
-      required Vector2 this.target})
+      {required super.position, required Vector2 size, required this.target})
       : super(size: size) {
     hitboxRadius = size.length / 2;
     isActive = true;
