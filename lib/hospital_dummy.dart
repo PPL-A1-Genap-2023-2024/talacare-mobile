@@ -5,9 +5,10 @@ import 'package:flame/components.dart';
 
 class HospitalObject<T extends FlameGame> extends SpriteComponent
     with HasGameReference<T> {
-  HospitalObject({super.position, Vector2? size, super.priority, super.key})
+  HospitalObject(
+      {super.position, required Vector2? size, super.priority, super.key})
       : super(
-          size: size ?? Vector2.all(50),
+          size: size,
           anchor: Anchor.center,
         );
 
@@ -28,7 +29,6 @@ class DragCallbacksExample extends FlameGame {
 }
 
 class DraggableObject extends HospitalObject with DragCallbacks {
-  bool debugMode = true;
   late Vector2 lastPosition;
 
   DraggableObject({super.position}) : super(size: Vector2.all(100));
