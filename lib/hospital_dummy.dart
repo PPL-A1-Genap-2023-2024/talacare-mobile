@@ -5,9 +5,12 @@ import 'package:flame/components.dart';
 
 class HospitalObject<T extends FlameGame> extends SpriteComponent
     with HasGameReference<T> {
-  HospitalObject(
-      {super.position, required Vector2? size, super.priority, super.key})
-      : super(
+  HospitalObject({
+    super.position,
+    super.priority,
+    super.key,
+    required Vector2? size,
+  }) : super(
           size: size,
           anchor: Anchor.center,
         );
@@ -19,8 +22,10 @@ class HospitalObject<T extends FlameGame> extends SpriteComponent
 }
 
 class DragCallbacksExample extends FlameGame {
-  DraggableObject syringe =
-      DraggableObject(position: Vector2(0, 200), size: Vector2(100, 100));
+  DraggableObject syringe = DraggableObject(
+      position: Vector2(0, 200),
+      size: Vector2(100, 100),
+      target: Vector2(0, 0));
 
   @override
   Future<void> onLoad() async {
@@ -31,8 +36,17 @@ class DragCallbacksExample extends FlameGame {
 
 class DraggableObject extends HospitalObject with DragCallbacks {
   late Vector2 lastPosition;
+  late Vector2 target;
+  late double hitboxRadius;
+  late bool isActive;
 
-  DraggableObject({super.position, required Vector2 size}) : super(size: size);
+  DraggableObject(
+      {required super.position, required Vector2 size, required Vector2 target})
+      : super(size: size) {
+    this.target = target;
+    this.hitboxRadius = size.length / 2;
+    this.isActive = true;
+  }
 
   @override
   void update(double dt) {
@@ -54,6 +68,11 @@ class DraggableObject extends HospitalObject with DragCallbacks {
   @override
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
-    position.setFrom(lastPosition);
+    if (position.distanceTo(target) <= hitboxRadius) {
+      this.removeFromParent();
+      this.isActive = false;
+    } else {
+      position.setFrom(lastPosition);
+    }
   }
 }
