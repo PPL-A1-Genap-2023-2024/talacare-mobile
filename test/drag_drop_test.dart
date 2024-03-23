@@ -19,6 +19,7 @@ void main() {
       syringe.onDragStart(createDragStartEvents(game: game));
       syringe.position.setFrom(newPosition);
       expect(syringe.position, newPosition);
+      expect(syringe.isActive, true);
     });
 
     testWithGame<DragCallbacksExample>(
@@ -28,9 +29,22 @@ void main() {
       DraggableObject syringe = game.syringe;
       Vector2 initialPosition = Vector2(syringe.x, syringe.y);
       syringe.onDragStart(createDragStartEvents(game: game));
-      syringe.position.setFrom(Vector2(0, 0));
+      syringe.position.setFrom(Vector2(500, 500));
       syringe.onDragEnd(DragEndEvent(1, DragEndDetails()));
       expect(initialPosition, syringe.position);
+      expect(syringe.isActive, true);
+    });
+
+    testWithGame<DragCallbacksExample>(
+        'Dragging and releasing object on the objective',
+        DragCallbacksExample.new, (game) async {
+      await game.ready();
+      DraggableObject syringe = game.syringe;
+      expect(syringe.isActive, true);
+      syringe.onDragStart(createDragStartEvents(game: game));
+      syringe.position.setFrom(Vector2(0, 0));
+      syringe.onDragEnd(DragEndEvent(1, DragEndDetails()));
+      expect(syringe.isActive, false);
     });
   });
 }
