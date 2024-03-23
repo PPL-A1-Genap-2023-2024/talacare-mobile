@@ -2,7 +2,6 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart' show Colors;
 import 'package:flame/components.dart';
-import 'package:meta/meta.dart';
 
 class HospitalObject<T extends FlameGame> extends SpriteComponent
     with HasGameReference<T> {
@@ -12,7 +11,6 @@ class HospitalObject<T extends FlameGame> extends SpriteComponent
           anchor: Anchor.center,
         );
 
-  @mustCallSuper
   @override
   Future<void> onLoad() async {
     sprite = await game.loadSprite('temp/syringe.png');
@@ -30,7 +28,6 @@ class DragCallbacksExample extends FlameGame {
 }
 
 class DraggableObject extends HospitalObject with DragCallbacks {
-  @override
   bool debugMode = true;
   late Vector2 lastPosition;
 
