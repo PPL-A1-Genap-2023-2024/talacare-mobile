@@ -16,7 +16,7 @@ class DPad extends SpriteComponent with HasGameRef<TalaCare> {
 
   @override
   Future<dynamic> onLoad() async {
-
+    sprite = await game.loadSprite('D_Pad/D-Pad.png');
 
     // Buttons
     final leftSprites = await loadArrowSprites('Left');
