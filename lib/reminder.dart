@@ -9,14 +9,14 @@ class ReminderForm extends StatefulWidget {
 
 class ReminderFormState extends State<ReminderForm> {
   final _formKey = GlobalKey<FormState>();
-  DateTime schedule = DateTime(2020);
+  TimeOfDay schedule = TimeOfDay(hour: 10, minute: 15);
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: schedule,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(2101));
+  Future<void> _selectSchedule(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: schedule,
+      initialEntryMode: TimePickerEntryMode.dialOnly,
+    );
     if (picked != null && picked != schedule) {
       setState(() {
         schedule = picked;
@@ -40,13 +40,13 @@ class ReminderFormState extends State<ReminderForm> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text("${schedule.toLocal()}".split(' ')[0]),
+              Text("${schedule}"),
               const SizedBox(
                 height: 20.0,
               ),
               ElevatedButton(
-                onPressed: () => _selectDate(context),
-                child: const Text('Select date'),
+                onPressed: () => _selectSchedule(context),
+                child: const Text('Select time'),
               ),
             ],
           ),
