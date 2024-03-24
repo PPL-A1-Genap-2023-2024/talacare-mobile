@@ -174,6 +174,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Spawnpoints">
+  <object id="92" name="Hospital" type="Hospital" x="224" y="64.6667" width="31.3333" height="31.6667"/>
   <object id="5" name="Player" type="Player" x="272" y="784" width="22.6048" height="21.7354"/>
   <object id="34" name="Drawing" type="Activity" x="140.459" y="799.124" width="15" height="15"/>
   <object id="35" name="Drawing" type="Activity" x="129.079" y="403.107" width="15" height="15"/>
@@ -188,7 +189,6 @@
   <object id="44" name="Drawing" type="Activity" x="256.533" y="625.013" width="15" height="15"/>
   <object id="46" name="Drawing" type="Activity" x="237.187" y="321.172" width="15" height="15"/>
   <object id="47" name="Drawing" type="Activity" x="409.022" y="793.434" width="15" height="15"/>
-  <object id="92" name="Hospital" type="Hospital" x="224" y="64.6667" width="31.3333" height="31.6667"/>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
   <object id="9" name="2" type="Outer" x="96" y="224" width="112" height="16"/>

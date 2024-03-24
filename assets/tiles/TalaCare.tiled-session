@@ -20,8 +20,8 @@
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 186.5,
-                "y": 225.5
+                "x": 239.5,
+                "y": 80.5
             }
         },
         "Level-02.tmx": {
@@ -31,7 +31,7 @@
             "scale": 1.171171875,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 184.00373557467816,
+                "x": 211.3267960776466,
                 "y": 320.6190380895204
             }
         },
@@ -49,15 +49,14 @@
     "openFiles": [
         "House Adventure.tsx",
         "Level-02.tmx",
-        "Level-01.tmx",
-        "Serene Village.tsx"
+        "Level-01.tmx"
     ],
     "project": "TalaCare.tiled-project",
     "recentFiles": [
         "House Adventure.tsx",
         "Level-02.tmx",
-        "Serene Village.tsx",
-        "Level-01.tmx"
+        "Level-01.tmx",
+        "Serene Village.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
