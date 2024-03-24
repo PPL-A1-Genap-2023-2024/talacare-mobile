@@ -11,12 +11,16 @@ void main() {
       ),
     );
     final ReminderFormState formState = tester.state(find.byWidget(form));
-    await tester.tap(find.text('Select date'));
+    await tester.tap(find.text('Select time'));
+    await tester.pumpAndSettle();
+    var center = tester
+        .getCenter(find.byKey(const ValueKey<String>('time-picker-dial')));
+    await tester.tapAt(Offset(center.dx - 50, center.dy));
     await tester.pump();
-    await tester.tap(find.text('5'));
+    await tester.tapAt(Offset(center.dx - 50, center.dy));
     await tester.pump();
     await tester.tap(find.text('OK'));
     await tester.pump();
-    expect(formState.schedule, DateTime(2020, 1, 5));
+    expect(formState.schedule, TimeOfDay(hour: 9, minute: 45));
   });
 }
