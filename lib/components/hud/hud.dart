@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:talacare/helpers/hospital_reason.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/components/hud/health.dart';
 
@@ -61,6 +62,10 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
       game.playerHealth -= 1;
       _updatePlayerMoveSpeed();
       healthDurationChecker = healthDuration;
+
+      if (game.playerHealth ==  1) {
+        game.enterHospital(HospitalReason.lowBlood);
+      }
     }
   }
 
