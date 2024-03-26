@@ -13,15 +13,19 @@
             "scaleInDock": 3.1055,
             "scaleInEditor": 1
         },
+        "House Decor.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "Level-01.tmx": {
             "expandedObjectLayers": [
                 3
             ],
             "scale": 1,
-            "selectedLayer": 3,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 239.5,
-                "y": 80.5
+                "x": 309.5,
+                "y": 377.5
             }
         },
         "Level-02.tmx": {
@@ -40,7 +44,7 @@
             "scaleInEditor": 1
         }
     },
-    "last.imagePath": "C:/Users/WorkPro/Documents/Kuliah/Semester 6 2024/PPL/Flutter_Talacare/talacare/assets/images/Serene_Village/16x16_original",
+    "last.imagePath": "C:/Users/WorkPro/Documents/Kuliah/Semester 6 2024/PPL/Flutter_Talacare/talacare/assets/images/Interiors_free/16x16",
     "map.height": 40,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
@@ -49,15 +53,18 @@
     "openFiles": [
         "House Adventure.tsx",
         "Level-02.tmx",
-        "Level-01.tmx"
+        "Level-01.tmx",
+        "House Decor.tsx"
     ],
     "project": "TalaCare.tiled-project",
     "recentFiles": [
         "House Adventure.tsx",
         "Level-02.tmx",
+        "House Decor.tsx",
         "Level-01.tmx",
         "Serene Village.tsx"
     ],
+    "resizeMap.removeObjects": false,
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 16,
