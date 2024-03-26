@@ -21,7 +21,7 @@ class HospitalDoor extends SpriteComponent with CollisionCallbacks, HasGameRef<T
   void onCollision(intersectionPoints, other) {
     if (other is Player) {
       isColliding = true;
-      game.enterHospital(HospitalReason.playerEnter);
+      game.confirmHospital(HospitalReason.playerEnter);
     }
     super.onCollision(intersectionPoints, other);
   }
