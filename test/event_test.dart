@@ -31,11 +31,10 @@ TestWidgetsFlutterBinding.ensureInitialized();
         TalaCare.new,
             (game) async {
           await game.ready();
-          final level = game.children.query<Level>().first;
           Hud hud = game.cam.viewport.children.query<Hud>().first;
           List<ProgressComponent> progressList = hud.children.query<ProgressComponent>();
-          for (int i=0; i<level.taken;i++) {
-            expect(progressList[i].current, ProgressState.todo);
+          for (ProgressComponent progress in progressList) {
+            expect(progress.current, ProgressState.todo);
           }
         }
     );
@@ -68,11 +67,11 @@ TestWidgetsFlutterBinding.ensureInitialized();
           Hud hud = game.cam.viewport.children.query<Hud>().first;
           List<ProgressComponent> progressList = hud.children.query<ProgressComponent>();
           game.update(5);
-          for (int i=0; i<level.taken;i++) {
-            if (progressList[i].progressNumber == 1) {
-              expect(progressList[i].current, ProgressState.done);
+          for (ProgressComponent progress in progressList) {
+            if (progress.progressNumber == 1) {
+              expect(progress.current, ProgressState.done);
             } else {
-              expect(progressList[i].current, ProgressState.todo);
+              expect(progress.current, ProgressState.todo);
             }
           }
         }
