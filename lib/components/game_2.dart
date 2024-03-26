@@ -18,9 +18,25 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
 
   @override
   FutureOr<void> onLoad() async {
+    final background = SpriteComponent();
+    background.sprite = await game.loadSprite("Hospital/hospital_setting.jpg");
+    background.scale = Vector2.all(0.5625);
+    gameRef.camTwo.backdrop = background;
+    gameRef.camTwo.viewfinder.anchor = Anchor.center;
+    gameRef.camTwo.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
 
+    final newButton = SpriteButtonComponent();
+    newButton.button = await game.loadSprite('Hospital/okay.png');
+    newButton.buttonDown = await game.loadSprite('Hospital/okay_pressed.png');
+    newButton.onPressed = finish_game;
+    gameRef.camTwo.viewport.add(AlignComponent(
+      child: newButton,
+      alignment: Anchor.center,
+    ));
+    return super.onLoad();
   }
 
   void finish_game() {
+    gameRef.exitHospital();
   }
 }
