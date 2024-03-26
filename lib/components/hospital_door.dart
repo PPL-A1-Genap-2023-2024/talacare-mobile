@@ -7,6 +7,7 @@ import 'package:talacare/talacare.dart';
 import '../helpers/hospital_reason.dart';
 
 class HospitalDoor extends SpriteComponent with CollisionCallbacks, HasGameRef<TalaCare> {
+  @override
   bool isColliding = false;
 
   @override

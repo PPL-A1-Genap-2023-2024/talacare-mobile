@@ -72,7 +72,7 @@ class HospitalConfirmation extends SpriteComponent with HasGameRef<TalaCare> {
 
   Future<SpriteButtonComponent> _loadSpriteButton(name) async {
     final newButton = SpriteButtonComponent();
-    newButton.button = await game.loadSprite('Hospital/${name}.png');
+    newButton.button = await game.loadSprite('Hospital/$name.png');
     newButton.buttonDown = await game.loadSprite('Hospital/${name}_pressed.png');
     return newButton;
   }
