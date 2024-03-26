@@ -3,15 +3,17 @@ import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
+import 'package:flame/palette.dart';
 import 'package:talacare/components/dpad.dart';
 import 'package:talacare/components/event.dart';
 import 'package:talacare/components/hospital_confirmation.dart';
 import 'package:talacare/components/level.dart';
 import 'helpers/directions.dart';
 import 'package:talacare/components/hud/hud.dart';
-import 'package:talacare/components/item_container.dart';
+import 'package:talacare/components/draggable_container.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
+import 'package:talacare/components/silhouette_container.dart';
 
 import 'helpers/hospital_reason.dart';
 
@@ -33,6 +35,11 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   int level = 1;
   int score = 0;
 
+  late Hud hud;
+  late DraggableContainer draggableContainer;
+  late RectangleComponent game2Background;
+  late SilhouetteContainer silhouetteContainer;
+  int game2Score = 0;
   
   final bool isWidgetTesting;
   TalaCare({this.isWidgetTesting = false});
@@ -95,7 +102,8 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     );
     cam.viewport.add(dpadAnchor);
     add(cam);
-    cam.viewport.add(Hud());
+    hud = Hud();
+    cam.viewport.add(hud);
   }
 
 
@@ -113,15 +121,9 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     }
   }
 
-  void yesToHospital() {
+  Future<void> yesToHospital() async {
     level = 2;
-    final double screenWidth = cam.viewport.size.x;
-
-    ItemContainer itemContainer = ItemContainer(
-      size: Vector2(screenWidth * 9 / 10, 100)
-    );
-
-    cam.viewport.add(itemContainer);
+    loadLevelTwoComponents();
   }
 
   void noToHospital() {
@@ -131,9 +133,30 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     confirmationIsActive = false;
   }
 
-  void okayHospital() {
+  Future<void> okayHospital() async {
     level = 2;
+    loadLevelTwoComponents();
+  }
 
+  Future<void> loadLevelTwoComponents() async {
+    cam.viewport.remove(hud);
+
+    game2Background = RectangleComponent(
+      paint: BasicPalette.lightBlue.paint(),
+      size: cam.viewport.size
+    );
+    silhouetteContainer = SilhouetteContainer(
+      position: Vector2(cam.viewport.size.x / 2, cam.viewport.size.y * 2 / 5),
+      size: Vector2.all(cam.viewport.size.x * 9 / 10)
+    );
+    draggableContainer = DraggableContainer(
+      position: Vector2(cam.viewport.size.x / 2, cam.viewport.size.y * 4 / 5),
+      size: Vector2(cam.viewport.size.x * 9 / 10, 100)
+    );
+
+    cam.viewport.add(game2Background);
+    cam.viewport.add(silhouetteContainer);
+    cam.viewport.add(draggableContainer);
   }
 
 }
