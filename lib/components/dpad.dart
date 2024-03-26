@@ -12,11 +12,12 @@ class DPad extends SpriteComponent with HasGameRef<TalaCare> {
   late final DPadArrow rightButton;
   late final DPadArrow upButton;
   late final DPadArrow downButton;
+  bool disabled = false;
 
 
   @override
   Future<dynamic> onLoad() async {
-
+    sprite = await game.loadSprite('D_Pad/D-Pad.png');
 
     // Buttons
     final leftSprites = await loadArrowSprites('Left');
@@ -60,6 +61,16 @@ class DPad extends SpriteComponent with HasGameRef<TalaCare> {
       ArrowState.unpressed: defaultSprite,
       ArrowState.pressed: pressedSprite
     };
+  }
+
+  void disable() {
+    disabled = true;
+    upButton.isActive = downButton.isActive = leftButton.isActive = rightButton.isActive = false;
+  }
+
+  void enable() {
+    disabled = false;
+    upButton.isActive = downButton.isActive = leftButton.isActive = rightButton.isActive = true;
   }
 
 }

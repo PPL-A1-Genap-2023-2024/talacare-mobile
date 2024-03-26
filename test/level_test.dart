@@ -3,8 +3,10 @@ import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/hospital_door.dart';
+import 'package:talacare/components/hud/hud.dart';
 import 'package:talacare/components/level.dart';
 import 'package:talacare/helpers/directions.dart';
+import 'package:talacare/helpers/hospital_reason.dart';
 import 'package:talacare/talacare.dart';
 
 void main() {
@@ -241,20 +243,73 @@ void main() {
   });
 
 
-  group('Game 2 Integration Test', () {
+  group('Game 1 to 2 Integration Test', () {
     testWithGame<TalaCare>(
-        'Change Level when enter door',
+        'Change Level when enter hospital and say yes',
         TalaCare.new,
         (game) async {
           await game.ready();
           final level = game.children.query<Level>().first;
           final player = level.player;
+          final initialLevel = game.level;
+          final door = level.children.query<HospitalDoor>().first;
+          door.onCollision({Vector2(0.0,0.0), Vector2(0.0,0.0)}, player);
+          expect(game.confirmationIsActive, true);
+          expect(game.dPad.disabled, true);
+          await game.ready();
+          final confirmation = game.confirmation;
+          expect(confirmation.reason, HospitalReason.playerEnter);
+          confirmation.yesButton.onTapDown(createTapDownEvents(game: game));
+          confirmation.yesButton.onTapUp(createTapUpEvents(game: game));
+          expect(game.level, initialLevel+1);
+        }
+    );
+
+    testWithGame<TalaCare>(
+        'Dont change Level and teleport player when enter hospital and say no',
+        TalaCare.new,
+            (game) async {
+          await game.ready();
+          final level = game.children.query<Level>().first;
+          final player = level.player;
+          final initialLevel = game.level;
 
           final door = level.children.query<HospitalDoor>().first;
           door.onCollision({Vector2(0.0,0.0), Vector2(0.0,0.0)}, player);
-          game.update(1);
+          expect(game.confirmationIsActive, true);
+          expect(game.dPad.disabled, true);
+          await game.ready();
+          final confirmation = game.confirmation;
+          expect(confirmation.reason, HospitalReason.playerEnter);
+          confirmation.noButton.onTapDown(createTapDownEvents(game: game));
+          confirmation.noButton.onTapUp(createTapUpEvents(game: game));
+          expect(game.level, initialLevel);
+        }
+    );
+
+    testWithGame<TalaCare>(
+        'Change Level when health is low',
+        TalaCare.new,
+            (game) async {
+          await game.ready();
+          Hud target = game.cam.viewport.children.query<Hud>().first;
+          final initHealth = game.playerHealth;
+
+          // Left the Player with 1 health
+          for (int i = 0; i < initHealth - 1; i++) {
+            target.update(target.healthDuration.toDouble());
+          }
+          expect(game.confirmationIsActive, true);
+          expect(game.dPad.disabled, true);
+          await game.ready();
+          final confirmation = game.confirmation;
+          expect(confirmation.reason, HospitalReason.lowBlood);
+          confirmation.yesButton.onTapDown(createTapDownEvents(game: game));
+          confirmation.yesButton.onTapUp(createTapUpEvents(game: game));
           expect(game.level, 2);
         }
     );
   });
+
+
 }

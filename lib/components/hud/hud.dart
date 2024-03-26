@@ -1,4 +1,6 @@
 import 'package:flame/components.dart';
+import 'package:talacare/components/hud/progress.dart';
+import 'package:talacare/helpers/hospital_reason.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/components/hud/health.dart';
 
@@ -38,6 +40,20 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
         ),
       );
     }
+
+    for (var i = 1; i <= 8; i++) {
+      final progressComponentSize = 30;
+      final gap = progressComponentSize;
+      final positionX = game.canvasSize.x / progressComponentSize;
+      final positionY = 0.toDouble();
+      await add(
+        ProgressComponent(
+          progressNumber: i,
+          position: Vector2(positionX + (gap.toDouble() * i), positionY),
+          size: Vector2.all(progressComponentSize.toDouble()),
+        ),
+      );
+    }
   }
 
   @override
@@ -61,6 +77,10 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
       game.playerHealth -= 1;
       _updatePlayerMoveSpeed();
       healthDurationChecker = healthDuration;
+
+      if (game.playerHealth ==  1) {
+        game.enterHospital(HospitalReason.lowBlood);
+      }
     }
   }
 

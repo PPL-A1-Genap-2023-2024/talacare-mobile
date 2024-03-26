@@ -5,12 +5,15 @@ import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
 import 'package:talacare/components/dpad.dart';
 import 'package:talacare/components/event.dart';
+import 'package:talacare/components/hospital_confirmation.dart';
 import 'package:talacare/components/level.dart';
 import 'helpers/directions.dart';
 import 'package:talacare/components/hud/hud.dart';
 import 'package:talacare/components/item_container.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
+
+import 'helpers/hospital_reason.dart';
 
 class TalaCare extends FlameGame with HasCollisionDetection {
   late final CameraComponent cam;
@@ -19,12 +22,17 @@ class TalaCare extends FlameGame with HasCollisionDetection {
 
 
   late final DPad dPad;
+  late HospitalConfirmation confirmation;
   @override
   late final World world;
   late AlignComponent eventAnchor;
+  late AlignComponent confirmationAnchor;
+  late AlignComponent dpadAnchor;
   bool eventIsActive = false;
+  bool confirmationIsActive = false;
   int level = 1;
   int score = 0;
+
   
   final bool isWidgetTesting;
   TalaCare({this.isWidgetTesting = false});
@@ -34,24 +42,8 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     if (!isWidgetTesting) {
       // Load all images into cache
       await images.loadAllImages();
-
-      world = Level(player: player, levelName: 'Level-0$level');
-      cam = CameraComponent(world: world);
-      cam.viewfinder.anchor = Anchor.center;
-      cam.viewfinder.zoom = 3;
-      cam.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
-
-      cam.follow(player);
-
-      dPad = DPad()
-      ..sprite = await loadSprite('D_Pad/D-Pad.png');
-
-      cam.viewport.add(AlignComponent(
-        child: dPad,
-        alignment: Anchor.bottomCenter,
-      ));
-      addAll([cam, world]);
-      cam.viewport.add(Hud());
+      loadLevel();
+      loadLevelOneComponents();
     }
 
 
@@ -83,7 +75,45 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     }
   }
 
-  Future<void> enterDoor() async {
+  Future<void> loadLevel() async {
+    world = Level(player: player, levelName: 'Level-0$level');
+    add(world);
+  }
+
+  Future<void> loadLevelOneComponents() async {
+    cam = CameraComponent(world: world);
+    cam.viewfinder.anchor = Anchor.center;
+    cam.viewfinder.zoom = 3;
+    cam.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
+
+    cam.follow(player);
+
+    dPad = DPad();
+    dpadAnchor = AlignComponent(
+      child: dPad,
+      alignment: Anchor.bottomCenter,
+    );
+    cam.viewport.add(dpadAnchor);
+    add(cam);
+    cam.viewport.add(Hud());
+  }
+
+
+  void enterHospital(HospitalReason reason) {
+    if (!confirmationIsActive) {
+      confirmation = HospitalConfirmation(reason: reason);
+      confirmationIsActive = true;
+      dPad.disable();
+      confirmationAnchor = AlignComponent(
+        child: confirmation,
+        alignment: Anchor.center,
+      );
+      // cam.viewport.remove(dpadAnchor);
+      cam.viewport.add(confirmationAnchor);
+    }
+  }
+
+  void yesToHospital() {
     level = 2;
     final double screenWidth = cam.viewport.size.x;
 
@@ -92,6 +122,18 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     );
 
     cam.viewport.add(itemContainer);
+  }
+
+  void noToHospital() {
+    cam.viewport.remove(confirmationAnchor);
+    player.y = player.y + 50;
+    dPad.enable();
+    confirmationIsActive = false;
+  }
+
+  void okayHospital() {
+    level = 2;
+
   }
 
 }

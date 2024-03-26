@@ -78,6 +78,26 @@ void main() {
     );
 
     testWithGame<TalaCare>(
+        'HealthComponent becomes unavailable after 1 duration of healthDuration',
+        TalaCare.new,
+            (game) async {
+          await game.ready();
+          final initHealth = game.playerHealth;
+          Hud target = game.cam.viewport.children.query<Hud>().first;
+          List<HealthComponent> healthList = target.children.query<HealthComponent>();
+
+          game.update(target.healthDuration.toDouble());
+          for (HealthComponent health in healthList) {
+            if (health.heartNumber == initHealth) {
+              expect(health.current, HeartState.unavailable);
+            } else {
+              expect(health.current, HeartState.available);
+            }
+          }
+        }
+    );
+
+    testWithGame<TalaCare>(
         'Health Timer stop when 1 health remaining',
         TalaCare.new,
             (game) async {

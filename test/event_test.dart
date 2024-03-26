@@ -2,6 +2,8 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:talacare/components/hud/hud.dart';
+import 'package:talacare/components/hud/progress.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/components/event.dart';
 import 'package:talacare/components/level.dart';
@@ -25,6 +27,18 @@ TestWidgetsFlutterBinding.ensureInitialized();
       }
     );
     testWithGame<TalaCare>(
+        'All Progress are todo prior collision',
+        TalaCare.new,
+            (game) async {
+          await game.ready();
+          Hud hud = game.cam.viewport.children.query<Hud>().first;
+          List<ProgressComponent> progressList = hud.children.query<ProgressComponent>();
+          for (ProgressComponent progress in progressList) {
+            expect(progress.current, ProgressState.todo);
+          }
+        }
+    );
+    testWithGame<TalaCare>(
       'Point disappears and activity is active upon collision', 
       TalaCare.new,
       (game) async {
@@ -39,6 +53,28 @@ TestWidgetsFlutterBinding.ensureInitialized();
         expect(game.eventIsActive, true);
         expect(game.score, 1);
       }
+    );
+    testWithGame<TalaCare>(
+        'Progress becomes done upon collision',
+        TalaCare.new,
+            (game) async {
+          final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+          await game.ready();
+          final level = game.children.query<Level>().first;
+          final player = level.children.query<Player>().first;
+          final point = level.children.query<ActivityPoint>().first;
+          point.onCollision(intersection, player);
+          Hud hud = game.cam.viewport.children.query<Hud>().first;
+          List<ProgressComponent> progressList = hud.children.query<ProgressComponent>();
+          game.update(5);
+          for (ProgressComponent progress in progressList) {
+            if (progress.progressNumber == 1) {
+              expect(progress.current, ProgressState.done);
+            } else {
+              expect(progress.current, ProgressState.todo);
+            }
+          }
+        }
     );
     testWithGame<TalaCare>(
       'Activity disappears after a set duration (3 seconds)', 

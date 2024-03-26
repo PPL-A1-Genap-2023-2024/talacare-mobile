@@ -12,7 +12,7 @@ void main() {
       TalaCare.new,
       (game) async {
         await game.ready();
-        game.enterDoor();
+        game.yesToHospital();
         await game.ready();
         final viewport = game.cam.viewport;
         expect(viewport.children.query<ItemContainer>().length, 1);

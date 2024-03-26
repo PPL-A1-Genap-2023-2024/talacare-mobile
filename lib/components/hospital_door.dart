@@ -4,8 +4,10 @@ import 'package:flame/components.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/talacare.dart';
 
-class HospitalDoor extends SpriteComponent with CollisionCallbacks, HasGameRef<TalaCare> {
+import '../helpers/hospital_reason.dart';
 
+class HospitalDoor extends SpriteComponent with CollisionCallbacks, HasGameRef<TalaCare> {
+  bool isColliding = false;
 
   @override
   FutureOr<void> onLoad() {
@@ -17,7 +19,8 @@ class HospitalDoor extends SpriteComponent with CollisionCallbacks, HasGameRef<T
   @override
   void onCollision(intersectionPoints, other) {
     if (other is Player) {
-      game.enterDoor();
+      isColliding = true;
+      game.enterHospital(HospitalReason.playerEnter);
     }
     super.onCollision(intersectionPoints, other);
   }
