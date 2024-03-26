@@ -33,7 +33,7 @@ void main() {
           await game.ready();
           final game_2 = game.children.query<HospitalPuzzle>().first;
           game_2.finish_game();
-          await game.ready();
+          game.update(5);
           expect(game.currentGame, initialLevel-1);
           expect(game.playerHealth, 4);
           expect(game.player.moveSpeed, 100);
@@ -62,7 +62,7 @@ void main() {
           await game.ready();
           final game_2 = game.children.query<HospitalPuzzle>().first;
           game_2.finish_game();
-          await game.ready();
+          game.update(5);
           expect(game.score, initialProgress);
 
         }
