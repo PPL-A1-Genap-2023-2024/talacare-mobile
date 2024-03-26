@@ -32,7 +32,7 @@ void main() {
 
           await game.ready();
           final game_2 = game.children.query<HospitalPuzzle>().first;
-          game_2.finish_game();
+          game_2.finishGame();
           game.update(5);
           expect(game.currentGame, initialLevel-1);
           expect(game.playerHealth, 4);
@@ -61,7 +61,7 @@ void main() {
           confirmation.yesButton.onTapUp(createTapUpEvents(game: game));
           await game.ready();
           final game_2 = game.children.query<HospitalPuzzle>().first;
-          game_2.finish_game();
+          game_2.finishGame();
           game.update(5);
           expect(game.score, initialProgress);
 

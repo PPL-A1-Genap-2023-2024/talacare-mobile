@@ -28,7 +28,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     final newButton = SpriteButtonComponent();
     newButton.button = await game.loadSprite('Hospital/okay.png');
     newButton.buttonDown = await game.loadSprite('Hospital/okay_pressed.png');
-    newButton.onPressed = finish_game;
+    newButton.onPressed = finishGame;
     gameRef.camTwo.viewport.add(AlignComponent(
       child: newButton,
       alignment: Anchor.center,
@@ -36,7 +36,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     return super.onLoad();
   }
 
-  void finish_game() {
+  void finishGame() {
     gameRef.exitHospital();
   }
 }
