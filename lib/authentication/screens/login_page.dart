@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:talacare/helpers/utils.dart';
-import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -10,21 +10,26 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _loginFormKey = GlobalKey<FormState>();
-  Color buttonColor = const Color.fromRGBO(254, 185, 0, 1);
+  Future<UserCredential?> signInWithGoogle() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  String statusMessage = "";
-  bool passwordVisible=false; 
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-  // TextEditingControllers
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
 
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
+    // Create a new credential
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Sign in the user with the credential
+    await auth.signInWithCredential(credential);
+    return null;
   }
 
   @override
@@ -38,7 +43,6 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Form(
-                key: _loginFormKey,
                 child: Container(
                   margin: const EdgeInsets.all(8),
                   padding: const EdgeInsets.all(20.0),
@@ -47,73 +51,14 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Login to Talacare",
+                        "Welcome to Talacare",
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
-                            color: Color.fromARGB(178, 3, 3, 3)),
+                            fontSize: 25,
+                            color: Colors.black
+                        ),
                       ),
                       const SizedBox(height: 30),
-                      TextFormField(
-                        key: const ValueKey('emailField'),
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          labelText: "Email ",
-                          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16.0),
-                            borderSide: const BorderSide(color: Colors.red),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter your email";
-                          }
-                          else if (!Utils.isValidEmail(value)) {
-                            return "Please enter a valid email";
-                          }
-                          return null;
-                        },
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(254)
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        obscureText: !passwordVisible,
-                        key: const ValueKey('passwordField'),
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          labelText: "Password ",
-                          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16.0),
-                            borderSide: const BorderSide(color: Colors.red),
-                          ),
-                          suffixIcon: IconButton( 
-                            icon: Icon(passwordVisible 
-                            ? Icons.visibility_off 
-                            : Icons.visibility), 
-                            color: buttonColor,
-                            onPressed: () { 
-                              setState( 
-                                () { 
-                                  passwordVisible = !passwordVisible; 
-                                }, 
-                              ); 
-                            }, 
-                          ), 
-                          alignLabelWithHint: false,
-                       ), 
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter your password";
-                          }
-                          return null;
-                        },
-                      ),
                       const SizedBox(height: 20),
                       Container(
                         padding: const EdgeInsets.all(8.0),
@@ -121,32 +66,28 @@ class _LoginPageState extends State<LoginPage> {
                         child: ElevatedButton(
                           key: const ValueKey('loginButton'),
                           onPressed: () {
-                            if (_loginFormKey.currentState!.validate()) {
-                              String email = _emailController.text;
-                              String password = _passwordController.text;
-
-                              // Implement login logic later
-                              print(email + " " + password);
-                            }
+                            signInWithGoogle();
                           },
-                          child: const Text(
-                            "Login",
-                            style: TextStyle(color: Colors.white),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center, 
+                            children: <Widget>[
+                              Image.asset('assets/images/Illustrations/google.png', height: 24.0),
+                              Padding(padding: EdgeInsets.symmetric(horizontal: 6)),
+                              const Text(
+                                'Log in with Google',
+                                style: TextStyle(
+                                  fontSize: 17,
+                                ),
+                              ),
+                            ],
                           ),
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
-                            backgroundColor: MaterialStateProperty.all(buttonColor),
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.grey),
+                            ),
                           ),
-                        ),
-                      ),
-                      Text(statusMessage, style: const TextStyle(color: Colors.red)),
-                      const SizedBox(height: 20),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Don't have an account yet? Sign up",
-                          style: TextStyle(color: buttonColor),
-                          
                         ),
                       )
                     ],
