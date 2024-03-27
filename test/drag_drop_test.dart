@@ -67,5 +67,18 @@ void main() {
       expect(syringe.isActive, true);
       expect(game.itemIndex, 0);
     });
+
+    testWithGame<DragCallbacksExample>(
+        'Dragging a completed objective', DragCallbacksExample.new,
+        (game) async {
+      await game.ready();
+      DraggableObject syringe = game.syringe1;
+      syringe.onDragStart(createDragStartEvents(game: game));
+      syringe.position.setFrom(syringe.target);
+      syringe.onDragEnd(DragEndEvent(1, DragEndDetails()));
+      syringe.onDragStart(createDragStartEvents(game: game));
+
+      expect(syringe.isDragged, false);
+    });
   });
 }
