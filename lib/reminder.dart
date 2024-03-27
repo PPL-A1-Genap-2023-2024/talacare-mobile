@@ -40,7 +40,7 @@ class ReminderFormState extends State<ReminderForm> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text("${schedule}"),
+              Text(schedule.toString()),
               const SizedBox(
                 height: 20.0,
               ),
