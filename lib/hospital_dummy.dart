@@ -84,13 +84,17 @@ class DraggableObject extends HospitalObject with DragCallbacks {
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
-    position += event.localDelta;
+    if (isActive) {
+      position += event.localDelta;
+    }
   }
 
   @override
   void onDragStart(DragStartEvent event) {
-    super.onDragStart(event);
-    lastPosition = Vector2(position.x, position.y);
+    if (isActive) {
+      super.onDragStart(event);
+      lastPosition = Vector2(position.x, position.y);
+    }
   }
 
   @override
@@ -101,6 +105,7 @@ class DraggableObject extends HospitalObject with DragCallbacks {
         position.distanceTo(target) <= hitboxRadius) {
       targetRectangle.removeFromParent();
       position.setFrom(target);
+      lastPosition = Vector2(position.x, position.y);
       isActive = false;
       game.nextItem();
     } else {
