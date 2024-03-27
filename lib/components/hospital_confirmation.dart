@@ -9,7 +9,6 @@ import '../helpers/hospital_reason.dart';
 
 
 class HospitalConfirmation extends SpriteComponent with HasGameRef<TalaCare> {
-  double timeElapsed = 0.0;
   HospitalReason reason;
   late String text;
   late final SpriteButtonComponent yesButton;

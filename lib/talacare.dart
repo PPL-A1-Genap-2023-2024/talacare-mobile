@@ -15,9 +15,7 @@ import 'helpers/hospital_reason.dart';
 
 class TalaCare extends FlameGame with HasCollisionDetection {
   late final CameraComponent camOne;
-  late final CameraComponent camTwo;
   late HouseAdventure gameOne;
-  late HospitalPuzzle gameTwo;
   Player player = Player(character: 'Adam');
   int playerHealth = 4;
 
@@ -44,15 +42,27 @@ class TalaCare extends FlameGame with HasCollisionDetection {
       await images.loadAllImages();
       gameOne = HouseAdventure(player: player, levelName: 'Level-01');
       camOne = CameraComponent(world: gameOne);
-
-      gameTwo = HospitalPuzzle(player: player);
-      camTwo = CameraComponent(world: gameTwo);
-
-      loadGameOne();
+      currentGame = 1;
+      switchGame(firstLoad:true);
     }
 
 
     return super.onLoad();
+  }
+
+  void switchGame({reason, firstLoad=false}) {
+    if (!firstLoad) {
+      removeAll([camera, world]);
+    }
+    switch(currentGame) {
+      case 1:
+        world = gameOne;
+        camera = camOne;
+      case 2:
+        world = HospitalPuzzle(player: player, reason: reason);
+        camera = CameraComponent(world: world);
+    }
+    addAll([camera, world]);
   }
 
   void changeDirection(Direction direction) {
@@ -66,7 +76,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
         child: ActivityEvent(variant: point.variant),
         alignment: Anchor.center
       );
-      camOne.viewport.add(eventAnchor);
+      camera.viewport.add(eventAnchor);
       eventIsActive = true;
       score += 1;
     }
@@ -75,26 +85,12 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   void onActivityEnd(ActivityEvent event) {
     if (eventIsActive) {
       eventAnchor.remove(event);
-      camOne.viewport.remove(eventAnchor);
+      camera.viewport.remove(eventAnchor);
       eventIsActive = false;
     }
   }
 
-
-  Future<void> loadGameOne() async {
-    currentGame = 1;
-    world = gameOne;
-    addAll([camOne, world]);
-  }
-
-  Future<void> loadGameTwo() async {
-    currentGame = 2;
-    world = gameTwo;
-    addAll([camTwo, world]);
-  }
-
-
-  void confirmHospital(HospitalReason reason) {
+  void showConfirmation(HospitalReason reason) {
     if (!confirmationIsActive) {
       confirmation = HospitalConfirmation(reason: reason);
       confirmationIsActive = true;
@@ -103,44 +99,44 @@ class TalaCare extends FlameGame with HasCollisionDetection {
         child: confirmation,
         alignment: Anchor.center,
       );
-      camOne.viewport.add(confirmationAnchor);
+      camera.viewport.add(confirmationAnchor);
     }
   }
 
+
   void removeConfirmation() {
-    camOne.viewport.remove(confirmationAnchor);
+    camera.viewport.remove(confirmationAnchor);
     gameOne.dPad.enable();
     confirmationIsActive = false;
   }
 
+
   void yesToHospital() {
     removeConfirmation();
-    removeAll([camOne, world]);
-    gameTwo.reason = HospitalReason.playerEnter;
-    loadGameTwo();
+    currentGame = 2;
+    switchGame(reason: HospitalReason.playerEnter);
   }
 
   void noToHospital() {
     removeConfirmation();
     player.y = player.y + 50;
-
   }
 
   void okayHospital() {
     removeConfirmation();
-    removeAll([camOne, world]);
-    gameTwo.reason = HospitalReason.lowBlood;
-    loadGameTwo();
+    currentGame = 2;
+    switchGame(reason: HospitalReason.lowBlood);
   }
 
   void exitHospital() {
-    removeAll([camTwo, world]);
-    loadGameOne();
+    removeAll([camera, world]);
+    currentGame = 1;
+    switchGame();
     player.x = gameOne.hospitalDoor.x;
     player.y = gameOne.hospitalDoor.y + 50;
     playerHealth = 4;
     player.moveSpeed = 100;
-    Hud hud = camOne.viewport.children.query<Hud>().first;
+    Hud hud = camera.viewport.children.query<Hud>().first;
     hud.healthDurationChecker = hud.healthDuration;
   }
 

@@ -31,7 +31,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
         TalaCare.new,
             (game) async {
           await game.ready();
-          Hud hud = game.camOne.viewport.children.query<Hud>().first;
+          Hud hud = game.camera.viewport.children.query<Hud>().first;
           List<ProgressComponent> progressList = hud.children.query<ProgressComponent>();
           for (ProgressComponent progress in progressList) {
             expect(progress.current, ProgressState.todo);
@@ -64,7 +64,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
           final player = level.children.query<Player>().first;
           final point = level.children.query<ActivityPoint>().first;
           point.onCollision(intersection, player);
-          Hud hud = game.camOne.viewport.children.query<Hud>().first;
+          Hud hud = game.camera.viewport.children.query<Hud>().first;
           List<ProgressComponent> progressList = hud.children.query<ProgressComponent>();
           game.update(5);
           for (ProgressComponent progress in progressList) {

@@ -292,7 +292,7 @@ void main() {
         TalaCare.new,
             (game) async {
           await game.ready();
-          Hud target = game.camOne.viewport.children.query<Hud>().first;
+          Hud target = game.camera.viewport.children.query<Hud>().first;
           final initHealth = game.playerHealth;
 
           // Left the Player with 1 health
