@@ -129,7 +129,6 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   }
 
   void exitHospital() {
-    removeAll([camera, world]);
     currentGame = 1;
     switchGame();
     player.x = gameOne.hospitalDoor.x;
