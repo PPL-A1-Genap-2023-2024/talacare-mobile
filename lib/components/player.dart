@@ -3,7 +3,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:talacare/components/collision_block.dart';
-import 'package:talacare/components/level.dart';
+import 'package:talacare/components/game_1.dart';
 import 'package:talacare/components/utils.dart';
 import 'package:talacare/talacare.dart';
 
@@ -11,12 +11,13 @@ import '../helpers/directions.dart';
 
 enum PlayerState { idle, running }
 
-class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, ParentIsA<Level> {
+class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, ParentIsA<HouseAdventure> {
   String character;
   Player({super.position, this.character = 'Adam'});
 
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
+  Vector2 initialSpawn = Vector2(0,0);
   final double stepTime = 0.1;
   double horizontalMovement = 0;
   double verticalMovement = 0;
@@ -121,7 +122,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
           }
           else {
             // Back to spawn point
-            position = Vector2(176, 576);
+            position = initialSpawn;
           }
         }
 
@@ -143,8 +144,10 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
         }
         // Colliding while moving up
         else if (velocity.y < 0) {
+
           position.y = block.y + block.height;
           velocity.y = 0;
+
         }
       }
     }
