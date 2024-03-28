@@ -11,7 +11,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group('Object Selection Tests', () {
     testWithGame<TalaCare>(
-      '3 draggable items and 1 silhouette item appear after game 2 starts', 
+      'First wave draggable items and silhouette item appear after game 2 starts', 
       TalaCare.new,
       (game) async {
         await game.ready();
@@ -24,6 +24,23 @@ void main() {
         expect(silhouetteContainer.children.query<SilhouetteItem>().length, 1);
         expect(viewport.children.query<DraggableContainer>().length, 1);
         final draggableContainer = viewport.children.query<DraggableContainer>().first;
+        expect(draggableContainer.children.query<DraggableItem>().length, 2);
+      }
+    );
+    testWithGame<TalaCare>(
+      'Second wave draggable items appear after container is emptied for the first time', 
+      TalaCare.new,
+      (game) async {
+        await game.ready();
+        game.currentGame = 2;
+        game.switchGame(reason: HospitalReason.playerEnter);
+        await game.ready();
+        final viewport = game.camera.viewport;
+        final draggableContainer = viewport.children.query<DraggableContainer>().first;
+        final draggableItems = draggableContainer.children.query<DraggableItem>();
+        draggableContainer.removeItem(draggableItems.first);
+        draggableContainer.removeItem(draggableItems.last);
+        await game.ready();
         expect(draggableContainer.children.query<DraggableItem>().length, 3);
       }
     );
