@@ -79,7 +79,7 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
       healthDurationChecker = healthDuration;
 
       if (game.playerHealth ==  1) {
-        game.enterHospital(HospitalReason.lowBlood);
+        game.showConfirmation(HospitalReason.lowBlood);
       }
     }
   }
