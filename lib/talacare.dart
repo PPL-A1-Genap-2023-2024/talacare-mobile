@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
-import 'package:flame/palette.dart';
 import 'package:talacare/components/event.dart';
 import 'package:talacare/components/game_2.dart';
 import 'package:talacare/components/hospital_confirmation.dart';
@@ -46,15 +45,12 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   @override
   FutureOr<void> onLoad() async {
     if (!isWidgetTesting) {
-      // Load all images into cache
       await images.loadAllImages();
       gameOne = HouseAdventure(player: player, levelName: 'Level-01');
       camOne = CameraComponent(world: gameOne);
       currentGame = 1;
       switchGame(firstLoad:true);
     }
-
-
     return super.onLoad();
   }
 
@@ -111,13 +107,11 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     }
   }
 
-
   void removeConfirmation() {
     camera.viewport.remove(confirmationAnchor);
     gameOne.dPad.enable();
     confirmationIsActive = false;
   }
-
 
   void yesToHospital() {
     removeConfirmation();
@@ -146,26 +140,4 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     Hud hud = camera.viewport.children.query<Hud>().first;
     hud.healthDurationChecker = hud.healthDuration;
   }
-
-  Future<void> loadLevelTwoComponents() async {
-    cam.viewport.remove(hud);
-
-    game2Background = RectangleComponent(
-      paint: BasicPalette.lightBlue.paint(),
-      size: cam.viewport.size
-    );
-    silhouetteContainer = SilhouetteContainer(
-      position: Vector2(cam.viewport.size.x / 2, cam.viewport.size.y * 2 / 5),
-      size: Vector2.all(cam.viewport.size.x * 9 / 10)
-    );
-    draggableContainer = DraggableContainer(
-      position: Vector2(cam.viewport.size.x / 2, cam.viewport.size.y * 4 / 5),
-      size: Vector2(cam.viewport.size.x * 9 / 10, 100)
-    );
-
-    cam.viewport.add(game2Background);
-    cam.viewport.add(silhouetteContainer);
-    cam.viewport.add(draggableContainer);
-  }
-
 }

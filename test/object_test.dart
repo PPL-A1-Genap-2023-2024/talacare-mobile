@@ -4,6 +4,7 @@ import 'package:talacare/components/draggable_container.dart';
 import 'package:talacare/components/draggable_item.dart';
 import 'package:talacare/components/silhouette_container.dart';
 import 'package:talacare/components/silhouette_item.dart';
+import 'package:talacare/helpers/hospital_reason.dart';
 import 'package:talacare/talacare.dart';
 
 void main() {
@@ -14,9 +15,10 @@ void main() {
       TalaCare.new,
       (game) async {
         await game.ready();
-        game.loadLevelTwoComponents();
+        game.currentGame = 2;
+        game.switchGame(reason: HospitalReason.playerEnter);
         await game.ready();
-        final viewport = game.cam.viewport;
+        final viewport = game.camera.viewport;
         expect(viewport.children.query<SilhouetteContainer>().length, 1);
         final silhouetteContainer = viewport.children.query<SilhouetteContainer>().first;
         expect(silhouetteContainer.children.query<SilhouetteItem>().length, 1);
@@ -30,9 +32,10 @@ void main() {
       TalaCare.new,
       (game) async {
         await game.ready();
-        game.loadLevelTwoComponents();
+        game.currentGame = 2;
+        game.switchGame(reason: HospitalReason.playerEnter);
         await game.ready();
-        final viewport = game.cam.viewport;
+        final viewport = game.camera.viewport;
         final silhouetteContainer = viewport.children.query<SilhouetteContainer>().first;
         final silhouetteIndex = silhouetteContainer.indicesDisplayed.last;
         final draggableContainer = viewport.children.query<DraggableContainer>().first;
