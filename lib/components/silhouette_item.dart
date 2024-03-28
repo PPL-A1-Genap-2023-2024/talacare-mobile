@@ -1,22 +1,24 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/palette.dart';
 import 'package:talacare/helpers/item.dart';
+import 'package:talacare/talacare.dart';
 
-class SilhouetteItem extends RectangleComponent {
+class SilhouetteItem extends SpriteComponent with HasGameRef<TalaCare> {
   final Item item;
+  late final RectangleHitbox hitbox;
 
   SilhouetteItem({required this.item});
 
   @override
   FutureOr<void> onLoad() async {
     anchor = Anchor.center;
-    paint = BasicPalette.black.paint();
     position = Vector2(item.x, item.y);
-    size = Vector2(50, 50);
-    add(TextComponent(text: item.name));
-    add(RectangleHitbox());
+    sprite = Sprite(game.images.fromCache('Game_2/item_${item.name}.png'));
+    this.tint(Color.fromARGB(255, 255, 255, 255));
+    hitbox = RectangleHitbox();
+    add(hitbox);
     return super.onLoad();
   }
 }

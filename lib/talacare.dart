@@ -54,7 +54,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     return super.onLoad();
   }
 
-  void switchGame({reason, firstLoad=false}) {
+  FutureOr<void> switchGame({reason, firstLoad=false}) async {
     if (!firstLoad) {
       removeAll([camera, world]);
     }

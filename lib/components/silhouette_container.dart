@@ -1,19 +1,18 @@
 import 'dart:async';
 import 'package:flame/components.dart';
-import 'package:flame/palette.dart';
 import 'package:talacare/components/silhouette_item.dart';
 import 'package:talacare/helpers/item.dart';
 import 'package:talacare/talacare.dart';
 
-class SilhouetteContainer extends RectangleComponent with HasGameRef<TalaCare> {
+class SilhouetteContainer extends SpriteComponent with HasGameRef<TalaCare> {
   final List<int> indicesDisplayed = [];
 
-  SilhouetteContainer({required super.position, required super.size});
+  SilhouetteContainer({required super.position});
 
   @override
   FutureOr<void> onLoad() async {
-    paint = BasicPalette.lightPink.paint();
     anchor = Anchor.center;
+    sprite = Sprite(game.images.fromCache('Game_2/hospital_container.png'));
     addNextItem();
     return super.onLoad();
   }

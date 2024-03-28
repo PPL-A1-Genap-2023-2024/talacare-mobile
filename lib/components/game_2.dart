@@ -15,14 +15,14 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
   late final DraggableContainer draggableContainer;
   late final SilhouetteContainer silhouetteContainer;
   late final Viewport screen;
-
+  int score = 0;
 
   HospitalPuzzle({required this.player, required this.reason});
 
   @override
   FutureOr<void> onLoad() async {
     final background = SpriteComponent();
-    background.sprite = await game.loadSprite("Hospital/hospital_setting.jpg");
+    background.sprite = Sprite(game.images.fromCache("Hospital/hospital_setting.jpg"));
     background.scale = Vector2.all(0.5625);
     gameRef.camera.backdrop = background;
     gameRef.camera.viewfinder.anchor = Anchor.center;
@@ -31,12 +31,11 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     screen = gameRef.camera.viewport;
     
     silhouetteContainer = SilhouetteContainer(
-      position: Vector2(screen.size.x / 2, screen.size.y * 2 / 5),
-      size: Vector2.all(screen.size.x * 9 / 10)
+      position: Vector2(screen.size.x / 2, screen.size.y / 2),
     );
     draggableContainer = DraggableContainer(
-      position: Vector2(screen.size.x / 2, screen.size.y * 4 / 5),
-      size: Vector2(screen.size.x * 9 / 10, 100)
+      position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
+      size: Vector2(screen.size.x, screen.size.y * 2 / 7)
     );
     gameRef.camera.viewport.add(silhouetteContainer);
     gameRef.camera.viewport.add(draggableContainer);
@@ -47,7 +46,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     // newButton.onPressed = finishGame;
     // gameRef.camera.viewport.add(AlignComponent(
     //   child: newButton,
-    //   alignment: Anchor.center,
+    //   alignment: Anchor.bottomCenter,
     // ));
     return super.onLoad();
   }
