@@ -69,7 +69,8 @@ class DraggableObject extends HospitalObject with DragCallbacks {
       : super(size: size) {
     hitboxRadius = size.length / 2;
     isActive = true;
-    targetRectangle = RectangleComponent(position: target, size: size);
+    targetRectangle =
+        RectangleComponent(position: target, size: size, anchor: Anchor.center);
   }
 
   void spawnTarget() {
