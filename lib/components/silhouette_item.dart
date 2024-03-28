@@ -16,7 +16,7 @@ class SilhouetteItem extends SpriteComponent with HasGameRef<TalaCare> {
     anchor = Anchor.center;
     position = Vector2(item.x, item.y);
     sprite = Sprite(game.images.fromCache('Game_2/item_${item.name}.png'));
-    this.tint(Color.fromARGB(255, 255, 255, 255));
+    tint(Color.fromARGB(255, 255, 255, 255));
     hitbox = RectangleHitbox();
     add(hitbox);
     return super.onLoad();

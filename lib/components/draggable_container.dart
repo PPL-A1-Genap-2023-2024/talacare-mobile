@@ -53,7 +53,7 @@ class DraggableContainer extends RectangleComponent with HasGameRef<TalaCare> {
   FutureOr<void> removeItem(DraggableItem item) async {
     remove(item);
     indicesDisplayed.remove(item.item.index);
-    if (indicesDisplayed.length == 0) {
+    if (indicesDisplayed.isEmpty) {
       loadSecondWaveItems();
     }
   }
