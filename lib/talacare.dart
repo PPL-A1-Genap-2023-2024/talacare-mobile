@@ -6,7 +6,6 @@ import 'package:talacare/components/event.dart';
 import 'package:talacare/components/game_2.dart';
 import 'package:talacare/components/hospital_confirmation.dart';
 import 'package:talacare/components/game_1.dart';
-import 'components/hud/hud.dart';
 import 'helpers/directions.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
@@ -135,8 +134,6 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     player.y = gameOne.hospitalDoor.y + 50;
     playerHealth = 4;
     player.moveSpeed = 100;
-    Hud hud = camera.viewport.children.query<Hud>().first;
-    hud.healthDurationChecker = hud.healthDuration;
   }
 
 }
