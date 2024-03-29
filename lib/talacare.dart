@@ -111,21 +111,15 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   }
 
 
-  void yesToHospital() {
+  void goToHospital(reason) {
     removeConfirmation();
     currentGame = 2;
-    switchGame(reason: HospitalReason.playerEnter);
+    switchGame(reason: reason);
   }
 
   void noToHospital() {
     removeConfirmation();
     player.y = player.y + 50;
-  }
-
-  void okayHospital() {
-    removeConfirmation();
-    currentGame = 2;
-    switchGame(reason: HospitalReason.lowBlood);
   }
 
   void exitHospital() {

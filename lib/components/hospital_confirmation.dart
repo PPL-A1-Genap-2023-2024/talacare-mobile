@@ -26,7 +26,7 @@ class HospitalConfirmation extends SpriteComponent with HasGameRef<TalaCare> {
         text = 'Kamu perlu transfusi darah di rumah sakit!';
 
         yesButton = await _loadSpriteButton('okay');
-        yesButton.onPressed = game.okayHospital;
+        yesButton.onPressed = yesToHospital;
         buttons.add(AlignComponent(
             child: yesButton,
             alignment: Anchor.center
@@ -35,7 +35,7 @@ class HospitalConfirmation extends SpriteComponent with HasGameRef<TalaCare> {
         text = 'Ke Rumah Sakit?';
 
         yesButton = await _loadSpriteButton('yes');
-        yesButton.onPressed = game.yesToHospital;
+        yesButton.onPressed = yesToHospital;
         yesButton.anchor = Anchor.centerRight;
         buttons.add(AlignComponent(
           child: yesButton,
@@ -76,5 +76,8 @@ class HospitalConfirmation extends SpriteComponent with HasGameRef<TalaCare> {
     return newButton;
   }
 
+  void yesToHospital() {
+    game.goToHospital(reason);
+  }
 
 }
