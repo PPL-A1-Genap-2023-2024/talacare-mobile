@@ -34,7 +34,7 @@ class PauseMenu extends StatelessWidget {
                     const Padding(
                         padding: EdgeInsets.only(top: 25, bottom: 25),
                         child: Text(
-                          'Game is Paused',
+                          'Game dijeda',
                           style: TextStyle(
                             fontSize: 30.0,
                             color: Colors.black,
@@ -62,7 +62,7 @@ class PauseMenu extends StatelessWidget {
                                 onPressed: () {},
                               ),
                               const Text(
-                                'Exit',
+                                'Keluar',
                                 style: TextStyle(
                                     fontSize: 15, color: Colors.black),
                               ),
@@ -85,7 +85,7 @@ class PauseMenu extends StatelessWidget {
                                 },
                               ),
                               const Text(
-                                'Continue',
+                                'Lanjut',
                                 style: TextStyle(
                                     fontSize: 15, color: Colors.black),
                               ),

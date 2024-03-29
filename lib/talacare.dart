@@ -4,13 +4,13 @@ import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
 import 'package:talacare/components/event.dart';
 import 'package:talacare/components/game_2.dart';
-import 'package:talacare/components/hospital_confirmation.dart';
+import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/components/game_1.dart';
 import 'helpers/directions.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 
-import 'helpers/hospital_reason.dart';
+import 'helpers/dialog_reason.dart';
 enum GameStatus {playing, paused, victory}
 
 class TalaCare extends FlameGame with HasCollisionDetection {
@@ -20,7 +20,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   int playerHealth = 4;
   GameStatus status = GameStatus.playing;
 
-  late HospitalConfirmation confirmation;
+  late GameDialog confirmation;
   @override
   late World world;
   late AlignComponent eventAnchor;
@@ -48,6 +48,17 @@ class TalaCare extends FlameGame with HasCollisionDetection {
 
 
     return super.onLoad();
+  }
+
+  @override
+  void pauseEngine() {
+    status = GameStatus.paused;
+    super.pauseEngine();
+  }
+
+  @override void resumeEngine() {
+    status = GameStatus.playing;
+    super.resumeEngine();
   }
 
   void switchGame({reason, firstLoad=false}) {
@@ -90,9 +101,9 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     }
   }
 
-  void showConfirmation(HospitalReason reason) {
+  void showConfirmation(DialogReason reason) {
     if (!confirmationIsActive) {
-      confirmation = HospitalConfirmation(reason: reason);
+      confirmation = GameDialog(reason: reason);
       confirmationIsActive = true;
       gameOne.dPad.disable();
       confirmationAnchor = AlignComponent(
@@ -133,6 +144,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
 
   void victory() {
     status = GameStatus.victory;
+    showConfirmation(DialogReason.gameVictory);
   }
 
 }

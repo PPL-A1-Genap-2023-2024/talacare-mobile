@@ -7,11 +7,11 @@ import 'package:flame/layout.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/talacare.dart';
 
-import '../helpers/hospital_reason.dart';
+import '../helpers/dialog_reason.dart';
 
 class HospitalPuzzle extends World with HasGameRef<TalaCare> {
   final Player player;
-  final HospitalReason reason;
+  final DialogReason reason;
 
 
   HospitalPuzzle({required this.player, required this.reason});
@@ -26,8 +26,8 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     gameRef.camera.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
 
     final newButton = SpriteButtonComponent();
-    newButton.button = await game.loadSprite('Hospital/okay.png');
-    newButton.buttonDown = await game.loadSprite('Hospital/okay_pressed.png');
+    newButton.button = await game.loadSprite('Dialog/okay.png');
+    newButton.buttonDown = await game.loadSprite('Dialog/okay_pressed.png');
     newButton.onPressed = finishGame;
     gameRef.camera.viewport.add(AlignComponent(
       child: newButton,

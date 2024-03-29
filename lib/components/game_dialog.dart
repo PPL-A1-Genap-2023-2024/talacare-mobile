@@ -4,25 +4,25 @@ import 'package:flame/input.dart';
 import 'package:flame/layout.dart';
 import 'package:talacare/talacare.dart';
 
-import '../helpers/hospital_reason.dart';
+import '../helpers/dialog_reason.dart';
 
 
 
-class HospitalConfirmation extends SpriteComponent with HasGameRef<TalaCare> {
-  HospitalReason reason;
+class GameDialog extends SpriteComponent with HasGameRef<TalaCare> {
+  DialogReason reason;
   late String text;
   late final SpriteButtonComponent yesButton;
   late final SpriteButtonComponent noButton;
 
 
-  HospitalConfirmation({required this.reason});
+  GameDialog({required this.reason});
 
   @override
   Future<dynamic> onLoad() async {
-    sprite = await game.loadSprite('Hospital/Background.png');
+    sprite = await game.loadSprite('Dialog/Background.png');
     final buttons = <AlignComponent>[];
     switch(reason) {
-      case HospitalReason.lowBlood:
+      case DialogReason.lowBlood:
         text = 'Kamu perlu transfusi darah di rumah sakit!';
 
         yesButton = await _loadSpriteButton('okay');
@@ -31,7 +31,7 @@ class HospitalConfirmation extends SpriteComponent with HasGameRef<TalaCare> {
             child: yesButton,
             alignment: Anchor.center
         ));
-      case HospitalReason.playerEnter:
+      case DialogReason.enterHospital:
         text = 'Ke Rumah Sakit?';
 
         yesButton = await _loadSpriteButton('yes');
@@ -44,6 +44,23 @@ class HospitalConfirmation extends SpriteComponent with HasGameRef<TalaCare> {
 
         noButton = await _loadSpriteButton('no');
         noButton.onPressed = game.noToHospital;
+        noButton.anchor = Anchor.centerRight;
+
+        buttons.add(AlignComponent(
+            child: noButton,
+            alignment: Anchor.centerLeft
+        ));
+      case DialogReason.gameVictory:
+        text = 'Kamu Menang!';
+
+        yesButton = await _loadSpriteButton('replay');
+        yesButton.anchor = Anchor.centerRight;
+        buttons.add(AlignComponent(
+            child: yesButton,
+            alignment: Anchor.centerRight
+        ));
+
+        noButton = await _loadSpriteButton('home');
         noButton.anchor = Anchor.centerRight;
 
         buttons.add(AlignComponent(
@@ -71,8 +88,8 @@ class HospitalConfirmation extends SpriteComponent with HasGameRef<TalaCare> {
 
   Future<SpriteButtonComponent> _loadSpriteButton(name) async {
     final newButton = SpriteButtonComponent();
-    newButton.button = await game.loadSprite('Hospital/$name.png');
-    newButton.buttonDown = await game.loadSprite('Hospital/${name}_pressed.png');
+    newButton.button = await game.loadSprite('Dialog/$name.png');
+    newButton.buttonDown = await game.loadSprite('Dialog/${name}_pressed.png');
     return newButton;
   }
 
