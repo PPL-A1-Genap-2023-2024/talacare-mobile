@@ -12,7 +12,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group('Game 2 Transition Test', () {
         testWithGame<TalaCare>(
-            'Play transition when entering game 2',
+            'Play transition when entering hospital voluntarily',
             TalaCare.new,
                 (game) async {
             await game.ready();
@@ -27,6 +27,26 @@ void main() {
             button.onTapUp(createTapUpEvents(game: game));
             await game.ready();
             expect(game_2.finished, true);
+            }
+        );
+
+        testWithGame<TalaCare>(
+            'Play transition when entering hospital because of low blood',
+            TalaCare.new,
+                (game) async {
+              await game.ready();
+              game.currentGame = 2;
+              game.switchGame(reason: DialogReason.lowBlood);
+              await game.ready();
+              final game_2 = game.children.query<HospitalPuzzle>().first;
+              expect(game_2.nurseTransition, true);
+              game.update(5);
+              await game.ready();
+              final button = game_2.playButtonAnchor.children.query<SpriteButtonComponent>().first;
+              button.onTapDown(createTapDownEvents(game: game));
+              button.onTapUp(createTapUpEvents(game: game));
+              await game.ready();
+              expect(game_2.finished, true);
             }
         );
   });
