@@ -311,5 +311,19 @@ void main() {
     );
   });
 
+  group('Game Victory Tests', () {
+    testWithGame<TalaCare>(
+        'Get Victory Message after Collect all activity point',
+        TalaCare.new,
+            (game) async {
+          await game.ready();
+          game.score = 8;
+          await game.ready();
+          expect(game.status, GameStatus.victory);
+
+        }
+    );
+  });
+
 
 }

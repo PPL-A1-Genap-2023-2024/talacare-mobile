@@ -11,13 +11,14 @@ import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 
 import 'helpers/hospital_reason.dart';
+enum GameStatus {playing, paused, victory}
 
 class TalaCare extends FlameGame with HasCollisionDetection {
   late final CameraComponent camOne;
   late HouseAdventure gameOne;
   Player player = Player(character: 'Adam');
   int playerHealth = 4;
-
+  GameStatus status = GameStatus.playing;
 
   late HospitalConfirmation confirmation;
   @override
