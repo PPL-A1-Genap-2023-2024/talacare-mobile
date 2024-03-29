@@ -3,7 +3,6 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:talacare/components/collision_block.dart';
-import 'package:talacare/components/game_1.dart';
 import 'package:talacare/components/utils.dart';
 import 'package:talacare/talacare.dart';
 
@@ -11,7 +10,7 @@ import '../helpers/directions.dart';
 
 enum PlayerState { idle, running }
 
-class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, ParentIsA<HouseAdventure> {
+class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, ParentIsA<World> {
   String character;
   Player({super.position, this.character = 'Adam'});
 

@@ -61,7 +61,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     super.resumeEngine();
   }
 
-  void switchGame({reason, firstLoad=false}) {
+  void switchGame({reason=DialogReason.enterHospital, firstLoad=false}) {
     if (!firstLoad) {
       removeAll([camera, world]);
     }
