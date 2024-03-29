@@ -318,7 +318,7 @@ void main() {
             (game) async {
           await game.ready();
           game.score = 8;
-          await game.ready();
+          game.update(5);
           expect(game.status, GameStatus.victory);
 
         }

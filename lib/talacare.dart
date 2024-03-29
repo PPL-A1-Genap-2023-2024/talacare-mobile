@@ -137,4 +137,8 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     player.moveSpeed = 100;
   }
 
+  void victory() {
+    status = GameStatus.victory;
+  }
+
 }
