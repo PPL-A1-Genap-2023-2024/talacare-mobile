@@ -25,10 +25,10 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     background.sprite = Sprite(game.images.fromCache("Hospital/hospital_setting.jpg"));
     background.scale = Vector2.all(0.5625);
     gameRef.camera.backdrop = background;
-    gameRef.camera.viewfinder.anchor = Anchor.center;
+    gameRef.camera.viewfinder.anchor = Anchor.topLeft;
     gameRef.camera.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
 
-    screen = gameRef.camera.viewport;
+    final screen = gameRef.camera.viewport;
     
     silhouetteContainer = SilhouetteContainer(
       position: Vector2(screen.size.x / 2, screen.size.y / 2),
@@ -37,8 +37,8 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
       position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
       size: Vector2(screen.size.x, screen.size.y * 2 / 7)
     );
-    gameRef.camera.viewport.add(silhouetteContainer);
-    gameRef.camera.viewport.add(draggableContainer);
+    add(silhouetteContainer);
+    add(draggableContainer);
 
     // final newButton = SpriteButtonComponent();
     // newButton.button = await game.loadSprite('Hospital/okay.png');

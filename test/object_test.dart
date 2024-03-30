@@ -18,12 +18,11 @@ void main() {
         game.currentGame = 2;
         game.switchGame(reason: HospitalReason.playerEnter);
         await game.ready();
-        final viewport = game.camera.viewport;
-        expect(viewport.children.query<SilhouetteContainer>().length, 1);
-        final silhouetteContainer = viewport.children.query<SilhouetteContainer>().first;
+        expect(game.world.children.query<SilhouetteContainer>().length, 1);
+        final silhouetteContainer = game.world.children.query<SilhouetteContainer>().first;
         expect(silhouetteContainer.children.query<SilhouetteItem>().length, 1);
-        expect(viewport.children.query<DraggableContainer>().length, 1);
-        final draggableContainer = viewport.children.query<DraggableContainer>().first;
+        expect(game.world.children.query<DraggableContainer>().length, 1);
+        final draggableContainer = game.world.children.query<DraggableContainer>().first;
         expect(draggableContainer.children.query<DraggableItem>().length, 2);
       }
     );
@@ -35,8 +34,7 @@ void main() {
         game.currentGame = 2;
         game.switchGame(reason: HospitalReason.playerEnter);
         await game.ready();
-        final viewport = game.camera.viewport;
-        final draggableContainer = viewport.children.query<DraggableContainer>().first;
+        final draggableContainer = game.world.children.query<DraggableContainer>().first;
         final draggableItems = draggableContainer.children.query<DraggableItem>();
         draggableContainer.removeItem(draggableItems.first);
         draggableContainer.removeItem(draggableItems.last);
@@ -52,10 +50,9 @@ void main() {
         game.currentGame = 2;
         game.switchGame(reason: HospitalReason.playerEnter);
         await game.ready();
-        final viewport = game.camera.viewport;
-        final silhouetteContainer = viewport.children.query<SilhouetteContainer>().first;
+        final silhouetteContainer = game.world.children.query<SilhouetteContainer>().first;
         final silhouetteIndex = silhouetteContainer.indicesDisplayed.last;
-        final draggableContainer = viewport.children.query<DraggableContainer>().first;
+        final draggableContainer = game.world.children.query<DraggableContainer>().first;
         final draggableIndices = draggableContainer.indicesDisplayed;
         expect(draggableIndices.contains(silhouetteIndex), true);
       }

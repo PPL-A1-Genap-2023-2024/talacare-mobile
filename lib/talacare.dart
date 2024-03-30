@@ -8,19 +8,19 @@ import 'package:talacare/components/hospital_confirmation.dart';
 import 'package:talacare/components/game_1.dart';
 import 'components/hud/hud.dart';
 import 'helpers/directions.dart';
-import 'package:talacare/components/draggable_container.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
-import 'package:talacare/components/silhouette_container.dart';
 
 import 'helpers/hospital_reason.dart';
 
 class TalaCare extends FlameGame with HasCollisionDetection {
   late final CameraComponent camOne;
   late HouseAdventure gameOne;
+  late Hud hud;
+  late int currentGame;
   Player player = Player(character: 'Adam');
   int playerHealth = 4;
-
+  int score = 0;
 
   late HospitalConfirmation confirmation;
   @override
@@ -29,15 +29,6 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
-
-  late int currentGame;
-  int score = 0;
-
-  late Hud hud;
-  late DraggableContainer draggableContainer;
-  late RectangleComponent game2Background;
-  late SilhouetteContainer silhouetteContainer;
-  int game2Score = 0;
   
   final bool isWidgetTesting;
   TalaCare({this.isWidgetTesting = false});
