@@ -3,13 +3,13 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 
 class CircleProgress extends RectangleComponent {
-  final double width;
+  final double widthInput;
   final int totalPoints;
   final List<bool> circlesAreMarked = [];
 
   CircleProgress({
     required super.position,
-    required this.width,
+    required this.widthInput,
     required this.totalPoints
   });
 
@@ -17,8 +17,8 @@ class CircleProgress extends RectangleComponent {
   FutureOr<void> onLoad() async {
     anchor = Anchor.center;
     paint = Paint()..color = Color.fromARGB(0, 0, 0, 0);
-    final circleDiameter = width / (totalPoints * 2 + 1);
-    size = Vector2(width, circleDiameter);
+    final circleDiameter = widthInput / (totalPoints * 2 + 1);
+    size = Vector2(widthInput, circleDiameter);
     add(RectangleComponent(
       anchor: Anchor.center,
       paint: Paint()..color = Color.fromARGB(255, 189, 204, 222),

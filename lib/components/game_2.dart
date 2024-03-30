@@ -36,7 +36,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
 
     progressBar = CircleProgress(
       position:  Vector2(screen.size.x / 2, screen.size.y * 1 / 7),
-      width: screen.size.x,
+      widthInput: screen.size.x,
       totalPoints: 5
     );
     instruction = TextComponent(
