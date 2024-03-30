@@ -2,10 +2,13 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:talacare/components/draggable_item.dart';
+import 'package:talacare/components/game_2.dart';
 import 'package:talacare/helpers/item.dart';
 import 'package:talacare/talacare.dart';
 
-class SilhouetteItem extends SpriteComponent with HasGameRef<TalaCare> {
+class SilhouetteItem extends SpriteComponent with CollisionCallbacks,
+HasGameRef<TalaCare>, HasWorldReference<HospitalPuzzle> {
   final Item item;
   late final RectangleHitbox hitbox;
 
@@ -20,5 +23,19 @@ class SilhouetteItem extends SpriteComponent with HasGameRef<TalaCare> {
     hitbox = RectangleHitbox();
     add(hitbox);
     return super.onLoad();
+  }
+
+  @override
+  FutureOr<void> onCollision(
+    Set<Vector2> intersectionPoints,
+    PositionComponent other
+  ) async {
+    if (other is DraggableItem && item.index == other.item.index) {
+      tint(Color.fromARGB(0, 255, 255, 255));
+      remove(hitbox);
+      world.score++;
+      world.silhouetteContainer.addNextItem();
+    }
+    super.onCollision(intersectionPoints, other);
   }
 }

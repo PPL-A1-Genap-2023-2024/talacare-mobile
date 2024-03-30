@@ -5,8 +5,9 @@ import 'package:talacare/components/silhouette_item.dart';
 import 'package:talacare/helpers/item.dart';
 import 'package:talacare/talacare.dart';
 
-class SilhouetteContainer extends SpriteComponent with HasGameRef<TalaCare>, HasWorldReference<HospitalPuzzle> {
-  final List<int> indicesDisplayed = [];
+class SilhouetteContainer extends SpriteComponent with HasGameRef<TalaCare>,
+HasWorldReference<HospitalPuzzle> {
+  int currentIndex = -1;
 
   SilhouetteContainer({required super.position});
 
@@ -19,7 +20,9 @@ class SilhouetteContainer extends SpriteComponent with HasGameRef<TalaCare>, Has
   }
 
   FutureOr<void> addNextItem() async {
-    add(SilhouetteItem(item: Item.values[world.score]));
-    indicesDisplayed.add(world.score);
+    if (world.score < 5) {
+      add(SilhouetteItem(item: Item.values[world.score]));
+      currentIndex++;
+    }
   }
 }
