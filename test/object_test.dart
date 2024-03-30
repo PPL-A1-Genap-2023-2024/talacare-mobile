@@ -1,9 +1,8 @@
-import 'package:flame/components.dart';
+import 'package:flame/input.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:talacare/components/draggable_container.dart';
 import 'package:talacare/components/draggable_item.dart';
-import 'package:talacare/components/silhouette_container.dart';
+import 'package:talacare/components/game_2.dart';
 import 'package:talacare/components/silhouette_item.dart';
 import 'package:talacare/helpers/hospital_reason.dart';
 import 'package:talacare/talacare.dart';
@@ -12,66 +11,93 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group('Object Selection Tests', () {
     testWithGame<TalaCare>(
-      'First wave draggable items and silhouette item appear after game 2 starts', 
+      'Initial game condition checks after game 2 starts', 
       TalaCare.new,
       (game) async {
         await game.ready();
         game.currentGame = 2;
         game.switchGame(reason: HospitalReason.playerEnter);
         await game.ready();
-        expect(game.world.children.query<SilhouetteContainer>().length, 1);
-        final silhouetteContainer = game.world.children.query<SilhouetteContainer>().first;
-        expect(silhouetteContainer.children.query<SilhouetteItem>().length, 1);
-        expect(game.world.children.query<DraggableContainer>().length, 1);
-        final draggableContainer = game.world.children.query<DraggableContainer>().first;
-        expect(draggableContainer.children.query<DraggableItem>().length, 2);
+        final world = game.children.query<HospitalPuzzle>().first;
+        expect(world.silhouetteContainer.children.query<SilhouetteItem>().length, 1);
+        expect(world.draggableContainer.children.query<DraggableItem>().length, 2);
+        expect(world.instruction.text, "Ayo cocokkan gambar!");
+        expect(world.progressBar.circlesAreMarked.contains(true), false);
+        expect(world.score, 0);
       }
     );
     testWithGame<TalaCare>(
-      'Second wave draggable items appear after container is emptied for the first time', 
+      'Second wave of items appear after container is emptied once', 
       TalaCare.new,
       (game) async {
         await game.ready();
         game.currentGame = 2;
         game.switchGame(reason: HospitalReason.playerEnter);
         await game.ready();
-        final silhouetteContainer = game.world.children.query<SilhouetteContainer>().first;
-        final draggableContainer = game.world.children.query<DraggableContainer>().first;
+        final world = game.children.query<HospitalPuzzle>().first;
         for (int i = 0; i <= 1; i++) {
-          var draggableIndices = draggableContainer.indicesDisplayed;
-          var silhouetteItems = silhouetteContainer.children.query<SilhouetteItem>();
-          var silhouetteItem = silhouetteItems[silhouetteContainer.currentIndex];
-          var draggableItems = draggableContainer.children.query<DraggableItem>();
+          var draggableIndices = world.draggableContainer.indicesDisplayed;
+          var silhouetteItems = world.silhouetteContainer.children.query<SilhouetteItem>();
+          var silhouetteItem = silhouetteItems[world.silhouetteContainer.currentIndex];
+          var draggableItems = world.draggableContainer.children.query<DraggableItem>();
           var matchingDraggableIndex = draggableIndices.indexOf(i);
           var draggableItem = draggableItems[matchingDraggableIndex];
           silhouetteItem.onCollision({Vector2(0,0)}, draggableItem);
           await game.ready();
         }
-        expect(draggableContainer.children.query<DraggableItem>().length, 3);
+        expect(world.draggableContainer.children.query<DraggableItem>().length, 3);
       }
     );
     testWithGame<TalaCare>(
-      'Current silhouette must have matching draggable at any point', 
+      'Silhouette, correct draggable, and progress must match at every point', 
       TalaCare.new,
       (game) async {
         await game.ready();
         game.currentGame = 2;
         game.switchGame(reason: HospitalReason.playerEnter);
         await game.ready();
-        final silhouetteContainer = game.world.children.query<SilhouetteContainer>().first;
-        final draggableContainer = game.world.children.query<DraggableContainer>().first;
+        final world = game.children.query<HospitalPuzzle>().first;
         for (int i = 0; i <= 4; i++) {
-          var draggableIndices = draggableContainer.indicesDisplayed;
-          expect(silhouetteContainer.currentIndex == i, true);
+          var draggableIndices = world.draggableContainer.indicesDisplayed;
+          expect(world.score, i);
+          expect(world.progressBar.circlesAreMarked.indexOf(false), i);
+          expect(world.silhouetteContainer.currentIndex, i);
           expect(draggableIndices.contains(i), true);
-          var silhouetteItems = silhouetteContainer.children.query<SilhouetteItem>();
-          var silhouetteItem = silhouetteItems[silhouetteContainer.currentIndex];
-          var draggableItems = draggableContainer.children.query<DraggableItem>();
+          var silhouetteItems = world.silhouetteContainer.children.query<SilhouetteItem>();
+          var silhouetteItem = silhouetteItems[world.silhouetteContainer.currentIndex];
+          var draggableItems = world.draggableContainer.children.query<DraggableItem>();
           var matchingDraggableIndex = draggableIndices.indexOf(i);
           var draggableItem = draggableItems[matchingDraggableIndex];
           silhouetteItem.onCollision({Vector2(0,0)}, draggableItem);
           await game.ready();
         }
+      }
+    );
+    testWithGame<TalaCare>(
+      'End game condition checks after all items have been matched', 
+      TalaCare.new,
+      (game) async {
+        await game.ready();
+        game.currentGame = 2;
+        game.switchGame(reason: HospitalReason.playerEnter);
+        await game.ready();
+        final world = game.children.query<HospitalPuzzle>().first;
+        for (int i = 0; i <= 4; i++) {
+          var draggableIndices = world.draggableContainer.indicesDisplayed;
+          var silhouetteItems = world.silhouetteContainer.children.query<SilhouetteItem>();
+          var silhouetteItem = silhouetteItems[world.silhouetteContainer.currentIndex];
+          var draggableItems = world.draggableContainer.children.query<DraggableItem>();
+          var matchingDraggableIndex = draggableIndices.indexOf(i);
+          var draggableItem = draggableItems[matchingDraggableIndex];
+          silhouetteItem.onCollision({Vector2(0,0)}, draggableItem);
+          await game.ready();
+        }
+        expect(world.silhouetteContainer.children.query<SilhouetteItem>().length, 5);
+        expect(world.draggableContainer.children.query<DraggableItem>().length, 0);
+        expect(world.children.query<ButtonComponent>().length, 1);
+        expect(world.instruction.text, "Transfusi darah berhasil!");
+        expect(world.progressBar.circlesAreMarked.contains(false), false);
+        expect(world.score, 5);
       }
     );
   });
