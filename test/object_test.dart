@@ -43,7 +43,7 @@ void main() {
       }
     );
     testWithGame<TalaCare>(
-      'One of the draggable items must match with the current silhouette', 
+      'Current silhouette must have matching draggable at any point', 
       TalaCare.new,
       (game) async {
         await game.ready();
@@ -51,10 +51,18 @@ void main() {
         game.switchGame(reason: HospitalReason.playerEnter);
         await game.ready();
         final silhouetteContainer = game.world.children.query<SilhouetteContainer>().first;
-        final silhouetteIndex = silhouetteContainer.indicesDisplayed.last;
         final draggableContainer = game.world.children.query<DraggableContainer>().first;
-        final draggableIndices = draggableContainer.indicesDisplayed;
-        expect(draggableIndices.contains(silhouetteIndex), true);
+        for (int i = 0; i <= 4; i++) {
+          var draggableIndices = draggableContainer.indicesDisplayed;
+          expect(silhouetteContainer.currentIndex == i, true);
+          expect(draggableIndices.contains(i), true);
+          var draggableItems = draggableContainer.children.query<DraggableItem>();
+          var matchingDraggableIndex = draggableIndices.indexOf(i);
+          var matchingDraggableItem = draggableItems[matchingDraggableIndex];
+          draggableContainer.removeItem(matchingDraggableItem);
+          silhouetteContainer.addNextItem();
+          await game.ready();
+        }
       }
     );
   });
