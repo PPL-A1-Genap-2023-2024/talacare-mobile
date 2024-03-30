@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:flame/components.dart';
-import 'package:flame/input.dart';
 import 'package:talacare/components/draggable_item.dart';
 import 'package:talacare/helpers/item.dart';
 import 'package:talacare/talacare.dart';
 
 class DraggableContainer extends RectangleComponent with HasGameRef<TalaCare> {
   final List<int> indicesDisplayed = [];
-  int wave = 1;
 
   DraggableContainer({required super.position, required super.size});
 
@@ -55,11 +53,5 @@ class DraggableContainer extends RectangleComponent with HasGameRef<TalaCare> {
   FutureOr<void> removeItem(DraggableItem item) async {
     remove(item);
     indicesDisplayed.remove(item.item.index);
-    if (indicesDisplayed.isEmpty && wave == 1) {
-      wave++;
-      addSecondWaveItems();
-    } else if (indicesDisplayed.isEmpty && wave == 2) {
-      // exit button here
-    }
   }
 }

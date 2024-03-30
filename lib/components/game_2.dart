@@ -51,6 +51,18 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     return super.onLoad();
   }
 
+  void updateScore() {
+    score++;
+    if (score == 2) {
+      draggableContainer.addSecondWaveItems();
+    }
+    if (score < 5) {
+      silhouetteContainer.addNextItem();
+    } else {
+      // exit button
+    }
+  }
+
   void finishGame() {
     gameRef.exitHospital();
   }

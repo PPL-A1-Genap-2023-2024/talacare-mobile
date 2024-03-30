@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:talacare/components/game_2.dart';
-import 'package:talacare/components/silhouette_item.dart';
 import 'package:talacare/helpers/item.dart';
 import 'package:talacare/talacare.dart';
 
@@ -20,13 +19,5 @@ HasGameRef<TalaCare>, HasWorldReference<HospitalPuzzle> {
     sprite = Sprite(game.images.fromCache('Game_2/item_${item.name}.png'));
     add(RectangleHitbox());
     return super.onLoad();
-  }
-
-  @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is SilhouetteItem && item.index == other.item.index) {
-      world.draggableContainer.removeItem(this);
-    }
-    super.onCollision(intersectionPoints, other);
   }
 }

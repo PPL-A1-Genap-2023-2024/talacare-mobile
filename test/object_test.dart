@@ -1,3 +1,4 @@
+import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/draggable_container.dart';
@@ -34,11 +35,18 @@ void main() {
         game.currentGame = 2;
         game.switchGame(reason: HospitalReason.playerEnter);
         await game.ready();
+        final silhouetteContainer = game.world.children.query<SilhouetteContainer>().first;
         final draggableContainer = game.world.children.query<DraggableContainer>().first;
-        final draggableItems = draggableContainer.children.query<DraggableItem>();
-        draggableContainer.removeItem(draggableItems.first);
-        draggableContainer.removeItem(draggableItems.last);
-        await game.ready();
+        for (int i = 0; i <= 1; i++) {
+          var draggableIndices = draggableContainer.indicesDisplayed;
+          var silhouetteItems = silhouetteContainer.children.query<SilhouetteItem>();
+          var silhouetteItem = silhouetteItems[silhouetteContainer.currentIndex];
+          var draggableItems = draggableContainer.children.query<DraggableItem>();
+          var matchingDraggableIndex = draggableIndices.indexOf(i);
+          var draggableItem = draggableItems[matchingDraggableIndex];
+          silhouetteItem.onCollision({Vector2(0,0)}, draggableItem);
+          await game.ready();
+        }
         expect(draggableContainer.children.query<DraggableItem>().length, 3);
       }
     );
@@ -56,11 +64,12 @@ void main() {
           var draggableIndices = draggableContainer.indicesDisplayed;
           expect(silhouetteContainer.currentIndex == i, true);
           expect(draggableIndices.contains(i), true);
+          var silhouetteItems = silhouetteContainer.children.query<SilhouetteItem>();
+          var silhouetteItem = silhouetteItems[silhouetteContainer.currentIndex];
           var draggableItems = draggableContainer.children.query<DraggableItem>();
           var matchingDraggableIndex = draggableIndices.indexOf(i);
-          var matchingDraggableItem = draggableItems[matchingDraggableIndex];
-          draggableContainer.removeItem(matchingDraggableItem);
-          silhouetteContainer.addNextItem();
+          var draggableItem = draggableItems[matchingDraggableIndex];
+          silhouetteItem.onCollision({Vector2(0,0)}, draggableItem);
           await game.ready();
         }
       }

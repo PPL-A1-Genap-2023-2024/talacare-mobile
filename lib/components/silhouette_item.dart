@@ -26,15 +26,12 @@ HasGameRef<TalaCare>, HasWorldReference<HospitalPuzzle> {
   }
 
   @override
-  FutureOr<void> onCollision(
-    Set<Vector2> intersectionPoints,
-    PositionComponent other
-  ) async {
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is DraggableItem && item.index == other.item.index) {
       tint(Color.fromARGB(0, 255, 255, 255));
       remove(hitbox);
-      world.score++;
-      world.silhouetteContainer.addNextItem();
+      world.draggableContainer.removeItem(other);
+      world.updateScore();
     }
     super.onCollision(intersectionPoints, other);
   }

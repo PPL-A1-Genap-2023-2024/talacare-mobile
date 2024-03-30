@@ -20,9 +20,7 @@ HasWorldReference<HospitalPuzzle> {
   }
 
   FutureOr<void> addNextItem() async {
-    if (world.score < 5) {
-      add(SilhouetteItem(item: Item.values[world.score]));
-      currentIndex++;
-    }
+    add(SilhouetteItem(item: Item.values[world.score]));
+    currentIndex++;
   }
 }
