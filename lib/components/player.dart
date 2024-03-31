@@ -3,7 +3,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:talacare/components/collision_block.dart';
-import 'package:talacare/components/level.dart';
+import 'package:talacare/components/game_1.dart';
 import 'package:talacare/components/utils.dart';
 import 'package:talacare/talacare.dart';
 
@@ -11,12 +11,13 @@ import '../helpers/directions.dart';
 
 enum PlayerState { idle, running }
 
-class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, ParentIsA<Level> {
+class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, ParentIsA<HouseAdventure> {
   String character;
   Player({super.position, this.character = 'Adam'});
 
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
+  Vector2 initialSpawn = Vector2(0,0);
   final double stepTime = 0.1;
   double horizontalMovement = 0;
   double verticalMovement = 0;
@@ -103,20 +104,25 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
       if (checkCollision(this, block)) {
         // Colliding without moving
         if (velocity.x == 0 && velocity.y == 0) {
-          if (block.position.x == 0 && block.height == 640){
+          // Left wall
+          if (block.type == WallTypes.outerLeft){
             position.x = block.x + block.width;
           }
-          else if (block.position.y == 0 && block.width == 368) {
-            position.y = block.y + block.height;
-          }
-          else if (block.position.x == 352 && block.height == 640) {
-            position.x = block.x - width;
-          }
-          else if (block.position.y == 624 && block.width == 368) {
+          // Bottom wall
+          else if (block.type == WallTypes.outerBottom) {
             position.y = block.y - height;
           }
+          // Right wall
+          else if (block.type == WallTypes.outerRight) {
+            position.x = block.x - width;
+          }
+          // Top wall
+          else if (block.type == WallTypes.outerTop) {
+            position.y = block.y + block.height;
+          }
           else {
-            position = Vector2(176, 576);
+            // Back to spawn point
+            position = initialSpawn;
           }
         }
 
@@ -138,8 +144,10 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
         }
         // Colliding while moving up
         else if (velocity.y < 0) {
+
           position.y = block.y + block.height;
           velocity.y = 0;
+
         }
       }
     }

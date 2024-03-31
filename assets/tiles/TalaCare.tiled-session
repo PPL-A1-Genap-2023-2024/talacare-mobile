@@ -7,21 +7,25 @@
     "expandedProjectPaths": [
         "."
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "House Adventure.tsx": {
-            "scaleInDock": 1.6041,
+            "scaleInDock": 3.1055,
+            "scaleInEditor": 1
+        },
+        "House Decor.tsx": {
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "Level-01.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                3
             ],
-            "scale": 0.8313,
-            "selectedLayer": 2,
+            "scale": 1,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 172.62119571755082,
-                "y": 297.72645254420786
+                "x": 201.5,
+                "y": 536.5
             }
         },
         "Level-02.tmx": {
@@ -31,12 +35,16 @@
             "scale": 1.171171875,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 210.47295043692884,
-                "y": 328.3036488559802
+                "x": 211.3267960776466,
+                "y": 320.6190380895204
             }
+        },
+        "Serene Village.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
-    "last.imagePath": "/Users/alanna/Documents/sem6/ppl/talacare-mobile/assets/images/Interiors_free/16x16",
+    "last.imagePath": "C:/Users/WorkPro/Documents/Kuliah/Semester 6 2024/PPL/Flutter_Talacare/talacare/assets/images/Interiors_free/16x16",
     "map.height": 40,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
@@ -44,15 +52,19 @@
     "map.width": 23,
     "openFiles": [
         "House Adventure.tsx",
+        "Level-02.tmx",
         "Level-01.tmx",
-        "Level-02.tmx"
+        "House Decor.tsx"
     ],
     "project": "TalaCare.tiled-project",
     "recentFiles": [
         "House Adventure.tsx",
         "Level-02.tmx",
-        "Level-01.tmx"
+        "House Decor.tsx",
+        "Level-01.tmx",
+        "Serene Village.tsx"
     ],
+    "resizeMap.removeObjects": false,
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 16,
