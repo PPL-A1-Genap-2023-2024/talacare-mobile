@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:talacare/talacare.dart';
+import 'package:talacare/widgets/homepage.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 
 class PauseMenu extends StatelessWidget {
@@ -59,7 +60,12 @@ class PauseMenu extends StatelessWidget {
                                 iconSize: 60,
                                 splashColor: Colors.white,
                                 icon: const Icon(Icons.house),
-                                onPressed: () {},
+                                onPressed: () {
+                                  gameRef.overlays.remove(PauseMenu.id);
+                                  gameRef.overlays.add(HomePage.id);
+                                  gameRef.pauseEngine();
+                                  gameRef.onLoad();
+                                },
                               ),
                               const Text(
                                 'Exit',

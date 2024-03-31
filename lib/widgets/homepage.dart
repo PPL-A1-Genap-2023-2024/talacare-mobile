@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const String id = 'HomePage';
   final TalaCare gameRef;
   HomePage({super.key, required this.gameRef});
@@ -14,62 +15,60 @@ class HomePage extends StatelessWidget {
   }
 
   @override
+  State<HomePage> createState() => _HomePageState(playButtonKey: _playButtonKey, gameRef: gameRef);
+}
+
+class _HomePageState extends State<HomePage> {
+  final TalaCare gameRef;
+  final GlobalKey playButtonKey;
+  _HomePageState({required this.playButtonKey, required this.gameRef});
+
+  List<Image> characterSelection = [
+    Image.asset("assets/images/Menu/showcase/boy.png"),
+    Image.asset("assets/images/Menu/showcase/girl.png")
+  ];
+
+  String currentCharacters = 'boy';
+
+  void PlayGame(){
+    gameRef.overlays.remove('HomePage');
+    gameRef.overlays.add(PauseButton.id);
+    gameRef.resumeEngine();
+  }
+
+  @override
   Widget build(BuildContext context) {
     gameRef.pauseEngine();
-    const blackTextColor = Color.fromRGBO(0, 0, 0, 1.0);
-    const whiteTextColor = Color.fromRGBO(255, 255, 255, 1.0);
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Material(
-      color: Colors.transparent,
-      child: Center(
-        child: Container(
-          padding: const EdgeInsets.all(10.0),
-          height: 250,
-          width: 300,
-          decoration: const BoxDecoration(
-            color: blackTextColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20),
-            ),
+      color: Colors.red,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CarouselSlider(
+              items: characterSelection,
+              options: CarouselOptions(
+                height: screenHeight * 0.3,
+                enableInfiniteScroll: true,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    gameRef.setCharacter(index);
+                  });
+                },
+              )
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'TalaCare',
-                style: TextStyle(
-                  color: whiteTextColor,
-                  fontSize: 24,
-                ),
-              ),
-              const SizedBox(height: 40),
-              SizedBox(
-                width: 200,
-                height: 75,
-                child: ElevatedButton(
-                  key: _playButtonKey,
-                  onPressed: () {
-                    gameRef.overlays.remove('HomePage');
-                    gameRef.overlays.add(PauseButton.id);
-                    gameRef.resumeEngine();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: whiteTextColor,
-                  ),
-                  child: const Text(
-                    'Play',
-                    style: TextStyle(
-                      fontSize: 40.0,
-                      color: blackTextColor,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-            ],
+          SizedBox(
+            height: screenHeight * 0.05,
           ),
-        ),
-      ),
+          IconButton(
+            key: playButtonKey,
+            icon: Image.asset("assets/images/Menu/PlayButton.png"),
+            iconSize: 50,
+            onPressed: () => PlayGame(),
+          )
+        ],
+      )
     );
   }
 }

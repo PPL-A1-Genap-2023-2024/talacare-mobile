@@ -1,4 +1,4 @@
-import 'dart:async';
+ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
@@ -13,7 +13,7 @@ enum PlayerState { idle, running }
 
 class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, ParentIsA<Level> {
   String character;
-  Player({super.position, this.character = 'Adam'});
+  Player({super.position, required this.character});
 
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;

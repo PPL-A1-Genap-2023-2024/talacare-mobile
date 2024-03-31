@@ -7,18 +7,19 @@ import 'package:talacare/components/dpad.dart';
 import 'package:talacare/components/event.dart';
 import 'package:talacare/components/level.dart';
 import 'helpers/directions.dart';
+import 'helpers/playableCharacters.dart';
 import 'package:talacare/components/hud/hud.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 
 class TalaCare extends FlameGame with HasCollisionDetection {
   late final CameraComponent cam;
-  Player player = Player(character: 'Adam');
+  Player player = Player(character: 'boy');
   int playerHealth = 4;
 
   late final DPad dPad;
   @override
-  late final World world;
+  late World world;
   late AlignComponent eventAnchor;
   bool eventIsActive = false;
   int score = 0;
@@ -78,6 +79,11 @@ class TalaCare extends FlameGame with HasCollisionDetection {
       cam.viewport.remove(eventAnchor);
       eventIsActive = false;
     }
+  }
+
+  void setCharacter(int index){
+    player.character = PlayableCharacters.values[index].name;
+    player.onLoad();
   }
 
 }
