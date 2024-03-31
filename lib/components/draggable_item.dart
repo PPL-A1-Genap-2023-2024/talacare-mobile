@@ -37,12 +37,4 @@ class DraggableItem extends SpriteComponent
   void onDragUpdate(DragUpdateEvent event) {
     position += event.localDelta;
   }
-
-  void onDragStart(DragStartEvent event) {
-    super.onDragStart(event);
-  }
-
-  void onDragEnd(DragEndEvent event) {
-    super.onDragEnd(event);
-  }
 }
