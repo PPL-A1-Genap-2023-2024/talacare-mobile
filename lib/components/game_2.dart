@@ -36,12 +36,12 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
 
     progressBar = CircleProgress(
       position:  Vector2(screen.size.x / 2, screen.size.y * 1 / 7),
-      widthInput: screen.size.x,
+      widthInput: screen.size.x * 3 / 5,
       totalPoints: 5
     );
     instruction = TextComponent(
       anchor: Anchor.center,
-      position: Vector2(screen.size.x / 2, screen.size.y * 2 / 7),
+      position: Vector2(screen.size.x / 2, screen.size.y * 1 / 4),
       text: "Ayo cocokkan gambar!",
       textRenderer: TextPaint(style: material.TextStyle(
         color: Color.fromARGB(255, 191, 210, 139),
@@ -49,7 +49,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
       ))
     );
     silhouetteContainer = SilhouetteContainer(
-      position: Vector2(screen.size.x / 2, screen.size.y / 2),
+      position: Vector2(screen.size.x / 2, screen.size.y * 8 / 17),
     );
     draggableContainer = DraggableContainer(
       position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
