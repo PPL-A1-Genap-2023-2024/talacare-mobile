@@ -1,149 +1,110 @@
 import 'dart:async';
-import 'dart:math' as math;
+import 'dart:ui';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
-import 'package:flame/layout.dart';
-import 'package:flame/sprite.dart';
-import 'package:flame_tiled/flame_tiled.dart';
+import 'package:flutter/material.dart' as material;
+import 'package:talacare/components/circle_progress.dart';
+import 'package:talacare/components/draggable_container.dart';
 import 'package:talacare/components/player.dart';
+import 'package:talacare/components/silhouette_container.dart';
 import 'package:talacare/talacare.dart';
-
-import '../helpers/dialog_reason.dart';
-import '../helpers/directions.dart';
 
 class HospitalPuzzle extends World with HasGameRef<TalaCare> {
   final Player player;
-  final DialogReason reason;
-  late SpriteAnimationComponent nurse;
-  bool nurseTransition = false;
-  late TiledComponent transition;
-  late TiledComponent level;
-  late Timer transitionCountdown;
-  late AlignComponent playButtonAnchor;
-  bool finished = false;
+  late final CircleProgress progressBar;
+  late final DraggableContainer draggableContainer;
+  late final SilhouetteContainer silhouetteContainer;
+  late final TextComponent instruction;
+  late final Viewport screen;
+  int score = 0;
 
-  HospitalPuzzle({required this.player, required this.reason});
-
-
+  HospitalPuzzle({required this.player});
 
   @override
   FutureOr<void> onLoad() async {
-    gameRef.camera.viewfinder.anchor = Anchor.center;
+    gameRef.camera.backdrop = RectangleComponent(
+        paint: Paint()..color = Color.fromARGB(255, 243, 253, 215),
+        size: Vector2(1000, 1000)
+    );
+    gameRef.camera.viewfinder.anchor = Anchor.topLeft;
     gameRef.camera.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
-    transition = await TiledComponent.load("Transition_01.tmx", Vector2.all(16));
-    transition.priority = -1;
-    nurse = SpriteAnimationComponent();
-    final spriteSheet = SpriteSheet.fromColumnsAndRows(
-        image: game.images.fromCache('Hospital/nurse.png'),
-        columns: 6,
-        rows: 1);
-    nurse.animation = spriteSheet.createAnimation(
-        row: 0,
-        stepTime: 0.1,
-        from: 0,
-        to: 5
+
+    screen = gameRef.camera.viewport;
+
+    progressBar = CircleProgress(
+        position:  Vector2(screen.size.x / 2, screen.size.y * 1 / 7),
+        widthInput: screen.size.x * 3 / 5,
+        totalPoints: 5
     );
-
-    startTransition();
-    transitionCountdown = Timer(5, onTick: () {
-      loadGame();
-    });
-
-    level = await TiledComponent.load("Level-02.tmx", Vector2.all(16));
-    level.anchor = Anchor.center;
-
-    final newButton = SpriteButtonComponent();
-    newButton.button = await game.loadSprite('Dialog/okay.png');
-    newButton.buttonDown = await game.loadSprite('Dialog/okay_pressed.png');
-    newButton.onPressed = removeBeforeFinish;
-    playButtonAnchor = AlignComponent(
-      child: newButton,
-      alignment: Anchor.center,
+    instruction = TextComponent(
+        anchor: Anchor.center,
+        position: Vector2(screen.size.x / 2, screen.size.y * 1 / 4),
+        text: "Ayo cocokkan gambar!",
+        textRenderer: TextPaint(style: material.TextStyle(
+            color: Color.fromARGB(255, 191, 210, 139),
+            fontSize: 28
+        ))
     );
-
-
-
+    silhouetteContainer = SilhouetteContainer(
+      position: Vector2(screen.size.x / 2, screen.size.y * 8 / 17),
+    );
+    draggableContainer = DraggableContainer(
+        position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
+        size: Vector2(screen.size.x, screen.size.y * 2 / 7)
+    );
+    add(progressBar);
+    add(instruction);
+    add(silhouetteContainer);
+    add(draggableContainer);
     return super.onLoad();
   }
 
-  @override
-  void update(double dt) {
-    if (nurseTransition) {
-      double movement = 100 * dt;
-      nurse.position.x += movement;
-      player.position.x += movement;
+  FutureOr<void> updateScore() async {
+    score++;
+    progressBar.updateProgress();
+    if (score == 2) {
+      draggableContainer.addSecondWaveItems();
     }
-    transitionCountdown.update(dt);
-    super.update(dt);
-  }
-
-  void startTransition() {
-    add(transition);
-
-    final spawnPointsLayer = transition.tileMap.getLayer<ObjectGroup>('SpawnPoint');
-
-    if (spawnPointsLayer != null) {
-      for (final spawnPoint in spawnPointsLayer.objects) {
-        if (spawnPoint.name == 'Player') {
-          player.scale = Vector2.all(4);
-          player.collisionActive = false;
-          if (finished | (reason == DialogReason.enterHospital)) {
-            player.direction = (finished) ? Direction.left : Direction.right;
-            player.position = Vector2(spawnPoint.x, spawnPoint.y);
-            add(player);
-            gameRef.camera.follow(player);
-          } else {
-
-            nurse.scale = Vector2.all(4);
-            nurse.position = Vector2(spawnPoint.x, spawnPoint.y);
-            add(nurse);
-
-
-
-            player.direction = Direction.right;
-            player.moveSpeed = 0;
-            player.priority = 1;
-            player.angle = -math.pi/2;
-            player.position = Vector2(spawnPoint.x + 30, spawnPoint.y + 90);
-            add(player);
-            gameRef.camera.follow(nurse);
-
-            nurseTransition = true;
-          }
-        }
-      }
+    if (score < 5) {
+      silhouetteContainer.addNextItem();
+    } else {
+      instruction.text = "Transfusi darah berhasil!";
+      addExitButton();
     }
   }
 
-
-
-  Future<void> loadGame() async {
-    if (nurseTransition) {
-      remove(nurse);
-      nurseTransition = false;
-      player.moveSpeed = 100;
-      player.angle = 0;
-    }
-    remove(player);
-    remove(transition);
-    add(level);
-    gameRef.camera.viewport.add(playButtonAnchor);
-  }
-
-  void removeBeforeFinish() {
-    remove(level);
-    gameRef.camera.viewport.remove(playButtonAnchor);
-    finishGame();
+  FutureOr<void> addExitButton() async {
+    final buttonText = TextComponent(
+        anchor: Anchor.center,
+        position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
+        text: "Kembali ke Rumah",
+        textRenderer: TextPaint(style: material.TextStyle(
+            color: Color.fromARGB(255, 165, 151, 102),
+            fontSize: 22
+        ))
+    );
+    final button = RectangleComponent(
+      paint: Paint()..color = Color.fromARGB(255, 253, 233, 168),
+      size: Vector2(200, 50),
+    );
+    final buttonDown = RectangleComponent(
+      paint: Paint()..color = Color.fromARGB(255, 222, 202, 138),
+      size: Vector2(200, 50),
+    );
+    final buttonGroup = ButtonComponent(
+      anchor: Anchor.center,
+      button: button,
+      buttonDown: buttonDown,
+      onReleased: finishGame,
+      position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
+      size: Vector2(200, 50),
+    );
+    add(buttonGroup);
+    add(buttonText);
   }
 
   void finishGame() {
-    finished = true;
-    startTransition();
-    transitionCountdown = Timer(5, onTick: () {
-      player.scale = Vector2.all(1);
-      player.direction = Direction.none;
-      gameRef.exitHospital();
-    });
+    gameRef.exitHospital();
   }
 }

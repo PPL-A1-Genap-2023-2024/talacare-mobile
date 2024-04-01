@@ -6,47 +6,56 @@ import 'package:talacare/components/event.dart';
 import 'package:talacare/components/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/components/game_1.dart';
+import 'components/transition.dart';
 import 'helpers/directions.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 
 import 'helpers/dialog_reason.dart';
-enum GameStatus {playing, paused, victory}
+enum GameStatus {playing, paused, victory, transition}
 
 class TalaCare extends FlameGame with HasCollisionDetection {
   late final CameraComponent camOne;
   late HouseAdventure gameOne;
+  late int currentGame;
+  late CameraComponent transitionCam;
+  late Timer transitionCountdown;
   Player player = Player(character: 'Adam');
   int playerHealth = 4;
   GameStatus status = GameStatus.playing;
 
   late GameDialog confirmation;
+  int score = 0;
   @override
   late World world;
   late AlignComponent eventAnchor;
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
-
-  late int currentGame;
-  int score = 0;
-
   
   final bool isWidgetTesting;
   TalaCare({this.isWidgetTesting = false});
 
+
+
+  @override
+  void update(double dt) {
+    // TODO: implement update
+    if (status==GameStatus.transition) {
+      transitionCountdown.update(dt);
+    }
+    super.update(dt);
+  }
+
   @override
   FutureOr<void> onLoad() async {
     if (!isWidgetTesting) {
-      // Load all images into cache
       await images.loadAllImages();
       gameOne = HouseAdventure(player: player, levelName: 'Level-01');
       camOne = CameraComponent(world: gameOne);
       currentGame = 1;
       switchGame(firstLoad:true);
     }
-
-
     return super.onLoad();
   }
 
@@ -70,10 +79,24 @@ class TalaCare extends FlameGame with HasCollisionDetection {
         world = gameOne;
         camera = camOne;
       case 2:
-        world = HospitalPuzzle(player: player, reason: reason);
+        world = HospitalPuzzle(player: player);
         camera = CameraComponent(world: world);
     }
-    addAll([camera, world]);
+    if (!firstLoad) {
+      final transition = GameTransition(player: player, reason: reason);
+      transitionCam = CameraComponent(world: transition);
+      addAll([transitionCam, transition]);
+      status = GameStatus.transition;
+      transitionCountdown = Timer(5, onTick: () {
+        removeAll([transitionCam, transition]);
+        status = GameStatus.playing;
+        addAll([camera, world]);
+      });
+    } else {
+      addAll([camera, world]);
+    }
+
+
   }
 
   void changeDirection(Direction direction) {
@@ -114,7 +137,6 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     }
   }
 
-
   void removeConfirmation() {
     camera.viewport.remove(confirmationAnchor);
     gameOne.dPad.enable();
@@ -123,6 +145,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
 
 
   void goToHospital(reason) {
+
     removeConfirmation();
     currentGame = 2;
     switchGame(reason: reason);
@@ -132,6 +155,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     removeConfirmation();
     player.y = player.y + 50;
   }
+
 
   void exitHospital() {
     currentGame = 1;
@@ -147,5 +171,4 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     status = GameStatus.victory;
     showConfirmation(DialogReason.gameVictory);
   }
-
 }
