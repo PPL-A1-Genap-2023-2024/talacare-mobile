@@ -16,9 +16,11 @@ import 'helpers/hospital_reason.dart';
 class TalaCare extends FlameGame with HasCollisionDetection {
   late final CameraComponent camOne;
   late HouseAdventure gameOne;
+  late Hud hud;
+  late int currentGame;
   Player player = Player(character: 'Adam');
   int playerHealth = 4;
-
+  int score = 0;
 
   late HospitalConfirmation confirmation;
   @override
@@ -27,10 +29,6 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
-
-  late int currentGame;
-  int score = 0;
-
   
   final bool isWidgetTesting;
   TalaCare({this.isWidgetTesting = false});
@@ -38,19 +36,16 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   @override
   FutureOr<void> onLoad() async {
     if (!isWidgetTesting) {
-      // Load all images into cache
       await images.loadAllImages();
       gameOne = HouseAdventure(player: player, levelName: 'Level-01');
       camOne = CameraComponent(world: gameOne);
       currentGame = 1;
       switchGame(firstLoad:true);
     }
-
-
     return super.onLoad();
   }
 
-  void switchGame({reason, firstLoad=false}) {
+  FutureOr<void> switchGame({reason, firstLoad=false}) async {
     if (!firstLoad) {
       removeAll([camera, world]);
     }
@@ -103,13 +98,11 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     }
   }
 
-
   void removeConfirmation() {
     camera.viewport.remove(confirmationAnchor);
     gameOne.dPad.enable();
     confirmationIsActive = false;
   }
-
 
   void yesToHospital() {
     removeConfirmation();
@@ -122,7 +115,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     player.y = player.y + 50;
   }
 
-  void okayHospital() {
+  Future<void> okayHospital() async {
     removeConfirmation();
     currentGame = 2;
     switchGame(reason: HospitalReason.lowBlood);
@@ -138,5 +131,4 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     Hud hud = camera.viewport.children.query<Hud>().first;
     hud.healthDurationChecker = hud.healthDuration;
   }
-
 }
