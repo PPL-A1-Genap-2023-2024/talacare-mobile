@@ -14,7 +14,7 @@ class DraggableItem extends SpriteComponent
         HasWorldReference<HospitalPuzzle>,
         DragCallbacks {
   final Item item;
-  late final Vector2 initialPosition;
+  late Vector2 initialPosition;
 
   DraggableItem({required this.item, required super.position});
 
@@ -36,5 +36,19 @@ class DraggableItem extends SpriteComponent
   @override
   void onDragUpdate(DragUpdateEvent event) {
     position += event.localDelta;
+    print(position);
+  }
+
+  @override
+  void onDragStart(DragStartEvent event) {
+    super.onDragStart(event);
+    initialPosition = Vector2(position.x, position.y);
+  }
+
+  @override
+  Future<void> onDragEnd(DragEndEvent event) async {
+    super.onDragEnd(event);
+    await Future.delayed(Duration(milliseconds: 50));
+    position = Vector2(initialPosition.x, initialPosition.y);
   }
 }
