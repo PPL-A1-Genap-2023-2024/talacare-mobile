@@ -162,6 +162,8 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     switchGame();
     player.x = gameOne.hospitalDoor.x;
     player.y = gameOne.hospitalDoor.y + 50;
+    player.angle = 0;
+    player.scale=Vector2.all(1);
     playerHealth = 4;
     player.moveSpeed = 100;
     player.collisionActive = true;
