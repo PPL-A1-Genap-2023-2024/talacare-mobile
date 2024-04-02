@@ -28,18 +28,8 @@ class DraggableItem extends SpriteComponent
   }
 
   @override
-  void update(double dt) {
-    super.update(dt);
-  }
-
-  @override
   void onDragUpdate(DragUpdateEvent event) {
     position += event.localDelta;
-  }
-
-  @override
-  void onDragStart(DragStartEvent event) {
-    super.onDragStart(event);
   }
 
   @override
