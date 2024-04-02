@@ -12,10 +12,9 @@ import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 
 import 'helpers/dialog_reason.dart';
-enum GameStatus {playing, paused, victory, transition}
+enum GameStatus {playing, victory, transition}
 
 class TalaCare extends FlameGame with HasCollisionDetection {
-  late final CameraComponent cam;
   String playedCharacter;
   Player player = Player(character: 'boy');
   late CameraComponent camOne;
@@ -25,9 +24,8 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   late Timer transitionCountdown;
   late int playerHealth;
   GameStatus status = GameStatus.playing;
-
   late GameDialog confirmation;
-  int score = 0;
+  late int score;
   @override
   late World world;
   late AlignComponent eventAnchor;
@@ -50,58 +48,56 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   FutureOr<void> onLoad() async {
     if (!isWidgetTesting) {
       playerHealth = 4;
+      score = 0;
+      status = GameStatus.playing;
       await images.loadAllImages();
+      player = Player(character: 'Adam');
       checkingPlayedCharacter();
-      gameOne = HouseAdventure(player: player, levelName: 'Level-01');
-      camOne = CameraComponent(world: gameOne);
       currentGame = 1;
-      switchGame(firstLoad:true);
+      world = gameOne = HouseAdventure(player: player, levelName: 'Level-01');
+      camera = camOne = CameraComponent(world: gameOne);
+      addAll([camera, world]);
     }
     return super.onLoad();
   }
 
-  @override
-  void pauseEngine() {
-    status = GameStatus.paused;
-    super.pauseEngine();
+
+  void switchGame({reason=DialogReason.enterHospital}) {
+    removeAll([camera, world]);
+
+    final transition = GameTransition(player: player, reason: reason);
+    transitionCam = CameraComponent(world: transition);
+    addAll([transitionCam, transition]);
+    status = GameStatus.transition;
+    transitionCountdown = Timer(5, onTick: () {
+      removeAll([transitionCam, transition]);
+      status = GameStatus.playing;
+      player.angle = 0;
+      player.scale = Vector2.all(1);
+      player.moveSpeed = 100;
+      player.x = gameOne.hospitalDoor.x;
+      player.y = gameOne.hospitalDoor.y + 50;
+      player.direction = Direction.none;
+      playerHealth = 4;
+      player.collisionActive = true;
+
+      switch (currentGame) {
+        case 1:
+          world = gameOne;
+          camera = camOne;
+        case 2:
+          world = HospitalPuzzle(player: player);
+          camera = CameraComponent(world: world);
+      }
+      addAll([camera, world]);
+    });
   }
 
-  @override
-  void resumeEngine() {
-    status = GameStatus.playing;
-    super.resumeEngine();
-  }
+
 
   void checkingPlayedCharacter(){
     if (player.character != playedCharacter){
       player = Player(character: playedCharacter);
-    }
-  }
-
-  void switchGame({reason=DialogReason.enterHospital, firstLoad=false}) {
-    if (!firstLoad) {
-      removeAll([camera, world]);
-    }
-    switch(currentGame) {
-      case 1:
-        world = gameOne;
-        camera = camOne;
-      case 2:
-        world = HospitalPuzzle(player: player);
-        camera = CameraComponent(world: world);
-    }
-    if (!firstLoad) {
-      final transition = GameTransition(player: player, reason: reason);
-      transitionCam = CameraComponent(world: transition);
-      addAll([transitionCam, transition]);
-      status = GameStatus.transition;
-      transitionCountdown = Timer(5, onTick: () {
-        removeAll([transitionCam, transition]);
-        status = GameStatus.playing;
-        addAll([camera, world]);
-      });
-    } else {
-      addAll([camera, world]);
     }
   }
 
@@ -164,15 +160,18 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   void exitHospital() {
     currentGame = 1;
     switchGame();
-    player.x = gameOne.hospitalDoor.x;
-    player.y = gameOne.hospitalDoor.y + 50;
-    playerHealth = 4;
-    player.moveSpeed = 100;
-    player.collisionActive = true;
   }
 
   void victory() {
     status = GameStatus.victory;
-    showConfirmation(DialogReason.gameVictory);
+    if (!eventIsActive) {
+      showConfirmation(DialogReason.gameVictory);
+    }
+  }
+
+  void playAgain() {
+    removeConfirmation();
+    removeAll([world, camera]);
+    onLoad();
   }
 }

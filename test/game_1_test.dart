@@ -326,6 +326,25 @@ void main() {
           expect(dialog.reason, DialogReason.gameVictory);
         }
     );
+
+    testWithGame<TalaCare>(
+        'Play Again after Victory',
+        TalaCare.new,
+            (game) async {
+          await game.ready();
+          Vector2 playerSpawn = Vector2.zero();
+          game.player.position.copyInto(playerSpawn);
+          game.victory();
+          await game.ready();
+          GameDialog dialog = game.confirmationAnchor.children.query<GameDialog>().first;
+          dialog.yesButton.onTapDown(createTapDownEvents(game: game));
+          dialog.yesButton.onTapUp(createTapUpEvents(game: game));
+          expect(game.status, GameStatus.playing);
+          expect(game.playerHealth, 4);
+          expect(game.player.position, playerSpawn);
+          expect(game.score, 0);
+        }
+    );
   });
 
 
