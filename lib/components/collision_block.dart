@@ -1,5 +1,8 @@
 import 'package:flame/components.dart';
 
+enum WallTypes { outerLeft, outerRight, outerTop, outerBottom, inside }
 class CollisionBlock extends PositionComponent {
-  CollisionBlock({ super.position, super.size }) ;
+  WallTypes type;
+
+  CollisionBlock({ super.position, super.size, this.type = WallTypes.inside }) ;
 }

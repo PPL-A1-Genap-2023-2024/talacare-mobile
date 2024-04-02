@@ -7,10 +7,16 @@ import 'package:talacare/talacare.dart';
 import 'package:http/http.dart' as http;
 import 'package:talacare/widgets/overlays/pause_button.dart';
 import 'package:talacare/widgets/overlays/pause_menu.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 void main() async {
   runApp(MyApp()); //TODO:REMOVE THIS
-  /*WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  
+  /*
   await Flame.device.fullScreen();
   await Flame.device.setPortrait();
 
