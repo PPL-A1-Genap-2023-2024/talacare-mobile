@@ -46,8 +46,8 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
 
   void changeCharacter(String name){
     character = name;
-    print(super.game);
-    print("player character is now $character");
+    _loadAllAnimations();
+    add(RectangleHitbox());
   }
 
   void _loadAllAnimations() {

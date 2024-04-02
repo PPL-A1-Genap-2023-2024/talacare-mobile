@@ -38,6 +38,9 @@ dependencies:
   flame_tiled: ^1.19.0
   flame_test: ^1.16.0
   carousel_slider: ^4.2.1
+  firebase_auth: ^4.17.9
+  firebase_core: ^2.27.1
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:
