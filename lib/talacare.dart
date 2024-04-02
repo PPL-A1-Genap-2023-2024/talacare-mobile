@@ -169,6 +169,8 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   }
 
   void playAgain() {
-
+    removeConfirmation();
+    removeAll([world, camera]);
+    onLoad();
   }
 }
