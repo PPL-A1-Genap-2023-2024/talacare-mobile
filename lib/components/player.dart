@@ -1,4 +1,4 @@
-import 'dart:async';
+ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
@@ -12,22 +12,23 @@ enum PlayerState { idle, running }
 
 class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, ParentIsA<World> {
   String character;
-  Player({super.position, this.character = 'Adam'});
+  Player({super.position, required this.character});
 
-  late final SpriteAnimation idleAnimation;
-  late final SpriteAnimation runningAnimation;
+  late SpriteAnimation idleAnimation;
+  late SpriteAnimation runningAnimation;
   Vector2 initialSpawn = Vector2(0,0);
   final double stepTime = 0.1;
   double horizontalMovement = 0;
   double verticalMovement = 0;
   Direction direction = Direction.none;
-  double moveSpeed = 100;
+  late double moveSpeed;
   Vector2 velocity = Vector2.zero();
   List<CollisionBlock> collisionBlocks = [];
   bool collisionActive = true;
 
   @override
   FutureOr<void> onLoad() {
+    moveSpeed = 100;
     _loadAllAnimations();
     add(RectangleHitbox());
     return super.onLoad();
@@ -41,6 +42,12 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
       _checkCollisions();
     }
     super.update(dt);
+  }
+
+  void changeCharacter(String name){
+    character = name;
+    _loadAllAnimations();
+    add(RectangleHitbox());
   }
 
   void _loadAllAnimations() {

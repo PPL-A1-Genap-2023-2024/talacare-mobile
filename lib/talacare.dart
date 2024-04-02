@@ -15,12 +15,13 @@ import 'helpers/dialog_reason.dart';
 enum GameStatus {playing, victory, transition}
 
 class TalaCare extends FlameGame with HasCollisionDetection {
+  String playedCharacter;
+  Player player = Player(character: 'boy');
   late CameraComponent camOne;
   late HouseAdventure gameOne;
   late int currentGame;
   late CameraComponent transitionCam;
   late Timer transitionCountdown;
-  late Player player;
   late int playerHealth;
   GameStatus status = GameStatus.playing;
   late GameDialog confirmation;
@@ -33,13 +34,10 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   bool confirmationIsActive = false;
   
   final bool isWidgetTesting;
-  TalaCare({this.isWidgetTesting = false});
-
-
+  TalaCare({this.isWidgetTesting = false, this.playedCharacter = 'boy'});
 
   @override
   void update(double dt) {
-    // TODO: implement update
     if (status==GameStatus.transition) {
       transitionCountdown.update(dt);
     }
@@ -54,6 +52,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
       status = GameStatus.playing;
       await images.loadAllImages();
       player = Player(character: 'Adam');
+      checkingPlayedCharacter();
       currentGame = 1;
       world = gameOne = HouseAdventure(player: player, levelName: 'Level-01');
       camera = camOne = CameraComponent(world: gameOne);
@@ -64,7 +63,6 @@ class TalaCare extends FlameGame with HasCollisionDetection {
 
 
   void switchGame({reason=DialogReason.enterHospital}) {
-
     removeAll([camera, world]);
 
     final transition = GameTransition(player: player, reason: reason);
@@ -75,7 +73,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
       removeAll([transitionCam, transition]);
       status = GameStatus.playing;
       player.angle = 0;
-      player.scale=Vector2.all(1);
+      player.scale = Vector2.all(1);
       player.moveSpeed = 100;
       player.x = gameOne.hospitalDoor.x;
       player.y = gameOne.hospitalDoor.y + 50;
@@ -83,7 +81,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
       playerHealth = 4;
       player.collisionActive = true;
 
-      switch(currentGame) {
+      switch (currentGame) {
         case 1:
           world = gameOne;
           camera = camOne;
@@ -92,10 +90,15 @@ class TalaCare extends FlameGame with HasCollisionDetection {
           camera = CameraComponent(world: world);
       }
       addAll([camera, world]);
-
     });
+  }
 
 
+
+  void checkingPlayedCharacter(){
+    if (player.character != playedCharacter){
+      player = Player(character: playedCharacter);
+    }
   }
 
   void changeDirection(Direction direction) {
@@ -144,7 +147,6 @@ class TalaCare extends FlameGame with HasCollisionDetection {
 
 
   void goToHospital(reason) {
-
     removeConfirmation();
     currentGame = 2;
     switchGame(reason: reason);
@@ -154,7 +156,6 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     removeConfirmation();
     player.y = player.y + 50;
   }
-
 
   void exitHospital() {
     currentGame = 1;

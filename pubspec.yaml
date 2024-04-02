@@ -37,6 +37,7 @@ dependencies:
   flame: ^1.16.0
   flame_tiled: ^1.19.0
   flame_test: ^1.16.0
+  carousel_slider: ^4.2.1
   firebase_auth: ^4.17.9
   firebase_core: ^2.27.1
   google_sign_in: ^6.2.1
@@ -71,10 +72,12 @@ flutter:
     - assets/images/Overlays/
     - assets/images/Activity_Points/
     - assets/images/Activity_Events/
+    - assets/images/Illustrations/
     - assets/images/Hospital/
     - assets/images/Serene_Village/16x16_original/
     - assets/images/Dialog/
     - assets/images/Game_2/
+    - assets/images/Button/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
