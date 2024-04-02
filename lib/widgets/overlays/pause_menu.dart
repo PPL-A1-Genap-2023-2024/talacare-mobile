@@ -14,6 +14,20 @@ class PauseMenu extends StatelessWidget {
     return _resumeButtonKey;
   }
 
+  void backToHomePage(){
+    print("back to homepage");
+    gameRef.overlays.add(HomePage.id);
+    gameRef.overlays.remove('PauseMenu');
+    gameRef.removeAll([gameRef.camera, gameRef.world]);
+    gameRef.world = gameRef.gameOne;
+    gameRef.player.changeCharacter('boy');
+    gameRef.camera = gameRef.camOne;
+    gameRef.addAll([gameRef.camera, gameRef.world]);
+    gameRef.player.onLoad();
+    gameRef.currentGame = 1;
+    print(gameRef.player.character);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -35,7 +49,7 @@ class PauseMenu extends StatelessWidget {
                     const Padding(
                         padding: EdgeInsets.only(top: 25, bottom: 25),
                         child: Text(
-                          'Game is Paused',
+                          'Game dijeda',
                           style: TextStyle(
                             fontSize: 30.0,
                             color: Colors.black,
@@ -61,14 +75,11 @@ class PauseMenu extends StatelessWidget {
                                 splashColor: Colors.white,
                                 icon: const Icon(Icons.house),
                                 onPressed: () {
-                                  gameRef.overlays.remove(PauseMenu.id);
-                                  gameRef.overlays.add(HomePage.id);
-                                  gameRef.pauseEngine();
-                                  gameRef.onLoad();
+                                  backToHomePage();
                                 },
                               ),
                               const Text(
-                                'Exit',
+                                'Keluar',
                                 style: TextStyle(
                                     fontSize: 15, color: Colors.black),
                               ),
@@ -91,7 +102,7 @@ class PauseMenu extends StatelessWidget {
                                 },
                               ),
                               const Text(
-                                'Continue',
+                                'Lanjut',
                                 style: TextStyle(
                                     fontSize: 15, color: Colors.black),
                               ),

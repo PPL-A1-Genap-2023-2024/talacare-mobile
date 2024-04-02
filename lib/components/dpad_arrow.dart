@@ -7,7 +7,7 @@ import '../helpers/directions.dart';
 
 class DPadArrow extends SpriteGroupComponent<ArrowState> with TapCallbacks, HasGameRef<TalaCare> {
   Direction arrowDirection;
-
+  bool isActive = true;
   DPadArrow({required this.arrowDirection});
 
 
@@ -33,7 +33,9 @@ class DPadArrow extends SpriteGroupComponent<ArrowState> with TapCallbacks, HasG
   @override
   void onTapDown(TapDownEvent event) {
     // Do something in response to a tap event
-    current = ArrowState.pressed;
-    game.changeDirection(arrowDirection);
+    if (isActive) {
+      current = ArrowState.pressed;
+      game.changeDirection(arrowDirection);
+    }
   }
 }

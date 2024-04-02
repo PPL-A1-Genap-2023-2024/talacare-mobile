@@ -20,7 +20,7 @@ void main() {
       TalaCare.new,
           (game) async {
         await game.ready();
-        expect(game.cam.viewport.children.any((element) => element is Hud), isTrue);
+        expect(game.camera.viewport.children.any((element) => element is Hud), isTrue);
       }
   );
 
@@ -30,7 +30,7 @@ void main() {
         TalaCare.new,
             (game) async {
           await game.ready();
-          Hud target = game.cam.viewport.children.query<Hud>().first;
+          Hud target = game.camera.viewport.children.query<Hud>().first;
           expect(target.children.query<HealthComponent>().length, game.playerHealth);
         }
     );
@@ -42,7 +42,7 @@ void main() {
         TalaCare.new,
             (game) async {
           await game.ready();
-          Hud target = game.cam.viewport.children.query<Hud>().first;
+          Hud target = game.camera.viewport.children.query<Hud>().first;
           expect(target.healthDurationChecker, isNotNull);
           expect(target.timerStarted, isTrue);
           expect(target.countDown.limit,  1);
@@ -54,7 +54,7 @@ void main() {
         TalaCare.new,
             (game) async {
           await game.ready();
-          Hud target = game.cam.viewport.children.query<Hud>().first;
+          Hud target = game.camera.viewport.children.query<Hud>().first;
           final initHealthDurationChecker = target.healthDurationChecker;
 
           // Do 1 tick
@@ -69,7 +69,7 @@ void main() {
         TalaCare.new,
             (game) async {
           await game.ready();
-          Hud target = game.cam.viewport.children.query<Hud>().first;
+          Hud target = game.camera.viewport.children.query<Hud>().first;
           final initHealthDurationChecker = target.healthDurationChecker;
 
           target.update(target.healthDuration.toDouble());
@@ -78,11 +78,31 @@ void main() {
     );
 
     testWithGame<TalaCare>(
+        'HealthComponent becomes unavailable after 1 duration of healthDuration',
+        TalaCare.new,
+            (game) async {
+          await game.ready();
+          final initHealth = game.playerHealth;
+          Hud target = game.camera.viewport.children.query<Hud>().first;
+          List<HealthComponent> healthList = target.children.query<HealthComponent>();
+
+          game.update(target.healthDuration.toDouble());
+          for (HealthComponent health in healthList) {
+            if (health.heartNumber == initHealth) {
+              expect(health.current, HeartState.unavailable);
+            } else {
+              expect(health.current, HeartState.available);
+            }
+          }
+        }
+    );
+
+    testWithGame<TalaCare>(
         'Health Timer stop when 1 health remaining',
         TalaCare.new,
             (game) async {
           await game.ready();
-          Hud target = game.cam.viewport.children.query<Hud>().first;
+          Hud target = game.camera.viewport.children.query<Hud>().first;
           final initHealth = game.playerHealth;
 
           // Left the Player with 1 health
@@ -108,7 +128,7 @@ void main() {
         TalaCare.new,
             (game) async {
           await game.ready();
-          Hud target = game.cam.viewport.children.query<Hud>().first;
+          Hud target = game.camera.viewport.children.query<Hud>().first;
           final initHealth = game.playerHealth;
           final initPlayerMoveSpeed = game.player.moveSpeed;
           target.update(target.healthDuration.toDouble());
@@ -122,7 +142,7 @@ void main() {
         TalaCare.new,
             (game) async {
           await game.ready();
-          Hud target = game.cam.viewport.children.query<Hud>().first;
+          Hud target = game.camera.viewport.children.query<Hud>().first;
           final initHealth = game.playerHealth;
 
           for (int i = 1; i <= initHealth; i++) {

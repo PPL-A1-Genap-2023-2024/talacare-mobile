@@ -69,23 +69,5 @@ void main() {
       await tester.pump();
       expect(myGame.player.character, 'boy');
     });
-    testWidgets('Check Character Selection', (tester) async {
-      tester.view.physicalSize = const Size(1080, 1920);
-      tester.view.devicePixelRatio = 1.0;
-      final myGame = TalaCare(isWidgetTesting: true);
-      final homePage = HomePage(gameRef: myGame);
-      final pauseButton = PauseButton(gameRef: myGame);
-      final pauseMenu = PauseMenu(gameRef: myGame);
-      await tester
-          .pumpWidget(GameWidget(game: myGame, initialActiveOverlays: const [
-        HomePage.id
-      ], overlayBuilderMap: {
-        HomePage.id: (BuildContext context, TalaCare myGame) => homePage,
-        PauseButton.id: (BuildContext context, TalaCare myGame) => pauseButton,
-        PauseMenu.id: (BuildContext context, TalaCare myGame) => pauseMenu
-      }));
-      await tester.pump();
-
-    });
   });
 }

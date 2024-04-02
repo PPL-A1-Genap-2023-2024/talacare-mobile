@@ -1,0 +1,1 @@
+enum DialogReason { lowBlood, enterHospital, gameVictory }
