@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:talacare/helpers/playableCharacters.dart';
 import 'package:talacare/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:talacare/authentication/screens/login_page.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'HomePage';
@@ -33,6 +35,11 @@ class _HomePageState extends State<HomePage> {
 
   String currentCharacter = 'boy';
 
+  Future<void> logout() async {
+    final GoogleSignIn googleSign = GoogleSignIn();
+    await googleSign.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -53,7 +60,15 @@ class _HomePageState extends State<HomePage> {
               IconButton(
                 icon: Image.asset("assets/images/Button/LogoutButton.png"),
                 iconSize: 50,
-                onPressed: () => (),
+                onPressed: () async {
+                  await logout();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context){
+                        return LoginPage();
+                      })
+                  );
+                },
               ),
               IconButton(
                 icon: Image.asset("assets/images/Button/SettingButton.png"),

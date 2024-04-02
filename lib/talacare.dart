@@ -73,7 +73,6 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   }
 
   void checkingPlayedCharacter(){
-    print("playedCharacter: ${playedCharacter}");
     if (player.character != playedCharacter){
       player = Player(character: playedCharacter);
     }
