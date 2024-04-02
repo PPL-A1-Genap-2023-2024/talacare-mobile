@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/draggable_item.dart';
 import 'package:talacare/components/game_2.dart';
 import 'package:talacare/components/silhouette_item.dart';
-import 'package:talacare/helpers/hospital_reason.dart';
+import 'package:talacare/helpers/dialog_reason.dart';
 import 'package:flame/extensions.dart';
 import 'package:talacare/talacare.dart';
 
@@ -19,7 +19,7 @@ void main() {
         TalaCare.new, (game) async {
       await game.ready();
       game.currentGame = 2;
-      game.switchGame(reason: HospitalReason.playerEnter);
+      game.switchGame(reason: DialogReason.enterHospital);
       await game.ready();
       final world = game.children.query<HospitalPuzzle>().first;
       List<int> draggableIndices = world.draggableContainer.indicesDisplayed;
@@ -38,7 +38,7 @@ void main() {
         (game) async {
       await game.ready();
       game.currentGame = 2;
-      game.switchGame(reason: HospitalReason.playerEnter);
+      game.switchGame(reason: DialogReason.enterHospital);
       await game.ready();
       final world = game.children.query<HospitalPuzzle>().first;
       List<int> draggableIndices = world.draggableContainer.indicesDisplayed;
@@ -61,7 +61,7 @@ void main() {
         TalaCare.new, (game) async {
       await game.ready();
       game.currentGame = 2;
-      game.switchGame(reason: HospitalReason.playerEnter);
+      game.switchGame(reason: DialogReason.enterHospital);
       await game.ready();
       final world = game.children.query<HospitalPuzzle>().first;
       List<int> draggableIndices = world.draggableContainer.indicesDisplayed;
@@ -87,7 +87,7 @@ void main() {
         TalaCare.new, (game) async {
       await game.ready();
       game.currentGame = 2;
-      game.switchGame(reason: HospitalReason.playerEnter);
+      game.switchGame(reason: DialogReason.enterHospital);
       await game.ready();
       final world = game.children.query<HospitalPuzzle>().first;
       List<int> draggableIndices = world.draggableContainer.indicesDisplayed;
