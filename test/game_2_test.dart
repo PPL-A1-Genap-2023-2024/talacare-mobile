@@ -1,13 +1,10 @@
 import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/game_2.dart';
 import 'package:talacare/components/hospital_door.dart';
-import 'package:talacare/components/hud/hud.dart';
 import 'package:talacare/components/game_1.dart';
 import 'package:talacare/components/point.dart';
-import 'package:talacare/helpers/directions.dart';
 import 'package:talacare/helpers/hospital_reason.dart';
 import 'package:talacare/talacare.dart';
 
