@@ -36,16 +36,16 @@ class DraggableContainer extends RectangleComponent with HasGameRef<TalaCare> {
     int bedFactor = 0;
     for (int i = 0; i <= 2; i++) {
       int index = indicesDisplayed[i];
+      if (index == 2) {
+        bedFactor++;
+      }
       DraggableItem item = DraggableItem(
         item: Item.values[index],
         position: Vector2(size.x * (i + 1 + bedFactor) / 6, size.y / 2),
       );
+      add(item);
       if (index == 2) {
         bedFactor++;
-        add(item);
-        bedFactor++;
-      } else {
-        add(item);
       }
     }
   }
