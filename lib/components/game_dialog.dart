@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:flame/layout.dart';
-import 'package:flame/palette.dart';
 import 'package:flame/text.dart';
 import 'package:talacare/talacare.dart';
 
