@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:talacare/models/schedule.dart';
 import 'package:talacare/reminder.dart';
@@ -54,11 +56,23 @@ class ScheduleList extends StatelessWidget {
                             'Content-Type': 'application/x-www-form-urlencoded'
                           },
                         );
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Reminder(httpClient)),
-                        );
+                        final Map<String, dynamic> responseBody =
+                            jsonDecode(response.body);
+                        if (response.statusCode == 200) {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Reminder(httpClient)),
+                          );
+                        }
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content:
+                              Text(responseBody['message']), // Snackbar message
+                          duration: Duration(
+                              seconds:
+                                  2), // Duration for which the Snackbar will be displayed
+                        ));
                       },
                     ),
                   ],
