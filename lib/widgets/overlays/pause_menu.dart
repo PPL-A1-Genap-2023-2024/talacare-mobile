@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:talacare/talacare.dart';
+import 'package:talacare/widgets/homepage.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 
 class PauseMenu extends StatelessWidget {
@@ -34,7 +35,7 @@ class PauseMenu extends StatelessWidget {
                     const Padding(
                         padding: EdgeInsets.only(top: 25, bottom: 25),
                         child: Text(
-                          'Game is Paused',
+                          'Game dijeda',
                           style: TextStyle(
                             fontSize: 30.0,
                             color: Colors.black,
@@ -59,10 +60,17 @@ class PauseMenu extends StatelessWidget {
                                 iconSize: 60,
                                 splashColor: Colors.white,
                                 icon: const Icon(Icons.house),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context){
+                                        return HomePage();
+                                      })
+                                  );
+                                },
                               ),
                               const Text(
-                                'Exit',
+                                'Keluar',
                                 style: TextStyle(
                                     fontSize: 15, color: Colors.black),
                               ),
@@ -85,7 +93,7 @@ class PauseMenu extends StatelessWidget {
                                 },
                               ),
                               const Text(
-                                'Continue',
+                                'Lanjut',
                                 style: TextStyle(
                                     fontSize: 15, color: Colors.black),
                               ),

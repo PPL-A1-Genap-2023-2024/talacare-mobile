@@ -1,0 +1,1 @@
+enum PlayableCharacters { boy, girl }

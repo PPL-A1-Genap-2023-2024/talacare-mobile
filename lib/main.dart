@@ -3,12 +3,13 @@ import 'package:flame/flame.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
+import 'package:talacare/authentication/screens/login_page.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 import 'package:talacare/widgets/overlays/pause_menu.dart';
+import 'package:talacare/widgets/homepage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'authentication/firebase_options.dart';
-import 'authentication/screens/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'TalaCare',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -44,7 +46,7 @@ class AuthenticationWrapper extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
         } else if (snapshot.hasData && snapshot.data != null) {
-          return TalaCareGame();
+          return HomePage();
         } else {
           return LoginPage();
         }
@@ -54,11 +56,15 @@ class AuthenticationWrapper extends StatelessWidget {
 }
 
 class TalaCareGame extends StatelessWidget {
+  final String playedCharacter;
+  TalaCareGame({required this.playedCharacter});
+
   @override
   Widget build(BuildContext context) {
-    final game = TalaCare();
+    final game = TalaCare(playedCharacter: playedCharacter);
+
     return GameWidget(
-      game: kDebugMode ? TalaCare() : game,
+      game: kDebugMode ? TalaCare(playedCharacter: playedCharacter) : game,
       initialActiveOverlays: const [
         PauseButton.id
       ],

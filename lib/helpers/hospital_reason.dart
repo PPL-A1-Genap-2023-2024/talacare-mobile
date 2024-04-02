@@ -1,1 +1,0 @@
-enum HospitalReason { lowBlood, playerEnter }

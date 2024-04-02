@@ -5,7 +5,7 @@ import 'package:talacare/components/game_2.dart';
 import 'package:talacare/components/hospital_door.dart';
 import 'package:talacare/components/game_1.dart';
 import 'package:talacare/components/point.dart';
-import 'package:talacare/helpers/hospital_reason.dart';
+import 'package:talacare/helpers/dialog_reason.dart';
 import 'package:talacare/talacare.dart';
 
 void main() {
@@ -22,11 +22,11 @@ void main() {
           door.onCollision({Vector2(0.0,0.0), Vector2(0.0,0.0)}, player);
           await game.ready();
           final confirmation = game.confirmation;
-          expect(confirmation.reason, HospitalReason.playerEnter);
+          expect(confirmation.reason, DialogReason.enterHospital);
           confirmation.yesButton.onTapDown(createTapDownEvents(game: game));
           confirmation.yesButton.onTapUp(createTapUpEvents(game: game));
           final initialLevel = game.currentGame;
-
+          game.update(5);
           await game.ready();
           final game_2 = game.children.query<HospitalPuzzle>().first;
           game_2.finishGame();
@@ -53,9 +53,10 @@ void main() {
           door.onCollision({Vector2(0.0,0.0), Vector2(0.0,0.0)}, player);
           await game.ready();
           final confirmation = game.confirmation;
-          expect(confirmation.reason, HospitalReason.playerEnter);
+          expect(confirmation.reason, DialogReason.enterHospital);
           confirmation.yesButton.onTapDown(createTapDownEvents(game: game));
           confirmation.yesButton.onTapUp(createTapUpEvents(game: game));
+          game.update(5);
           await game.ready();
           final game_2 = game.children.query<HospitalPuzzle>().first;
           game_2.finishGame();
