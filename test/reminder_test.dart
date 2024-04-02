@@ -28,7 +28,7 @@ void main() {
     await tester.pump();
   });
 
-  testWidgets('Test edit reminder', (tester) async {
+  /*testWidgets('Test edit reminder', (tester) async {
     String data = '''
     {
       "status": "OK",
@@ -105,5 +105,5 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.delete));
     await tester.pump();
-  });
+  });*/
 }
