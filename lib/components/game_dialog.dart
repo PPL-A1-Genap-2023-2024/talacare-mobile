@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:flame/layout.dart';
+import 'package:flame/palette.dart';
+import 'package:flame/text.dart';
 import 'package:talacare/talacare.dart';
 
 import '../helpers/dialog_reason.dart';
@@ -71,6 +74,14 @@ class GameDialog extends SpriteComponent with HasGameRef<TalaCare> {
     }
     final textBox = TextBoxComponent(text:text);
     textBox.align = Anchor.center;
+    textBox.textRenderer = TextPaint(
+      style: TextStyle(
+        color: Color.fromARGB(255, 114,83,113),
+        fontSize: 23,
+        fontWeight: FontWeight.bold
+      ),
+    );
+
     add(AlignComponent(
       child: textBox,
       alignment: Anchor.topCenter
