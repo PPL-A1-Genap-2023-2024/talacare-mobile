@@ -54,6 +54,7 @@ class GameDialog extends SpriteComponent with HasGameRef<TalaCare> {
         text = 'Kamu Menang!';
 
         yesButton = await _loadSpriteButton('replay');
+        yesButton.onPressed = gameRef.playAgain;
         yesButton.anchor = Anchor.centerRight;
         buttons.add(AlignComponent(
             child: yesButton,

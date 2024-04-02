@@ -12,20 +12,19 @@ import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 
 import 'helpers/dialog_reason.dart';
-enum GameStatus {playing, paused, victory, transition}
+enum GameStatus {playing, victory, transition}
 
 class TalaCare extends FlameGame with HasCollisionDetection {
-  late final CameraComponent camOne;
+  late CameraComponent camOne;
   late HouseAdventure gameOne;
   late int currentGame;
   late CameraComponent transitionCam;
   late Timer transitionCountdown;
-  Player player = Player(character: 'Adam');
-  int playerHealth = 4;
+  late Player player;
+  late int playerHealth;
   GameStatus status = GameStatus.playing;
-
   late GameDialog confirmation;
-  int score = 0;
+  late int score;
   @override
   late World world;
   late AlignComponent eventAnchor;
@@ -50,7 +49,11 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   @override
   FutureOr<void> onLoad() async {
     if (!isWidgetTesting) {
+      playerHealth = 4;
+      score = 0;
+      status = GameStatus.playing;
       await images.loadAllImages();
+      player = Player(character: 'Adam');
       currentGame = 1;
       world = gameOne = HouseAdventure(player: player, levelName: 'Level-01');
       camera = camOne = CameraComponent(world: gameOne);
@@ -59,16 +62,6 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     return super.onLoad();
   }
 
-  @override
-  void pauseEngine() {
-    status = GameStatus.paused;
-    super.pauseEngine();
-  }
-
-  @override void resumeEngine() {
-    status = GameStatus.playing;
-    super.resumeEngine();
-  }
 
   void switchGame({reason=DialogReason.enterHospital}) {
 
@@ -170,6 +163,12 @@ class TalaCare extends FlameGame with HasCollisionDetection {
 
   void victory() {
     status = GameStatus.victory;
-    showConfirmation(DialogReason.gameVictory);
+    if (!eventIsActive) {
+      showConfirmation(DialogReason.gameVictory);
+    }
+  }
+
+  void playAgain() {
+
   }
 }
