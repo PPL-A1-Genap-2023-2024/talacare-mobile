@@ -12,7 +12,7 @@ void main() {
       tester.view.physicalSize = const Size(1080, 1920);
       tester.view.devicePixelRatio = 1.0;
       final myGame = TalaCare(isWidgetTesting: true);
-      final homePage = HomePage(gameRef: myGame);
+      final homePage = HomePage();
       await tester
           .pumpWidget(GameWidget(game: myGame, initialActiveOverlays: const [
         HomePage.id
@@ -28,7 +28,7 @@ void main() {
       tester.view.physicalSize = const Size(1080, 1920);
       tester.view.devicePixelRatio = 1.0;
       final myGame = TalaCare(isWidgetTesting: true);
-      final homePage = HomePage(gameRef: myGame);
+      final homePage = HomePage();
       final GlobalKey playButtonKey = homePage.getPlayButtonKey();
       final pauseButton = PauseButton(gameRef: myGame);
       final pauseMenu = PauseMenu(gameRef: myGame);
@@ -55,7 +55,7 @@ void main() {
       tester.view.physicalSize = const Size(1080, 1920);
       tester.view.devicePixelRatio = 1.0;
       final myGame = TalaCare(isWidgetTesting: true);
-      final homePage = HomePage(gameRef: myGame);
+      final homePage = HomePage();
       final pauseButton = PauseButton(gameRef: myGame);
       final pauseMenu = PauseMenu(gameRef: myGame);
       await tester

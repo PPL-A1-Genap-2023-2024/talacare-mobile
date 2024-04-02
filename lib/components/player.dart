@@ -14,8 +14,8 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
   String character;
   Player({super.position, required this.character});
 
-  late final SpriteAnimation idleAnimation;
-  late final SpriteAnimation runningAnimation;
+  late SpriteAnimation idleAnimation;
+  late SpriteAnimation runningAnimation;
   Vector2 initialSpawn = Vector2(0,0);
   final double stepTime = 0.1;
   double horizontalMovement = 0;

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:talacare/helpers/playableCharacters.dart';
-import 'package:talacare/talacare.dart';
-import 'package:talacare/widgets/overlays/pause_button.dart';
+import 'package:talacare/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'HomePage';
-  final TalaCare gameRef;
-  HomePage({super.key, required this.gameRef});
+  HomePage({super.key});
 
   final GlobalKey _playButtonKey = GlobalKey();
   final GlobalKey _settingsButtonKey = GlobalKey();
@@ -21,13 +19,12 @@ class HomePage extends StatefulWidget {
   }
 
   @override
-  State<HomePage> createState() => _HomePageState(playButtonKey: _playButtonKey, gameRef: gameRef);
+  State<HomePage> createState() => _HomePageState(playButtonKey: _playButtonKey);
 }
 
 class _HomePageState extends State<HomePage> {
-  final TalaCare gameRef;
   final GlobalKey playButtonKey;
-  _HomePageState({required this.playButtonKey, required this.gameRef});
+  _HomePageState({required this.playButtonKey});
 
   List<Image> characterSelection = [
     Image.asset("assets/images/Characters_free/boy.png"),
@@ -36,15 +33,8 @@ class _HomePageState extends State<HomePage> {
 
   String currentCharacter = 'boy';
 
-  void PlayGame(){
-    gameRef.overlays.remove('HomePage');
-    gameRef.overlays.add(PauseButton.id);
-    gameRef.resumeEngine();
-  }
-
   @override
   Widget build(BuildContext context) {
-    gameRef.pauseEngine();
     double screenHeight = MediaQuery.of(context).size.height;
 
     return MaterialApp(
@@ -84,8 +74,6 @@ class _HomePageState extends State<HomePage> {
                     onPageChanged: (index, reason) {
                       setState(() {
                         currentCharacter = PlayableCharacters.values[index].name;
-                        gameRef.player.changeCharacter(currentCharacter);
-                        gameRef.player.onLoad();
                       });
                     },
                   )
@@ -97,7 +85,14 @@ class _HomePageState extends State<HomePage> {
                 key: playButtonKey,
                 icon: Image.asset("assets/images/Button/PlayButton.png"),
                 iconSize: 50,
-                onPressed: () => PlayGame(),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context){
+                      return TalaCareGame(playedCharacter: currentCharacter);
+                    })
+                  );
+                },
               )
             ],
           ),

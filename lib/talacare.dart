@@ -16,6 +16,7 @@ enum GameStatus {playing, paused, victory, transition}
 
 class TalaCare extends FlameGame with HasCollisionDetection {
   late final CameraComponent cam;
+  String playedCharacter;
   Player player = Player(character: 'boy');
   late CameraComponent camOne;
   late HouseAdventure gameOne;
@@ -35,7 +36,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   bool confirmationIsActive = false;
   
   final bool isWidgetTesting;
-  TalaCare({this.isWidgetTesting = false});
+  TalaCare({this.isWidgetTesting = false, this.playedCharacter = 'boy'});
 
   @override
   void update(double dt) {
@@ -50,6 +51,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     if (!isWidgetTesting) {
       playerHealth = 4;
       await images.loadAllImages();
+      checkingPlayedCharacter();
       gameOne = HouseAdventure(player: player, levelName: 'Level-01');
       camOne = CameraComponent(world: gameOne);
       currentGame = 1;
@@ -70,15 +72,12 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     super.resumeEngine();
   }
 
-  // void restartEngine() {
-  //   removeAll([camera, world]);
-  //   world = gameOne;
-  //   player.changeCharacter('boy');
-  //   player.onLoad();
-  //   camera = camOne;
-  //   addAll([camera, world]);
-  //   currentGame = 1;
-  // }
+  void checkingPlayedCharacter(){
+    print("playedCharacter: ${playedCharacter}");
+    if (player.character != playedCharacter){
+      player = Player(character: playedCharacter);
+    }
+  }
 
   void switchGame({reason=DialogReason.enterHospital, firstLoad=false}) {
     if (!firstLoad) {
