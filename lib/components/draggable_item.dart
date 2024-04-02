@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart';
 import 'package:talacare/components/game_2.dart';
 import 'package:talacare/helpers/item.dart';
 import 'package:talacare/talacare.dart';
@@ -24,25 +23,23 @@ class DraggableItem extends SpriteComponent
     initialPosition = position;
     sprite = Sprite(game.images.fromCache('Game_2/item_${item.name}.png'));
     add(RectangleHitbox());
+    initialPosition = Vector2(position.x, position.y);
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    debugColor = isDragged ? Colors.greenAccent : Colors.purple;
   }
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
     position += event.localDelta;
-    print(position);
   }
 
   @override
   void onDragStart(DragStartEvent event) {
     super.onDragStart(event);
-    initialPosition = Vector2(position.x, position.y);
   }
 
   @override

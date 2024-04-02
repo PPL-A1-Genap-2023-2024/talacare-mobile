@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/draggable_item.dart';
 import 'package:talacare/components/game_2.dart';
+import 'package:talacare/components/silhouette_item.dart';
 import 'package:talacare/helpers/hospital_reason.dart';
 import 'package:flame/extensions.dart';
 import 'package:talacare/talacare.dart';
@@ -25,11 +26,11 @@ void main() {
       List<DraggableItem> draggableItems =
           world.draggableContainer.children.query<DraggableItem>();
       int matchingDraggableIndex = draggableIndices.indexOf(0);
-      DraggableItem firstItem = draggableItems[matchingDraggableIndex];
+      DraggableItem draggableItem = draggableItems[matchingDraggableIndex];
       Vector2 newPosition = Vector2(1000, 1000);
-      firstItem.onDragStart(createDragStartEvents(game: game));
-      firstItem.position.setFrom(newPosition);
-      expect(firstItem.position, newPosition);
+      draggableItem.onDragStart(createDragStartEvents(game: game));
+      draggableItem.position.setFrom(newPosition);
+      expect(draggableItem.position, newPosition);
     });
 
     testWithGame<TalaCare>(
@@ -44,57 +45,67 @@ void main() {
       List<DraggableItem> draggableItems =
           world.draggableContainer.children.query<DraggableItem>();
       int matchingDraggableIndex = draggableIndices.indexOf(0);
-      DraggableItem firstItem = draggableItems[matchingDraggableIndex];
+      DraggableItem draggableItem = draggableItems[matchingDraggableIndex];
       Vector2 initialPosition =
-          Vector2(firstItem.position.x, firstItem.position.y);
+          Vector2(draggableItem.position.x, draggableItem.position.y);
       Vector2 newPosition = Vector2(0, 0);
-      firstItem.onDragStart(createDragStartEvents(game: game));
-      firstItem.position.setFrom(newPosition);
-      firstItem.onDragEnd(DragEndEvent(1, DragEndDetails()));
+      draggableItem.onDragStart(createDragStartEvents(game: game));
+      draggableItem.position.setFrom(newPosition);
+      draggableItem.onDragEnd(DragEndEvent(1, DragEndDetails()));
       await Future.delayed(Duration(milliseconds: 100));
-      expect(firstItem.position, initialPosition);
+      expect(draggableItem.position, initialPosition);
     });
 
-    // testWithGame<DragCallbacksExample>(
-    //     'Dragging and releasing object on the objective and in right sequence',
-    //     DragCallbacksExample.new, (game) async {
-    //   await game.ready();
-    //   DraggableObject syringe = game.syringe1;
-    //   syringe.onDragStart(createDragStartEvents(game: game));
-    //   syringe.position.setFrom(syringe.target);
-    //   syringe.onDragEnd(DragEndEvent(1, DragEndDetails()));
+    testWithGame<TalaCare>(
+        'Dragging and releasing object on the objective and in right sequence',
+        TalaCare.new, (game) async {
+      await game.ready();
+      game.currentGame = 2;
+      game.switchGame(reason: HospitalReason.playerEnter);
+      await game.ready();
+      final world = game.children.query<HospitalPuzzle>().first;
+      List<int> draggableIndices = world.draggableContainer.indicesDisplayed;
+      List<DraggableItem> draggableItems =
+          world.draggableContainer.children.query<DraggableItem>();
+      int matchingDraggableIndex = draggableIndices.indexOf(0);
+      DraggableItem draggableItem = draggableItems[matchingDraggableIndex];
+      List<SilhouetteItem> silhouetteItems =
+          world.silhouetteContainer.children.query<SilhouetteItem>();
+      SilhouetteItem silhouetteItem =
+          silhouetteItems[world.silhouetteContainer.currentIndex];
+      Vector2 newPosition = Vector2(silhouetteItem.x, silhouetteItem.y);
+      draggableItem.onDragStart(createDragStartEvents(game: game));
+      draggableItem.position.setFrom(newPosition);
+      draggableItem.onDragEnd(DragEndEvent(1, DragEndDetails()));
+      silhouetteItem.onCollision({newPosition}, draggableItem);
+      expect(world.score, 1);
+      expect(world.instruction.text, "Sudah Cocok. Lanjutkan!");
+    });
 
-    //   expect(syringe.position, syringe.target);
-    //   expect(syringe.isActive, false);
-    //   expect(game.itemIndex, 1);
-    // });
-
-    // testWithGame<DragCallbacksExample>(
-    //     'Dragging and releasing object on the objective but not in right sequence',
-    //     DragCallbacksExample.new, (game) async {
-    //   await game.ready();
-    //   DraggableObject syringe = game.syringe2;
-    //   Vector2 initialPosition = Vector2(syringe.x, syringe.y);
-    //   syringe.onDragStart(createDragStartEvents(game: game));
-    //   syringe.position.setFrom(syringe.target);
-    //   syringe.onDragEnd(DragEndEvent(1, DragEndDetails()));
-
-    //   expect(syringe.position, initialPosition);
-    //   expect(syringe.isActive, true);
-    //   expect(game.itemIndex, 0);
-    // });
-
-    // testWithGame<DragCallbacksExample>(
-    //     'Dragging a completed objective', DragCallbacksExample.new,
-    //     (game) async {
-    //   await game.ready();
-    //   DraggableObject syringe = game.syringe1;
-    //   syringe.onDragStart(createDragStartEvents(game: game));
-    //   syringe.position.setFrom(syringe.target);
-    //   syringe.onDragEnd(DragEndEvent(1, DragEndDetails()));
-    //   syringe.onDragStart(createDragStartEvents(game: game));
-
-    //   expect(syringe.isDragged, false);
-    // });
+    testWithGame<TalaCare>(
+        'Dragging and releasing object on the objective but not in right sequence',
+        TalaCare.new, (game) async {
+      await game.ready();
+      game.currentGame = 2;
+      game.switchGame(reason: HospitalReason.playerEnter);
+      await game.ready();
+      final world = game.children.query<HospitalPuzzle>().first;
+      List<int> draggableIndices = world.draggableContainer.indicesDisplayed;
+      List<DraggableItem> draggableItems =
+          world.draggableContainer.children.query<DraggableItem>();
+      int matchingDraggableIndex = draggableIndices.indexOf(1);
+      DraggableItem draggableItem = draggableItems[matchingDraggableIndex];
+      List<SilhouetteItem> silhouetteItems =
+          world.silhouetteContainer.children.query<SilhouetteItem>();
+      SilhouetteItem silhouetteItem =
+          silhouetteItems[world.silhouetteContainer.currentIndex];
+      Vector2 newPosition = Vector2(silhouetteItem.x, silhouetteItem.y);
+      draggableItem.onDragStart(createDragStartEvents(game: game));
+      draggableItem.position.setFrom(newPosition);
+      draggableItem.onDragEnd(DragEndEvent(1, DragEndDetails()));
+      silhouetteItem.onCollision({newPosition}, draggableItem);
+      expect(world.score, 0);
+      expect(world.instruction.text, "Belum Cocok. Ayo Coba Lagi!");
+    });
   });
 }
