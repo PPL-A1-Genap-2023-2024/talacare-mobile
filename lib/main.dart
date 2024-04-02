@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/reminder.dart';
 import 'package:talacare/talacare.dart';
+import 'package:http/http.dart' as http;
 import 'package:talacare/widgets/overlays/pause_button.dart';
 import 'package:talacare/widgets/overlays/pause_menu.dart';
 
@@ -33,8 +34,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: ReminderForm(),
+    return MaterialApp(
+      home: Reminder(http.Client()),
     );
   }
 }

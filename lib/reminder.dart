@@ -1,56 +1,55 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:talacare/models/schedule.dart';
+import 'package:talacare/reminder_create.dart';
+import 'package:talacare/reminder_schedule.dart';
 
-class ReminderForm extends StatefulWidget {
-  const ReminderForm({super.key});
+Future<List<Schedule>> fetchSchedule(http.Client httpClient) async {
+  final response = await httpClient.get(
+    Uri.parse('http://localhost:8000/reminder/show'),
+    headers: {"Content-Type": "application/json"},
+  );
 
-  @override
-  State<ReminderForm> createState() => ReminderFormState();
+  if (response.statusCode == 200) {
+    final jsonData = jsonDecode(response.body);
+    final List<dynamic> scheduleJsonList = jsonData['schedule'];
+
+    final List<Schedule> scheduleList = scheduleJsonList
+        .map((scheduleJson) => Schedule.fromJson(scheduleJson))
+        .toList();
+
+    return scheduleList;
+  } else {
+    throw Exception('Gagal mendapatkan jadwal: ${response.statusCode}');
+  }
 }
 
-class ReminderFormState extends State<ReminderForm> {
-  final _formKey = GlobalKey<FormState>();
-  TimeOfDay schedule = TimeOfDay(hour: 10, minute: 15);
-
-  Future<void> _selectSchedule(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: schedule,
-      initialEntryMode: TimePickerEntryMode.dialOnly,
-    );
-    if (picked != null && picked != schedule) {
-      setState(() {
-        schedule = picked;
-      });
-    }
-  }
+class Reminder extends StatelessWidget {
+  final http.Client httpClient;
+  Reminder(this.httpClient);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Reminder',
-          ),
-        ),
+        title: Text("Reminder Obat"),
       ),
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(schedule.toString()),
-              const SizedBox(
-                height: 20.0,
-              ),
-              ElevatedButton(
-                onPressed: () => _selectSchedule(context),
-                child: const Text('Select time'),
-              ),
-            ],
+      body: Column(
+        children: [
+          Expanded(
+            child: ScheduleList(httpClient),
           ),
-        ),
+          ElevatedButton(
+            onPressed: () => showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return ReminderCreateForm(httpClient: httpClient);
+              },
+            ),
+            child: const Text('Tambahkan Jadwal Baru'),
+          ),
+        ],
       ),
     );
   }
