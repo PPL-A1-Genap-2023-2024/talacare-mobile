@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../widgets/homepage.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -75,6 +77,38 @@ class _LoginPageState extends State<LoginPage> {
                               Padding(padding: EdgeInsets.symmetric(horizontal: 6)),
                               const Text(
                                 'Log in with Google',
+                                style: TextStyle(
+                                  fontSize: 17,
+                                ),
+                              ),
+                            ],
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: BorderSide(color: Colors.grey),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context){
+                                  return HomePage();
+                                })
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Text(
+                                'Masuk tanpa akun',
                                 style: TextStyle(
                                   fontSize: 17,
                                 ),

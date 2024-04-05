@@ -1,9 +1,8 @@
-import 'dart:async';
+ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:talacare/components/collision_block.dart';
-import 'package:talacare/components/game_1.dart';
 import 'package:talacare/components/utils.dart';
 import 'package:talacare/talacare.dart';
 
@@ -11,23 +10,25 @@ import '../helpers/directions.dart';
 
 enum PlayerState { idle, running }
 
-class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, ParentIsA<HouseAdventure> {
+class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, ParentIsA<World> {
   String character;
-  Player({super.position, this.character = 'Adam'});
+  Player({super.position, required this.character});
 
-  late final SpriteAnimation idleAnimation;
-  late final SpriteAnimation runningAnimation;
+  late SpriteAnimation idleAnimation;
+  late SpriteAnimation runningAnimation;
   Vector2 initialSpawn = Vector2(0,0);
   final double stepTime = 0.1;
   double horizontalMovement = 0;
   double verticalMovement = 0;
   Direction direction = Direction.none;
-  double moveSpeed = 100;
+  late double moveSpeed;
   Vector2 velocity = Vector2.zero();
   List<CollisionBlock> collisionBlocks = [];
+  bool collisionActive = true;
 
   @override
   FutureOr<void> onLoad() {
+    moveSpeed = 100;
     _loadAllAnimations();
     add(RectangleHitbox());
     return super.onLoad();
@@ -41,6 +42,12 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
       _checkCollisions();
     }
     super.update(dt);
+  }
+
+  void changeCharacter(String name){
+    character = name;
+    _loadAllAnimations();
+    add(RectangleHitbox());
   }
 
   void _loadAllAnimations() {
@@ -100,57 +107,60 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
   }
 
   void _checkCollisions() {
-    for (final block in collisionBlocks) {
-      if (checkCollision(this, block)) {
-        // Colliding without moving
-        if (velocity.x == 0 && velocity.y == 0) {
-          // Left wall
-          if (block.type == WallTypes.outerLeft){
-            position.x = block.x + block.width;
+    if (collisionActive) {
+      for (final block in collisionBlocks) {
+        if (checkCollision(this, block)) {
+          // Colliding without moving
+          if (velocity.x == 0 && velocity.y == 0) {
+            // Left wall
+            if (block.type == WallTypes.outerLeft){
+              position.x = block.x + block.width;
+            }
+            // Bottom wall
+            else if (block.type == WallTypes.outerBottom) {
+              position.y = block.y - height;
+            }
+            // Right wall
+            else if (block.type == WallTypes.outerRight) {
+              position.x = block.x - width;
+            }
+            // Top wall
+            else if (block.type == WallTypes.outerTop) {
+              position.y = block.y + block.height;
+            }
+            else {
+              // Back to spawn point
+              position = initialSpawn;
+            }
           }
-          // Bottom wall
-          else if (block.type == WallTypes.outerBottom) {
-            position.y = block.y - height;
-          }
-          // Right wall
-          else if (block.type == WallTypes.outerRight) {
+
+          // Colliding while moving right
+          if (velocity.x > 0) {
             position.x = block.x - width;
+            velocity.x = 0;
           }
-          // Top wall
-          else if (block.type == WallTypes.outerTop) {
+          // Colliding while moving left
+          else if (velocity.x < 0) {
+            position.x = block.x + block.width;
+            velocity.x = 0;
+          }
+
+          // Colliding while moving down
+          if (velocity.y > 0) {
+            position.y = block.y - height;
+            velocity.y = 0;
+          }
+          // Colliding while moving up
+          else if (velocity.y < 0) {
+
             position.y = block.y + block.height;
+            velocity.y = 0;
+
           }
-          else {
-            // Back to spawn point
-            position = initialSpawn;
-          }
-        }
-
-        // Colliding while moving right
-        if (velocity.x > 0) {
-          position.x = block.x - width;
-          velocity.x = 0;
-        }
-        // Colliding while moving left
-        else if (velocity.x < 0) {
-          position.x = block.x + block.width;
-          velocity.x = 0;
-        }
-
-        // Colliding while moving down
-        if (velocity.y > 0) {
-          position.y = block.y - height;
-          velocity.y = 0;
-        }
-        // Colliding while moving up
-        else if (velocity.y < 0) {
-
-          position.y = block.y + block.height;
-          velocity.y = 0;
-
         }
       }
     }
+
   }
 
 }

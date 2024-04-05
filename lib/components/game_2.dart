@@ -9,10 +9,8 @@ import 'package:talacare/components/draggable_container.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/silhouette_container.dart';
 import 'package:talacare/talacare.dart';
-import '../helpers/hospital_reason.dart';
 
 class HospitalPuzzle extends World with HasGameRef<TalaCare> {
-  final HospitalReason reason;
   final Player player;
   late final CircleProgress progressBar;
   late final DraggableContainer draggableContainer;
@@ -21,13 +19,13 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
   late final Viewport screen;
   int score = 0;
 
-  HospitalPuzzle({required this.player, required this.reason});
+  HospitalPuzzle({required this.player});
 
   @override
   FutureOr<void> onLoad() async {
     gameRef.camera.backdrop = RectangleComponent(
-      paint: Paint()..color = Color.fromARGB(255, 243, 253, 215),
-      size: Vector2(1000, 1000)
+        paint: Paint()..color = Color.fromARGB(255, 243, 253, 215),
+        size: Vector2(1000, 1000)
     );
     gameRef.camera.viewfinder.anchor = Anchor.topLeft;
     gameRef.camera.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
@@ -35,25 +33,25 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     screen = gameRef.camera.viewport;
 
     progressBar = CircleProgress(
-      position:  Vector2(screen.size.x / 2, screen.size.y * 1 / 7),
-      widthInput: screen.size.x * 3 / 5,
-      totalPoints: 5
+        position:  Vector2(screen.size.x / 2, screen.size.y * 1 / 7),
+        widthInput: screen.size.x * 3 / 5,
+        totalPoints: 5
     );
     instruction = TextComponent(
-      anchor: Anchor.center,
-      position: Vector2(screen.size.x / 2, screen.size.y * 1 / 4),
-      text: "Ayo cocokkan gambar!",
-      textRenderer: TextPaint(style: material.TextStyle(
-        color: Color.fromARGB(255, 191, 210, 139),
-        fontSize: 28
-      ))
+        anchor: Anchor.center,
+        position: Vector2(screen.size.x / 2, screen.size.y * 1 / 4),
+        text: "Ayo cocokkan gambar!",
+        textRenderer: TextPaint(style: material.TextStyle(
+            color: Color.fromARGB(255, 191, 210, 139),
+            fontSize: 28
+        ))
     );
     silhouetteContainer = SilhouetteContainer(
       position: Vector2(screen.size.x / 2, screen.size.y * 8 / 17),
     );
     draggableContainer = DraggableContainer(
-      position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
-      size: Vector2(screen.size.x, screen.size.y * 2 / 7)
+        position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
+        size: Vector2(screen.size.x, screen.size.y * 2 / 7)
     );
     add(progressBar);
     add(instruction);
@@ -77,14 +75,14 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
   }
 
   FutureOr<void> addExitButton() async {
-   final buttonText = TextComponent(
-      anchor: Anchor.center,
-      position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
-      text: "Kembali ke Rumah",
-      textRenderer: TextPaint(style: material.TextStyle(
-        color: Color.fromARGB(255, 165, 151, 102),
-        fontSize: 22
-      ))
+    final buttonText = TextComponent(
+        anchor: Anchor.center,
+        position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
+        text: "Kembali ke Rumah",
+        textRenderer: TextPaint(style: material.TextStyle(
+            color: Color.fromARGB(255, 165, 151, 102),
+            fontSize: 22
+        ))
     );
     final button = RectangleComponent(
       paint: Paint()..color = Color.fromARGB(255, 253, 233, 168),

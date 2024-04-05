@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="34" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="5">
+ <imagelayer id="2" name="Parralax" locked="1" offsetx="2.33333" offsety="-3" repeatx="1">
+  <image source="../images/Hospital/hospital_hallway.jpg" width="626" height="373"/>
+ </imagelayer>
+ <objectgroup id="3" name="SpawnPoint">
+  <object id="2" name="Player" x="264" y="210.667" width="64" height="64"/>
+ </objectgroup>
+</map>
