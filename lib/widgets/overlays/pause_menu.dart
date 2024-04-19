@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:talacare/talacare.dart';
-import 'package:talacare/widgets/homepage.dart';
+import 'package:talacare/screens/homepage.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 
 class PauseMenu extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:talacare/authentication/screens/login_page.dart';
-import 'package:talacare/widgets/homepage.dart';
+import 'package:talacare/screens/login_page.dart';
+import 'package:talacare/screens/homepage.dart';
 
 void main() {
   group('LoginPage UI Test', () {
