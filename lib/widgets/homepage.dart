@@ -11,6 +11,11 @@ class HomePage extends StatefulWidget {
 
   final GlobalKey _playButtonKey = GlobalKey();
   final GlobalKey _settingsButtonKey = GlobalKey();
+  final GlobalKey _exportButtonKey = GlobalKey();
+
+  GlobalKey getExportButtonKey() {
+    return _exportButtonKey;
+  }
 
   GlobalKey getPlayButtonKey() {
     return _playButtonKey;
@@ -21,12 +26,14 @@ class HomePage extends StatefulWidget {
   }
 
   @override
-  State<HomePage> createState() => _HomePageState(playButtonKey: _playButtonKey);
+  State<HomePage> createState() => _HomePageState(
+      playButtonKey: _playButtonKey, exportButtonKey: _exportButtonKey);
 }
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey playButtonKey;
-  _HomePageState({required this.playButtonKey});
+  final GlobalKey exportButtonKey;
+  _HomePageState({required this.playButtonKey, required this.exportButtonKey});
 
   List<Image> characterSelection = [
     Image.asset("assets/images/Characters_free/boy.png"),
@@ -62,18 +69,21 @@ class _HomePageState extends State<HomePage> {
                 iconSize: 50,
                 onPressed: () async {
                   await logout();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context){
-                        return LoginPage();
-                      })
-                  );
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return LoginPage();
+                  }));
                 },
               ),
               IconButton(
                 icon: Image.asset("assets/images/Button/SettingButton.png"),
                 iconSize: 50,
                 onPressed: () => (),
+              ),
+              IconButton(
+                key: exportButtonKey,
+                icon: Image.asset("assets/images/Button/ExportButton.png"),
+                iconSize: 50,
+                onPressed: () {},
               ),
             ],
             backgroundColor: Colors.transparent,
@@ -88,11 +98,11 @@ class _HomePageState extends State<HomePage> {
                     enableInfiniteScroll: true,
                     onPageChanged: (index, reason) {
                       setState(() {
-                        currentCharacter = PlayableCharacters.values[index].name;
+                        currentCharacter =
+                            PlayableCharacters.values[index].name;
                       });
                     },
-                  )
-              ),
+                  )),
               SizedBox(
                 height: screenHeight * 0.05,
               ),
@@ -101,12 +111,9 @@ class _HomePageState extends State<HomePage> {
                 icon: Image.asset("assets/images/Button/PlayButton.png"),
                 iconSize: 50,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context){
-                      return TalaCareGame(playedCharacter: currentCharacter);
-                    })
-                  );
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return TalaCareGame(playedCharacter: currentCharacter);
+                  }));
                 },
               )
             ],
@@ -116,4 +123,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
