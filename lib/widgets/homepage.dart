@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:talacare/export_data/screens/export_page.dart';
 import 'package:talacare/helpers/playableCharacters.dart';
 import 'package:talacare/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -83,7 +84,11 @@ class _HomePageState extends State<HomePage> {
                 key: exportButtonKey,
                 icon: Image.asset("assets/images/Button/ExportButton.png"),
                 iconSize: 50,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return ExportPage();
+                  }));
+                },
               ),
             ],
             backgroundColor: Colors.transparent,
