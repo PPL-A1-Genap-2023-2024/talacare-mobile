@@ -38,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: Color(0xFFBC9CCA),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -52,78 +53,59 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const Text('Selamat Datang',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Color(0xFFFFF6E6),
+                              fontSize: 32,
+                              fontFamily: 'Fredoka One',
+                              fontWeight: FontWeight.w600)),
+                      const SizedBox(height: 10),
                       const Text(
-                        "Welcome to Talacare",
+                        'di Talacare',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 25,
-                            color: Colors.black
-                        ),
+                            color: Color(0xFFD5EF9D),
+                            fontSize: 24,
+                            fontFamily: 'Fredoka One',
+                            fontWeight: FontWeight.w400),
                       ),
                       const SizedBox(height: 30),
+                      Image.asset('assets/images/Illustrations/homepage.png'),
                       const SizedBox(height: 20),
                       Container(
-                        padding: const EdgeInsets.all(8.0),
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          key: const ValueKey('loginButton'),
-                          onPressed: () {
-                            signInWithGoogle();
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center, 
-                            children: <Widget>[
-                              Image.asset('assets/images/Illustrations/google.png', height: 24.0),
-                              Padding(padding: EdgeInsets.symmetric(horizontal: 6)),
-                              const Text(
-                                'Log in with Google',
-                                style: TextStyle(
-                                  fontSize: 17,
-                                ),
-                              ),
-                            ],
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.grey),
-                            ),
-                          ),
-                        ),
-                      ),
+                          padding: const EdgeInsets.all(8.0),
+                          width: double.infinity,
+                          child: IconButton(
+                            icon: Image.asset(
+                                'assets/images/Illustrations/Login Button.png'),
+                            onPressed: () {
+                              signInWithGoogle();
+                            },
+                          )),
                       Container(
-                        padding: const EdgeInsets.all(8.0),
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context){
+                          padding: const EdgeInsets.all(8.0),
+                          width: double.infinity,
+                          child: TextButton(
+                              onPressed: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
                                   return HomePage();
-                                })
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              const Text(
-                                'Masuk tanpa akun',
-                                style: TextStyle(
-                                  fontSize: 17,
+                                }));
+                              },
+                              style: ButtonStyle(
+                                foregroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromARGB(255, 255, 246, 230)),
+                                textStyle: MaterialStateProperty.all<TextStyle>(
+                                  TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: 'Fredoka',
+                                  ),
                                 ),
                               ),
-                            ],
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: BorderSide(color: Colors.grey),
-                            ),
-                          ),
-                        ),
-                      )
+                              child: Text('Masuk tanpa akun')))
                     ],
                   ),
                 ),
