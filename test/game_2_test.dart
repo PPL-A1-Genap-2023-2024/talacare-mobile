@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/game_2.dart';
 import 'package:talacare/components/hospital_door.dart';
 import 'package:talacare/components/game_1.dart';
+import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 import 'package:talacare/helpers/dialog_reason.dart';
 import 'package:talacare/talacare.dart';
@@ -66,6 +67,34 @@ void main() {
         }
     );
   });
-
-
+  group('HospitalPuzzle Timer Test', () {
+    testWithGame<TalaCare>(
+      'HospitalPuzzle Timer Test Timer starts with 30 seconds and  decreases by 1 second each update',
+      TalaCare.new,
+      (game) async {
+         final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+          await game.ready();
+          final game_1 = game.children.query<HouseAdventure>().first;
+          final player = game_1.player;
+          final point = game_1.children.query<ActivityPoint>().first;
+          point.onCollision(intersection, player);
+          await game.ready();
+          final initialProgress = game.score;
+          final door = game_1.children.query<HospitalDoor>().first;
+          door.onCollision({Vector2(0.0,0.0), Vector2(0.0,0.0)}, player);
+          await game.ready();
+          final confirmation = game.confirmation;
+          expect(confirmation.reason, DialogReason.enterHospital);
+          confirmation.yesButton.onTapDown(createTapDownEvents(game: game));
+          confirmation.yesButton.onTapUp(createTapUpEvents(game: game));
+          game.update(5);
+          await game.ready();
+          final game_2 = game.children.query<HospitalPuzzle>().first;
+          expect(game_2.timeLimit, 30);
+          await Future.delayed(Duration(seconds: 1));
+          expect(game_2.timeLimit, 29);
+      },
+    );
+  });
+  
 }
