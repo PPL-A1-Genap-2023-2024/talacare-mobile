@@ -16,8 +16,10 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
   late final DraggableContainer draggableContainer;
   late final SilhouetteContainer silhouetteContainer;
   late final TextComponent instruction;
+  late final TextComponent timerText; 
   late final Viewport screen;
   int score = 0;
+  int timeLimit = 30;
 
   HospitalPuzzle({required this.player});
 
@@ -57,8 +59,34 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     add(instruction);
     add(silhouetteContainer);
     add(draggableContainer);
+    
+    timerText = TextComponent(
+      anchor: Anchor.topCenter,
+      position: Vector2(screen.size.x / 2, screen.size.y * 1 / 10),
+      text: "Time: $timeLimit",
+      textRenderer: TextPaint(style: material.TextStyle(
+          color: Color.fromARGB(255, 255, 255, 255),
+          fontSize: 20
+      ))
+    );
+    add(timerText);
+
+    onTick();
     return super.onLoad();
   }
+
+   void onTick() {
+    if (timeLimit > 0) {
+      Future.delayed(Duration(seconds: 1), () {
+        timeLimit--;
+        timerText.text = "Time: $timeLimit";
+        onTick();
+    });
+    } else {
+      finishGame();
+    }
+  }
+
 
   FutureOr<void> updateScore() async {
     score++;
