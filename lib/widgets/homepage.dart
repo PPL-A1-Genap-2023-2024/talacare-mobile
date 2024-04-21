@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/helpers/playableCharacters.dart';
 import 'package:talacare/main.dart';
@@ -27,6 +28,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey playButtonKey;
   _HomePageState({required this.playButtonKey});
+  final CarouselController _controller = CarouselController();
 
   List<Image> characterSelection = [
     Image.asset("assets/images/Characters_free/boy.png"),
@@ -54,12 +56,107 @@ class _HomePageState extends State<HomePage> {
         //   )
         // ),
         child: Scaffold(
-          backgroundColor: const Color(0xfff2c293),
-          appBar: AppBar(
-            actions: [
+          backgroundColor: const Color(0xffd7a9ec),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Yuk Pilih karaktermu dulu',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Color(0xff745573 ),
+                    fontSize: 24,
+                    fontFamily: 'Fredoka One',
+                    fontWeight: FontWeight.w400),
+              ),
+              SizedBox(
+                height: screenHeight * 0.05,
+              ),
+
+              /* Character Slider */
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    icon: Image.asset(
+                      "assets/images/Button/tombol_prev.png",
+                      width: 50,
+                    ),
+                    onPressed: () => _controller.previousPage(),
+                  ),
+                  Flexible(
+                    child:  CarouselSlider(
+                        items: characterSelection,
+                        carouselController: _controller,
+                        options: CarouselOptions(
+                          height: screenHeight * 0.3,
+                          enableInfiniteScroll: true,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              currentCharacter = PlayableCharacters.values[index].name;
+                            });
+                          },
+                        )
+                    ),
+                  ),
+                  IconButton(
+                    icon: Image.asset(
+                        "assets/images/Button/tombol_next.png",
+                      width: 50,
+                    ),
+                    onPressed: () => _controller.nextPage(),
+                  ),
+                ],
+              ),
+
+              SizedBox(
+                height: screenHeight * 0.05,
+              ),
+
+              Container(
+                child: Text(
+                  currentCharacter,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Color(0xff745573 ),
+                      fontSize: 16,
+                      fontFamily: 'Fredoka One',
+                      fontWeight: FontWeight.w400),
+                ),
+              ),
+
+              SizedBox(
+                height: screenHeight * 0.05,
+              ),
+
+              /* Tombol Mulai */
               IconButton(
-                icon: Image.asset("assets/images/Button/LogoutButton.png"),
-                iconSize: 50,
+                icon: Image.asset(
+                  "assets/images/Button/tombol_mulai.png",
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context){
+                        return TalaCareGame(playedCharacter: currentCharacter);
+                      })
+                  );
+                },
+              ),
+
+              /* Tombol Pengaturan */
+              IconButton(
+                icon: Image.asset(
+                  "assets/images/Button/tombol_pengaturan.png",
+                ),
+                onPressed: () => (),
+              ),
+
+              /* Tombol Logout */
+              IconButton(
+                icon: Image.asset(
+                  "assets/images/Button/tombol_keluar.png",
+                ),
                 onPressed: () async {
                   await logout();
                   Navigator.push(
@@ -70,45 +167,6 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-              IconButton(
-                icon: Image.asset("assets/images/Button/SettingButton.png"),
-                iconSize: 50,
-                onPressed: () => (),
-              ),
-            ],
-            backgroundColor: Colors.transparent,
-          ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CarouselSlider(
-                  items: characterSelection,
-                  options: CarouselOptions(
-                    height: screenHeight * 0.3,
-                    enableInfiniteScroll: true,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        currentCharacter = PlayableCharacters.values[index].name;
-                      });
-                    },
-                  )
-              ),
-              SizedBox(
-                height: screenHeight * 0.05,
-              ),
-              IconButton(
-                key: playButtonKey,
-                icon: Image.asset("assets/images/Button/PlayButton.png"),
-                iconSize: 50,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context){
-                      return TalaCareGame(playedCharacter: currentCharacter);
-                    })
-                  );
-                },
-              )
             ],
           ),
         ),
