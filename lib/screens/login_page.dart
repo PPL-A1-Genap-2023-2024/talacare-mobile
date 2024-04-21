@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:talacare/helpers/color_palette.dart';
+import 'package:talacare/helpers/text_styles.dart';
 
 import 'homepage.dart';
 
@@ -38,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xFFBC9CCA),
+      backgroundColor: AppColors.greenPrimary,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -54,22 +56,10 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text('Selamat Datang',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Color(0xFFFFF6E6),
-                              fontSize: 32,
-                              fontFamily: 'Fredoka One',
-                              fontWeight: FontWeight.w600)),
+                          textAlign: TextAlign.center, style: AppTextStyles.h1),
                       const SizedBox(height: 10),
-                      const Text(
-                        'di Talacare',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Color(0xFFD5EF9D),
-                            fontSize: 24,
-                            fontFamily: 'Fredoka One',
-                            fontWeight: FontWeight.w400),
-                      ),
+                      const Text('di Talacare',
+                          textAlign: TextAlign.center, style: AppTextStyles.h2),
                       const SizedBox(height: 30),
                       Image.asset('assets/images/Illustrations/homepage.png'),
                       const SizedBox(height: 20),
@@ -96,14 +86,9 @@ class _LoginPageState extends State<LoginPage> {
                               style: ButtonStyle(
                                 foregroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Color.fromARGB(255, 255, 246, 230)),
+                                        AppColors.textColor),
                                 textStyle: MaterialStateProperty.all<TextStyle>(
-                                  TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'Fredoka',
-                                  ),
-                                ),
+                                    AppTextStyles.largeBold),
                               ),
                               child: Text('Masuk tanpa akun')))
                     ],
