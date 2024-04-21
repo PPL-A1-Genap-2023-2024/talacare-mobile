@@ -7,27 +7,47 @@ import 'package:mockito/mockito.dart';
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 void main() {
-  testWidgets('Export Data Button Existence Test', (WidgetTester tester) async {
+  testWidgets('Widget Button to Export Page Test', (WidgetTester tester) async {
     HomePage home = HomePage();
     await tester.pumpWidget(MaterialApp(home: home));
     await tester.pump();
     GlobalKey exportButtonKey = home.getExportButtonKey();
-    final exportButtonFinder = find.byKey(exportButtonKey);
+    Finder exportButtonFinder = find.byKey(exportButtonKey);
     expect(exportButtonFinder, findsOneWidget);
   });
-  testWidgets('Navigate To Export Data Test', (WidgetTester tester) async {
+  testWidgets('Navigate To Export Data and Go Back Test',
+      (WidgetTester tester) async {
     HomePage home = HomePage();
-    final mockObserver = MockNavigatorObserver();
+    MockNavigatorObserver mockObserver = MockNavigatorObserver();
     await tester.pumpWidget(MaterialApp(
       home: home,
       navigatorObservers: [mockObserver],
     ));
     await tester.pump();
     GlobalKey exportButtonKey = home.getExportButtonKey();
-    final exportButtonFinder = find.byKey(exportButtonKey);
+    Finder exportButtonFinder = find.byKey(exportButtonKey);
     expect(find.byType(ExportPage), findsNothing);
+
     await tester.tap(exportButtonFinder);
     await tester.pumpAndSettle();
     expect(find.byType(ExportPage), findsOne);
+    expect(find.byType(HomePage), findsNothing);
+
+    ExportPage exportPage = tester.widget(find.byType(ExportPage).first);
+    GlobalKey backButtonKey = exportPage.getBackButtonKey();
+    Finder backButtonFinder = find.byKey((backButtonKey));
+    await tester.tap(backButtonFinder);
+    await tester.pumpAndSettle();
+    expect(find.byType(ExportPage), findsNothing);
+    expect(find.byType(HomePage), findsOne);
+  });
+  testWidgets('Export Page Widget Test', (WidgetTester tester) async {
+    ExportPage home = ExportPage();
+    await tester.pumpWidget(MaterialApp(home: home));
+    await tester.pump();
+    Finder getForm = find.byType(TextField);
+    Finder getButtons = find.byType(ElevatedButton);
+    expect(getForm, findsOne);
+    expect(getButtons, findsExactly(2));
   });
 }
