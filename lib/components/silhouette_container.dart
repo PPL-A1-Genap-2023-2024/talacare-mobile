@@ -8,6 +8,8 @@ import 'package:talacare/talacare.dart';
 class SilhouetteContainer extends SpriteComponent with HasGameRef<TalaCare>,
 HasWorldReference<HospitalPuzzle> {
   int currentIndex = -1;
+  late bool childIsHappy;
+  late SpriteComponent child;
 
   SilhouetteContainer({required super.position});
 
@@ -15,6 +17,13 @@ HasWorldReference<HospitalPuzzle> {
   FutureOr<void> onLoad() async {
     anchor = Anchor.center;
     sprite = Sprite(game.images.fromCache('Game_2/hospital_container.png'));
+    child = SpriteComponent(
+      anchor: Anchor.center,
+      position: Vector2(225, 160),
+      sprite: Sprite(game.images.fromCache('Game_2/child_boy_before.png'))
+    );
+    childIsHappy = false;
+    add(child);
     addNextItem();
     return super.onLoad();
   }
@@ -22,5 +31,10 @@ HasWorldReference<HospitalPuzzle> {
   FutureOr<void> addNextItem() async {
     add(SilhouetteItem(item: Item.values[world.score]));
     currentIndex++;
+  }
+
+  FutureOr<void> changeChildSprite() async {
+    child.sprite = Sprite(game.images.fromCache('Game_2/child_boy_after.png'));
+    childIsHappy = true;
   }
 }

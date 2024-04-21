@@ -70,6 +70,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
       silhouetteContainer.addNextItem();
     } else {
       instruction.text = "Transfusi darah berhasil!";
+      silhouetteContainer.changeChildSprite();
       addExitButton();
     }
   }
