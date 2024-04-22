@@ -23,4 +23,10 @@ class AppTextStyles {
     color: AppColors.textColor
   );
 
+  static const TextStyle normalText = TextStyle(
+    color: AppColors.textColor,
+    fontSize: 16,
+    fontFamily: 'Fredoka',
+    fontWeight: FontWeight.w500,
+  );
 }
