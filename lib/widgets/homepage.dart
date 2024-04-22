@@ -131,6 +131,7 @@ class _HomePageState extends State<HomePage> {
 
               /* Tombol Mulai */
               IconButton(
+                key: playButtonKey,
                 icon: Image.asset(
                   "assets/images/Button/tombol_mulai.png",
                 ),
