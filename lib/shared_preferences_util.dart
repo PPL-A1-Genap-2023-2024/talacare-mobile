@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<List> fetchSchedule() async {
-  var prefs = await SharedPreferences.getInstance();
+List fetchSchedule(SharedPreferences prefs) {
   var schedule = [];
   for (var i = 1; i < 4; i++) {
     var iteration = i.toString();
@@ -16,9 +15,8 @@ Future<List> fetchSchedule() async {
   return schedule;
 }
 
-Future<String> addSchedule(hour, minute) async {
-  var prefs = await SharedPreferences.getInstance();
-  if (!await checkIfDifferentSchedule(hour, minute)) {
+String addSchedule(hour, minute, SharedPreferences prefs) {
+  if (!checkIfDifferentSchedule(hour, minute, prefs)) {
     return "Sudah ada jadwal yang sama";
   }
 
@@ -26,31 +24,30 @@ Future<String> addSchedule(hour, minute) async {
     var iteration = i.toString();
     if (!prefs.containsKey("hour_$iteration") &&
         !prefs.containsKey("minute_$iteration")) {
-      prefs.setString("hour_$iteration", hour);
-      prefs.setString("minute_$iteration", hour);
+      prefs.setInt("hour_$iteration", hour);
+      prefs.setInt("minute_$iteration", hour);
       return "Berhasil membuat jadwal";
     }
   }
   return "Jadwal hanya maksimal 3";
 }
 
-Future<bool> checkIfDifferentSchedule(hour, minute) async {
-  var prefs = await SharedPreferences.getInstance();
+bool checkIfDifferentSchedule(hour, minute, SharedPreferences prefs) {
   for (var i = 1; i < 4; i++) {
     var iteration = i.toString();
-    if (!prefs.containsKey("hour_$iteration") &&
-        !prefs.containsKey("minute_$iteration")) if (!prefs
-                .containsKey("hour_$iteration") ==
-            hour &&
-        !prefs.containsKey("minute_$iteration") == minute) return false;
+    if (prefs.containsKey("hour_$iteration") &&
+        prefs.containsKey("minute_$iteration")) {
+      if (!(prefs.getInt("hour_$iteration") == hour) &&
+          !(prefs.getInt("minute_$iteration") == minute)) {
+        return false;
+      }
+    }
   }
   return true;
 }
 
-Future<String> editSchedule(hour, minute, id) async {
-  var prefs = await SharedPreferences.getInstance();
-
-  if (!await checkIfDifferentSchedule(hour, minute)) {
+String editSchedule(hour, minute, id, SharedPreferences prefs) {
+  if (!checkIfDifferentSchedule(hour, minute, prefs)) {
     return "Sudah ada jadwal yang sama";
   }
 
@@ -60,9 +57,7 @@ Future<String> editSchedule(hour, minute, id) async {
   return "Berhasil mengubah jadwal";
 }
 
-Future<String> deleteSchedule(id) async {
-  var prefs = await SharedPreferences.getInstance();
-
+String deleteSchedule(id, SharedPreferences prefs) {
   prefs.remove("hour_$id");
   prefs.remove("minute_$id");
 
