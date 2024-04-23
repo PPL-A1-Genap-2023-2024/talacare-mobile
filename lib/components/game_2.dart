@@ -20,6 +20,8 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
   late final Viewport screen;
   int score = 0;
   int timeLimit = 30;
+  late Timer countDown;
+  bool timerStarted = false;
 
   HospitalPuzzle({required this.player});
 
@@ -71,21 +73,33 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     );
     add(timerText);
 
-    onTick();
+    timerStarted = true;
+    countDown = Timer(1, repeat: true, onTick: () {
+      if (timeLimit > 0) {
+        timeLimit--;
+        timerText.text = "Time: $timeLimit";
+      } else {
+        timerStarted = false;
+        finishGame();
+      }
+    });
+
+    countDown.start();
+
     return super.onLoad();
   }
 
-   void onTick() {
-    if (timeLimit > 0) {
-      Future.delayed(Duration(seconds: 1), () {
-        timeLimit--;
-        timerText.text = "Time: $timeLimit";
-        onTick();
-    });
-    } else {
-      finishGame();
-    }
+   @override
+  void update(double dt) {
+    super.update(dt);
+    _updateTimer(dt);
   }
+
+  void _updateTimer(double dt) {
+    if (timerStarted && timeLimit > 0) {
+      countDown.update(dt);
+    }
+    }
 
 
   FutureOr<void> updateScore() async {
