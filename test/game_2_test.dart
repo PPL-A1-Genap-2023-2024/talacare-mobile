@@ -91,7 +91,7 @@ void main() {
           await game.ready();
           final game_2 = game.children.query<HospitalPuzzle>().first;
           expect(game_2.timeLimit, 30);
-          await Future.delayed(Duration(seconds: 1));
+          game_2.update(1.0);
           expect(game_2.timeLimit, 29);
       },
     );
