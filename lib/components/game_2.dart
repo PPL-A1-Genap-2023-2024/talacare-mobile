@@ -64,11 +64,11 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     
     timerText = TextComponent(
       anchor: Anchor.topCenter,
-      position: Vector2(screen.size.x / 2, screen.size.y * 1 / 10),
-      text: "Time: $timeLimit",
+      position: Vector2(screen.size.x / 2, screen.size.y * 1 / 14),
+      text: "Sisa waktu: $timeLimit detik",
       textRenderer: TextPaint(style: material.TextStyle(
-          color: Color.fromARGB(255, 255, 255, 255),
-          fontSize: 20
+        color: Color.fromARGB(255, 191, 210, 139),
+        fontSize: 24,
       ))
     );
     add(timerText);
@@ -77,7 +77,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     countDown = Timer(1, repeat: true, onTick: () {
       if (timeLimit > 0) {
         timeLimit--;
-        timerText.text = "Time: $timeLimit";
+        timerText.text = "Sisa waktu: $timeLimit detik";
       } else {
         timerStarted = false;
         finishGame();
@@ -96,10 +96,14 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
   }
 
   void _updateTimer(double dt) {
-    if (timerStarted && timeLimit > 0) {
+    if (timerStarted) {
       countDown.update(dt);
+      if (timeLimit <= 0) {
+        timerStarted = false;
+        finishGame();
+      }
     }
-    }
+  }
 
 
   FutureOr<void> updateScore() async {
@@ -117,6 +121,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
   }
 
   FutureOr<void> addExitButton() async {
+    timerStarted = false;
     final buttonText = TextComponent(
         anchor: Anchor.center,
         position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
