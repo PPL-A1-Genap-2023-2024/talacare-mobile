@@ -28,41 +28,34 @@ class _ExportPageState extends State<ExportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFD7A9EC),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'Mengunduh Data Pemain',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
             ),
             Container(
                 child: Column(
               children: [
                 Text(
-                  'Tuliskan nama file yang akan diunduh',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  'Tekan tombol Export Data untuk mengunduh',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      labelText: 'talacare_data',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                ElevatedButton(
+                SizedBox(height: 50),
+                IconButton(
+                  icon: Image.asset("assets/images/Button/ExportButton.png"),
                   key: downloadButtonKey,
                   onPressed: () {},
-                  child: Text('Unduh'),
                 ),
-                ElevatedButton(
+                IconButton(
+                  icon: Image.asset("assets/images/Button/BackButton.png"),
                   key: backButtonKey,
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('Kembali'),
                 ),
               ],
             )),

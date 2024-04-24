@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
               ),
               IconButton(
                 key: exportButtonKey,
-                icon: Image.asset("assets/images/Button/ExportButton.png"),
+                icon: Image.asset("assets/images/Button/SettingButton.png"),
                 iconSize: 50,
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
