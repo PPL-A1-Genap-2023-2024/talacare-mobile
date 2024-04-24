@@ -45,9 +45,7 @@ void main() {
     ExportPage home = ExportPage();
     await tester.pumpWidget(MaterialApp(home: home));
     await tester.pump();
-    Finder getForm = find.byType(TextField);
-    Finder getButtons = find.byType(ElevatedButton);
-    expect(getForm, findsOne);
+    Finder getButtons = find.byType(IconButton);
     expect(getButtons, findsExactly(2));
   });
 }
