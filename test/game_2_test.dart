@@ -95,6 +95,35 @@ void main() {
           expect(game_2.timeLimit, 29);
       },
     );
+    testWithGame<TalaCare>(
+        'Go back to game 1 when game 2 lose, health and speed adjusted and progress maintained',
+        TalaCare.new,
+            (game) async {
+          final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+          await game.ready();
+          final game_1 = game.children.query<HouseAdventure>().first;
+          final player = game_1.player;
+          final point = game_1.children.query<ActivityPoint>().first;
+          point.onCollision(intersection, player);
+          await game.ready();
+          final initialProgress = game.score;
+          final door = game_1.children.query<HospitalDoor>().first;
+          door.onCollision({Vector2(0.0,0.0), Vector2(0.0,0.0)}, player);
+          await game.ready();
+          final confirmation = game.confirmation;
+          expect(confirmation.reason, DialogReason.enterHospital);
+          confirmation.yesButton.onTapDown(createTapDownEvents(game: game));
+          confirmation.yesButton.onTapUp(createTapUpEvents(game: game));
+          game.update(5);
+          await game.ready();
+          final game_2 = game.children.query<HospitalPuzzle>().first;
+          game_2.loseGame();
+          game.update(5);
+          expect(game.playerHealth, 2);
+          expect(player.moveSpeed, 56.25);  //75% of 75% of 100
+          expect(game.score, initialProgress);
+        }
+    );
   });
   
 }
