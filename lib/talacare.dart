@@ -12,7 +12,8 @@ import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 
 import 'helpers/dialog_reason.dart';
-enum GameStatus {playing, victory, transition}
+
+enum GameStatus { playing, victory, transition }
 
 class TalaCare extends FlameGame with HasCollisionDetection {
   String playedCharacter;
@@ -26,19 +27,21 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   GameStatus status = GameStatus.playing;
   late GameDialog confirmation;
   late int score;
+  late DateTime startTimestamp;
+  late DateTime endTimestamp;
   @override
   late World world;
   late AlignComponent eventAnchor;
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
-  
+
   final bool isWidgetTesting;
   TalaCare({this.isWidgetTesting = false, this.playedCharacter = 'boy'});
 
   @override
   void update(double dt) {
-    if (status==GameStatus.transition) {
+    if (status == GameStatus.transition) {
       transitionCountdown.update(dt);
     }
     super.update(dt);
@@ -46,6 +49,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
 
   @override
   FutureOr<void> onLoad() async {
+    startTimestamp = DateTime.now();
     if (!isWidgetTesting) {
       playerHealth = 4;
       score = 0;
@@ -61,8 +65,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     return super.onLoad();
   }
 
-
-  void switchGame({reason=DialogReason.enterHospital}) {
+  void switchGame({reason = DialogReason.enterHospital}) {
     removeAll([camera, world]);
 
     final transition = GameTransition(player: player, reason: reason);
@@ -93,10 +96,8 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     });
   }
 
-
-
-  void checkingPlayedCharacter(){
-    if (player.character != playedCharacter){
+  void checkingPlayedCharacter() {
+    if (player.character != playedCharacter) {
       player = Player(character: playedCharacter);
     }
   }
@@ -109,9 +110,8 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     if (!eventIsActive) {
       world.remove(point);
       eventAnchor = AlignComponent(
-        child: ActivityEvent(variant: point.variant),
-        alignment: Anchor.center
-      );
+          child: ActivityEvent(variant: point.variant),
+          alignment: Anchor.center);
       camera.viewport.add(eventAnchor);
       eventIsActive = true;
       score += 1;
@@ -145,7 +145,6 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     confirmationIsActive = false;
   }
 
-
   void goToHospital(reason) {
     removeConfirmation();
     currentGame = 2;
@@ -163,6 +162,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   }
 
   void victory() {
+    endTimestamp = DateTime.now();
     status = GameStatus.victory;
     if (!eventIsActive) {
       showConfirmation(DialogReason.gameVictory);
