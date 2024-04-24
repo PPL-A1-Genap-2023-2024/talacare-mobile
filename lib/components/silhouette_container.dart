@@ -20,7 +20,7 @@ HasWorldReference<HospitalPuzzle> {
     child = SpriteComponent(
       anchor: Anchor.center,
       position: Vector2(225, 160),
-      sprite: Sprite(game.images.fromCache('Game_2/child_boy_before.png'))
+      sprite: Sprite(game.images.fromCache('Game_2/child_${game.playedCharacter}_before.png'))
     );
     childIsHappy = false;
     add(child);
@@ -34,7 +34,7 @@ HasWorldReference<HospitalPuzzle> {
   }
 
   FutureOr<void> changeChildSprite() async {
-    child.sprite = Sprite(game.images.fromCache('Game_2/child_boy_after.png'));
+    child.sprite = Sprite(game.images.fromCache('Game_2/child_${game.playedCharacter}_after.png'));
     childIsHappy = true;
   }
 }
