@@ -17,7 +17,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
   late SpriteAnimation idleAnimation;
   late SpriteAnimation runningAnimation;
   Vector2 initialSpawn = Vector2(0,0);
-  final double stepTime = 0.1;
+  final double stepTime = 0.25;
   double horizontalMovement = 0;
   double verticalMovement = 0;
   Direction direction = Direction.none;
@@ -79,7 +79,7 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
         row: 0,
         stepTime: stepTime,
         from: start,
-        to: start + 5
+        to: start + 6
     );
   }
 
