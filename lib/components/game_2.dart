@@ -79,8 +79,8 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
         timeLimit--;
         timerText.text = "Sisa waktu: $timeLimit detik";
       } else {
-        timerStarted = false;
-        finishGame();
+        instruction.text = "Kamu belum berhasil ??";
+        addLoseButton();
       }
     });
 
@@ -99,8 +99,8 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     if (timerStarted) {
       countDown.update(dt);
       if (timeLimit <= 0) {
-        timerStarted = false;
-        finishGame();
+        instruction.text = "Kamu belum berhasil ??";
+        addLoseButton();
       }
     }
   }
@@ -151,7 +151,42 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     add(buttonText);
   }
 
+  FutureOr<void> addLoseButton() async {
+    timerStarted = false;
+    final buttonText = TextComponent(
+        anchor: Anchor.center,
+        position: Vector2(screen.size.x / 2, screen.size.y * 17 / 25),
+        text: "Kembali ke Rumah",
+        textRenderer: TextPaint(style: material.TextStyle(
+            color: Color.fromARGB(255, 165, 151, 102),
+            fontSize: 22
+        ))
+    );
+    final button = RectangleComponent(
+      paint: Paint()..color = Color.fromARGB(255, 253, 233, 168),
+      size: Vector2(200, 50),
+    );
+    final buttonDown = RectangleComponent(
+      paint: Paint()..color = Color.fromARGB(255, 222, 202, 138),
+      size: Vector2(200, 50),
+    );
+    final buttonGroup = ButtonComponent(
+      anchor: Anchor.center,
+      button: button,
+      buttonDown: buttonDown,
+      onReleased: loseGame,
+      position: Vector2(screen.size.x / 2, screen.size.y * 17 / 25),
+      size: Vector2(200, 50),
+    );
+    add(buttonGroup);
+    add(buttonText);
+  }
+
   void finishGame() {
     gameRef.exitHospital();
+  }
+
+  void loseGame() {
+    gameRef.loseHospital();
   }
 }
