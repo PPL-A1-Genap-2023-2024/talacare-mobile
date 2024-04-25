@@ -37,7 +37,7 @@ class _ExportPageState extends State<ExportPage> {
       required this.client});
 
   Future<void> fetchData(http.Client client, BuildContext context) async {
-    Uri url = Uri.parse(URL_BACKEND);
+    Uri url = Uri.parse(urlBackEnd);
     try {
       http.Response response = await client.get(url);
       if (response.statusCode == 200) {
