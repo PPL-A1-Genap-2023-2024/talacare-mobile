@@ -5,20 +5,24 @@ import 'package:talacare/helpers/text_styles.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-  final double buttonWidth;
-  final double buttonHeight = 72;
+  final double initialButtonWidth;
+  final double buttonHeight;
   final String? assetImagePath;
+  static const double defaultButtonWidth = 270;
+  static const double defaultButtonHeight = 72;
 
-  const CustomButton(
-      {Key? key,
-      required this.text,
-      required this.onPressed,
-      required this.buttonWidth,
-      this.assetImagePath})
-      : super(key: key);
+  const CustomButton({
+    Key? key,
+    required this.text,
+    required this.onPressed,
+    this.initialButtonWidth = defaultButtonWidth,
+    this.buttonHeight = defaultButtonHeight,
+    this.assetImagePath,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final buttonWidth = initialButtonWidth < defaultButtonWidth ? defaultButtonWidth : initialButtonWidth;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -81,6 +85,7 @@ class CustomButton extends StatelessWidget {
                     children: [
                       if (assetImagePath != null)
                         (Container(
+                          key: Key('icon_container'),
                           width: 18,
                           height: 18,
                           decoration: BoxDecoration(
