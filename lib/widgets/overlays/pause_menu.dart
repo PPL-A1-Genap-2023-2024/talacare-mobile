@@ -28,7 +28,7 @@ class PauseMenu extends StatelessWidget {
               border: Border.all(color: AppColors.textColor, width: 8.0),
               borderRadius: const BorderRadius.all(Radius.circular(15)),
             ),
-            height: MediaQuery.of(context).size.height * 30 / 100,
+            height: MediaQuery.of(context).size.height * 40 / 100,
             width: MediaQuery.of(context).size.width * 70 / 100,
             child: Column(
               children: [
@@ -56,7 +56,7 @@ class PauseMenu extends StatelessWidget {
                           ),
                           const DefaultTextStyle(
                             child: Text('Keluar'),
-                            style: AppTextStyles.normalText,
+                            style: AppTextStyles.normal,
                           ),
                         ],
                       ),
@@ -77,7 +77,7 @@ class PauseMenu extends StatelessWidget {
                           ),
                           const DefaultTextStyle(
                             child: Text('Lanjut'),
-                            style: AppTextStyles.normalText,
+                            style: AppTextStyles.normal,
                           ),
                         ],
                       ),
