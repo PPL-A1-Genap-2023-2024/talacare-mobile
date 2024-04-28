@@ -43,9 +43,11 @@ class AuthenticationWrapper extends StatelessWidget {
     return StreamBuilder(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, AsyncSnapshot<User?> snapshot) {
+        print("currentUser: ${FirebaseAuth.instance.currentUser}");
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
         } else if (snapshot.hasData && snapshot.data != null) {
+          print("welcome");
           return HomePage();
         } else {
           return LoginPage();

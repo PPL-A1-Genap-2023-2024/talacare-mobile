@@ -26,6 +26,7 @@ class PauseMenu extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.grey,
                   border: Border.all(color: Colors.white),
+                  // rounding
                   borderRadius: const BorderRadius.all(Radius.circular(15)),
                 ),
                 height: MediaQuery.of(context).size.height * 55 / 100,
@@ -36,18 +37,7 @@ class PauseMenu extends StatelessWidget {
                         padding: EdgeInsets.only(top: 25, bottom: 25),
                         child: Text(
                           'Game dijeda',
-                          style: TextStyle(
-                            fontSize: 30.0,
-                            color: Colors.black,
-                          ),
                         )),
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.amber,
-                      ),
-                      height: MediaQuery.of(context).size.height * 20 / 100,
-                      width: MediaQuery.of(context).size.width * 40 / 100,
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

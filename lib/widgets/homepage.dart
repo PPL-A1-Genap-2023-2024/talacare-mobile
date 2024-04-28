@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:talacare/helpers/playableCharacters.dart';
+import 'package:talacare/helpers/playable_characters.dart';
 import 'package:talacare/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -38,8 +39,11 @@ class _HomePageState extends State<HomePage> {
   String currentCharacter = 'boy';
 
   Future<void> logout() async {
-    final GoogleSignIn googleSign = GoogleSignIn();
-    await googleSign.signOut();
+    if (await GoogleSignIn().isSignedIn()) {
+      // Either this line
+      GoogleSignIn().signOut();
+    }
+    await FirebaseAuth.instance.signOut();
   }
 
   @override
@@ -56,15 +60,15 @@ class _HomePageState extends State<HomePage> {
         //   )
         // ),
         child: Scaffold(
-          backgroundColor: const Color(0xffd7a9ec),
+          backgroundColor: const Color(0xffe1827f),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Yuk Pilih karaktermu dulu',
+                'Yuk pilih karaktermu dulu',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Color(0xff745573 ),
+                    color: Color(0xff745573),
                     fontSize: 24,
                     fontFamily: 'Fredoka One',
                     fontWeight: FontWeight.w400),
@@ -160,12 +164,14 @@ class _HomePageState extends State<HomePage> {
                 ),
                 onPressed: () async {
                   await logout();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context){
-                        return LoginPage();
-                      })
-                  );
+                  if (FirebaseAuth.instance.currentUser == null){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context){
+                          return LoginPage();
+                        })
+                    );
+                  }
                 },
               ),
             ],
