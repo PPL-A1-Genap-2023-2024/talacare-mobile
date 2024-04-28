@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
@@ -9,13 +11,37 @@ import 'package:talacare/widgets/overlays/pause_button.dart';
 import 'package:talacare/widgets/overlays/pause_menu.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 void main() async {
-  runApp(MyApp()); //TODO:REMOVE THIS
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
+  //await FirebaseMessaging.instance.setAutoInitEnabled(true);
+  //final fcmToken = await FirebaseMessaging.instance.getToken();
+
+  NotificationSettings settings =
+      await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    print('User granted permission');
+  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    print('User granted provisional permission');
+  } else {
+    print('User declined or has not accepted permission');
+  }
+
+  runApp(MyApp()); //TODO:REMOVE THIS
+
   /*
   await Flame.device.fullScreen();
   await Flame.device.setPortrait();
@@ -41,7 +67,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Reminder(http.Client()),
+      home: Reminder(),
     );
   }
 }

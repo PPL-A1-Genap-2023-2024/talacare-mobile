@@ -1,9 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:talacare/reminder.dart';
-import 'package:talacare/reminder_create.dart';
 import 'package:talacare/reminder_edit.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talacare/schedule_util.dart';
 

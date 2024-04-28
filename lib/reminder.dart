@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:talacare/models/schedule.dart';
 import 'package:talacare/reminder_create.dart';
 import 'package:talacare/reminder_schedule.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Reminder extends StatelessWidget {
   Reminder();
