@@ -68,7 +68,8 @@ void main() {
     verify(client.get(uriExample)).called(1);
     expect(find.text('Berhasil Export Data'), findsOneWidget);
   });
-  testWidgets('Export Data Failed Test', (WidgetTester tester) async {
+  testWidgets('Export Data Failed Test (Wrong Request)',
+      (WidgetTester tester) async {
     Uri uriExample = Uri.parse('http://127.0.0.1:8000/');
     MockClient client = MockClient();
     when(client.get(uriExample)).thenAnswer(
@@ -82,5 +83,26 @@ void main() {
     await tester.pump();
     verify(client.get(uriExample)).called(1);
     expect(find.text('Gagal Export Data'), findsOneWidget);
+  });
+  testWidgets('Export Data Failed (Server Not Responding)',
+      (WidgetTester tester) async {
+    Uri uriExample = Uri.parse('http://127.0.0.1:8000/');
+    MockClient client = MockClient();
+    when(client.get(uriExample))
+        .thenAnswer((_) async => throw Exception('Failed to fetch data'));
+    ExportPage exportPage = ExportPage(client: client);
+    await tester.pumpWidget(MaterialApp(home: exportPage));
+
+    GlobalKey sendEmailButtonKey = exportPage.getDownloadButtonKey();
+    Finder sendEmailButton = find.byKey(sendEmailButtonKey);
+    await tester.tap(sendEmailButton);
+    await tester.pump();
+    verify(client.get(uriExample)).called(1);
+    expect(find.text('Gagal Export Data'), findsOneWidget);
+
+    Finder button = find.byType(IconButton).last;
+    await tester.tap(button);
+    await tester.pump();
+    expect(find.text('Gagal Export Data'), findsNothing);
   });
 }
