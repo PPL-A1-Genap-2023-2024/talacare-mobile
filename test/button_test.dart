@@ -39,7 +39,7 @@ void main() {
     expect(find.byKey(Key('icon_container')), findsOneWidget);  
   });
 
-  testWidgets('CustomButton with empty text', (WidgetTester tester) async {
+  testWidgets('CustomButton with negative button width', (WidgetTester tester) async {
      await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
