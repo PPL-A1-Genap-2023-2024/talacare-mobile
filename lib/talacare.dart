@@ -112,14 +112,9 @@ class TalaCare extends FlameGame with HasCollisionDetection {
       playerHealth = 2;   //half
       player.collisionActive = true;
 
-      switch (currentGame) {
-        case 1:
-          world = gameOne;
-          camera = camOne;
-        case 2:
-          world = HospitalPuzzle(player: player);
-          camera = CameraComponent(world: world);
-      }
+      world = gameOne;
+      camera = camOne;
+      
       addAll([camera, world]);
     });
   }

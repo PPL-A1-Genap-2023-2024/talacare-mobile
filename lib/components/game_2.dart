@@ -78,9 +78,6 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
       if (timeLimit > 0) {
         timeLimit--;
         timerText.text = "Sisa waktu: $timeLimit detik";
-      } else {
-        instruction.text = "Kamu belum berhasil";
-        addLoseButton();
       }
     });
 
