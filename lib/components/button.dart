@@ -22,7 +22,9 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttonWidth = initialButtonWidth < defaultButtonWidth ? defaultButtonWidth : initialButtonWidth;
+    final buttonWidth = initialButtonWidth < defaultButtonWidth
+        ? defaultButtonWidth
+        : initialButtonWidth;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -84,7 +86,8 @@ class CustomButton extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       if (assetImagePath != null)
-                        (Container(
+                        (Expanded(
+                            child: Container(
                           key: Key('icon_container'),
                           width: 18,
                           height: 18,
@@ -94,11 +97,13 @@ class CustomButton extends StatelessWidget {
                               fit: BoxFit.fill,
                             ),
                           ),
-                        )),
+                        ))),
                       if (assetImagePath != null) const SizedBox(width: 10),
-                      Text(text,
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.mediumBold),
+                      Expanded(
+                        child: Text(text,
+                            textAlign: TextAlign.center,
+                            style: AppTextStyles.mediumBold),
+                      ),
                     ],
                   ),
                 ),
