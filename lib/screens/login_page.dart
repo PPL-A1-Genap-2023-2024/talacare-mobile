@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:talacare/components/button.dart';
 import 'package:talacare/helpers/color_palette.dart';
 import 'package:talacare/helpers/text_styles.dart';
 
@@ -20,10 +21,11 @@ class _LoginPageState extends State<LoginPage> {
 
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    if (googleUser == null) return null;
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
+        await googleUser.authentication;
 
     // Create a new credential
     final AuthCredential credential = GoogleAuthProvider.credential(
@@ -66,13 +68,14 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                           padding: const EdgeInsets.all(8.0),
                           width: double.infinity,
-                          child: IconButton(
-                            icon: Image.asset(
-                                'assets/images/Illustrations/Login Button.png'),
-                            onPressed: () {
-                              signInWithGoogle();
-                            },
-                          )),
+                          child: CustomButton(
+                              text: "Masuk dengan Google",
+                              initialButtonWidth: 270,
+                              assetImagePath:
+                                  "assets/images/Illustrations/google.png",
+                              onPressed: () {
+                                signInWithGoogle();
+                              })),
                       Container(
                           padding: const EdgeInsets.all(8.0),
                           width: double.infinity,
@@ -88,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                                     MaterialStateProperty.all<Color>(
                                         AppColors.textColor),
                                 textStyle: MaterialStateProperty.all<TextStyle>(
-                                    AppTextStyles.largeBold),
+                                    AppTextStyles.medium),
                               ),
                               child: Text('Masuk tanpa akun')))
                     ],
