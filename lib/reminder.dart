@@ -1,33 +1,11 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:talacare/models/schedule.dart';
 import 'package:talacare/reminder_create.dart';
 import 'package:talacare/reminder_schedule.dart';
-
-Future<List<Schedule>> fetchSchedule(http.Client httpClient) async {
-  final response = await httpClient.get(
-    Uri.parse('http://localhost:8000/reminder/show'),
-    headers: {"Content-Type": "application/json"},
-  );
-
-  if (response.statusCode == 200) {
-    final jsonData = jsonDecode(response.body);
-    final List<dynamic> scheduleJsonList = jsonData['schedule'];
-
-    final List<Schedule> scheduleList = scheduleJsonList
-        .map((scheduleJson) => Schedule.fromJson(scheduleJson))
-        .toList();
-
-    return scheduleList;
-  } else {
-    throw Exception('Gagal mendapatkan jadwal: ${response.statusCode}');
-  }
-}
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Reminder extends StatelessWidget {
-  final http.Client httpClient;
-  Reminder(this.httpClient);
+  Reminder();
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +16,13 @@ class Reminder extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: ScheduleList(httpClient),
+            child: ScheduleList(),
           ),
           ElevatedButton(
             onPressed: () => showModalBottomSheet(
               context: context,
               builder: (BuildContext context) {
-                return ReminderCreateForm(httpClient: httpClient);
+                return ReminderCreateForm();
               },
             ),
             child: const Text('Tambahkan Jadwal Baru'),

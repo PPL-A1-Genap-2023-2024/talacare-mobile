@@ -25,7 +25,7 @@ String addSchedule(hour, minute, SharedPreferences prefs) {
     if (!prefs.containsKey("hour_$iteration") &&
         !prefs.containsKey("minute_$iteration")) {
       prefs.setInt("hour_$iteration", hour);
-      prefs.setInt("minute_$iteration", hour);
+      prefs.setInt("minute_$iteration", minute);
       return "Berhasil membuat jadwal";
     }
   }
@@ -52,7 +52,7 @@ String editSchedule(hour, minute, id, SharedPreferences prefs) {
   }
 
   prefs.setInt("hour_$id", hour);
-  prefs.setInt("minute_$id", hour);
+  prefs.setInt("minute_$id", minute);
 
   return "Berhasil mengubah jadwal";
 }

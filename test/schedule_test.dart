@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:talacare/shared_preferences_util.dart';
+import 'package:talacare/schedule_util.dart';
 import 'package:mockito/annotations.dart';
 @GenerateNiceMocks([MockSpec<SharedPreferences>()])
-import 'shared_preferences_test.mocks.dart';
+import 'schedule_test.mocks.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

@@ -1,13 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talacare/reminder.dart';
+import 'package:talacare/schedule_util.dart';
 
 class ReminderCreateForm extends StatefulWidget {
-  final http.Client httpClient;
-
-  const ReminderCreateForm({super.key, required this.httpClient});
+  ReminderCreateForm({super.key});
 
   @override
   State<ReminderCreateForm> createState() => _ReminderCreateFormState();
@@ -16,12 +13,16 @@ class ReminderCreateForm extends StatefulWidget {
 class _ReminderCreateFormState extends State<ReminderCreateForm> {
   final _formKey = GlobalKey<FormState>();
   TimeOfDay schedule = TimeOfDay(hour: 0, minute: 0);
-  late http.Client httpClient;
+  late SharedPreferences prefs;
 
   @override
   void initState() {
     super.initState();
-    httpClient = widget.httpClient;
+    initPrefs();
+  }
+
+  Future<void> initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
   }
 
   Future<void> _selectSchedule(BuildContext context) async {
@@ -63,32 +64,18 @@ class _ReminderCreateFormState extends State<ReminderCreateForm> {
               ),
               ElevatedButton(
                   onPressed: () async {
-                    //TODO: Possibly refactor this and django backend to use json instead of from data
-                    final response = await httpClient.post(
-                        Uri.parse('http://localhost:8000/reminder/create'),
-                        headers: <String, String>{
-                          'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: <String, String>{
-                          "hour": schedule.hour.toString(),
-                          "minute": schedule.minute.toString(),
-                        });
-                    final Map<String, dynamic> responseBody =
-                        jsonDecode(response.body);
-                    if (response.statusCode == 200) {
+                    final response =
+                        addSchedule(schedule.hour, schedule.minute, prefs);
+                    if (response == "Berhasil membuat jadwal") {
                       Navigator.pop(context);
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => Reminder(httpClient)),
+                        MaterialPageRoute(builder: (context) => Reminder()),
                       );
                     }
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content:
-                          Text(responseBody['message']), // Snackbar message
-                      duration: Duration(
-                          seconds:
-                              2), // Duration for which the Snackbar will be displayed
+                      content: Text(response),
+                      duration: Duration(seconds: 2),
                     ));
                   },
                   child: const Text("Buat Jadwal"))
