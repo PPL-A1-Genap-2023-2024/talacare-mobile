@@ -93,6 +93,11 @@ void main() {
           expect(game_2.timeLimit, 30);
           game_2.update(1.0);
           expect(game_2.timeLimit, 29);
+          game_2.update(29.0);
+          final instructionText = game_2.instruction.text;
+
+          expect(instructionText, "Kamu belum berhasil");
+          expect(game_2.timerStarted, false);
       },
     );
     testWithGame<TalaCare>(
