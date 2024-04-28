@@ -79,7 +79,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
         timeLimit--;
         timerText.text = "Sisa waktu: $timeLimit detik";
       } else {
-        instruction.text = "Kamu belum berhasil ??";
+        instruction.text = "Kamu belum berhasil";
         addLoseButton();
       }
     });
@@ -99,7 +99,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     if (timerStarted) {
       countDown.update(dt);
       if (timeLimit <= 0) {
-        instruction.text = "Kamu belum berhasil ??";
+        instruction.text = "Kamu belum berhasil";
         addLoseButton();
       }
     }
