@@ -69,7 +69,7 @@ void main() {
   });
   group('HospitalPuzzle Timer Test', () {
     testWithGame<TalaCare>(
-      'HospitalPuzzle Timer Test Timer starts with 30 seconds and  decreases by 1 second each update',
+      'HospitalPuzzle Timer Test Timer starts with 10 seconds and  decreases by 1 second each update, and back to 10 seconds if success drag each object',
       TalaCare.new,
       (game) async {
          final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
@@ -90,10 +90,13 @@ void main() {
           game.update(5);
           await game.ready();
           final game_2 = game.children.query<HospitalPuzzle>().first;
-          expect(game_2.timeLimit, 30);
+          expect(game_2.timeLimit, 10);
           game_2.update(1.0);
-          expect(game_2.timeLimit, 29);
-          game_2.update(29.0);
+          expect(game_2.timeLimit, 9);
+          game_2.update(9.0);
+          game_2.updateScore();
+          expect(game_2.timeLimit, 10);
+          game_2.update(10.0);
           final instructionText = game_2.instruction.text;
 
           expect(instructionText, "Kamu belum berhasil");
