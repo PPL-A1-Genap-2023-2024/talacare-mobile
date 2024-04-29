@@ -97,6 +97,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
       countDown.update(dt);
       if (timeLimit <= 0) {
         instruction.text = "Kamu belum berhasil";
+        draggableContainer.disableDragging();
         addLoseButton();
       }
     }

@@ -14,6 +14,7 @@ class DraggableItem extends SpriteComponent
         DragCallbacks {
   final Item item;
   late Vector2 initialPosition;
+  bool isDraggable = true;
 
   DraggableItem({required this.item, required super.position});
 
@@ -29,11 +30,13 @@ class DraggableItem extends SpriteComponent
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
+    if (!isDraggable) return;
     position += event.localDelta;
   }
 
   @override
   Future<void> onDragEnd(DragEndEvent event) async {
+    if (!isDraggable) return;
     super.onDragEnd(event);
     await Future.delayed(Duration(milliseconds: 50));
     position = Vector2(initialPosition.x, initialPosition.y);
