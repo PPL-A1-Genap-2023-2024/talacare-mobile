@@ -114,5 +114,23 @@ void main() {
       expect(world.score, 0);
       expect(world.instruction.text, "Belum Cocok. Ayo Coba Lagi!");
     });
+
+    testWithGame<TalaCare>(
+      'disableDragging sets isDraggable to false for all DraggableItems',
+      TalaCare.new, (game) async {
+        await game.ready();
+        game.currentGame = 2;
+        game.switchGame(reason: DialogReason.enterHospital);
+        game.update(5);
+        await game.ready();
+        final world = game.children.query<HospitalPuzzle>().first;
+        world.draggableContainer.disableDragging();
+        world.draggableContainer.children.forEach((child) {
+          if (child is DraggableItem) {
+            expect(child.isDraggable, false);
+          }
+        });
+      },
+    );
   });
 }
