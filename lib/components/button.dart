@@ -2,29 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:talacare/helpers/color_palette.dart';
 import 'package:talacare/helpers/text_styles.dart';
 
+enum ButtonSize { small, medium, large }
+
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-  final double initialButtonWidth;
-  final double buttonHeight;
+  final ButtonSize size;
   final String? assetImagePath;
-  static const double defaultButtonWidth = 270;
-  static const double defaultButtonHeight = 72;
 
   const CustomButton({
     Key? key,
     required this.text,
     required this.onPressed,
-    this.initialButtonWidth = defaultButtonWidth,
-    this.buttonHeight = defaultButtonHeight,
+    this.size = ButtonSize.medium,
     this.assetImagePath,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final buttonWidth = initialButtonWidth < defaultButtonWidth
-        ? defaultButtonWidth
-        : initialButtonWidth;
+    double buttonWidth;
+    double buttonHeight = 72;
+
+    switch (size) {
+      case ButtonSize.small:
+        buttonWidth = 150;
+        break;
+      case ButtonSize.medium:
+        buttonWidth = 200;
+        break;
+      case ButtonSize.large:
+        buttonWidth = 270;
+        break;
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -75,36 +85,38 @@ class CustomButton extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
-                left: 9,
-                top: 7,
-                child: Container(
-                  width: buttonWidth - 18,
-                  height: buttonHeight - 27,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      if (assetImagePath != null)
-                        (Expanded(
-                            child: Container(
-                          key: Key('icon_container'),
-                          width: 18,
-                          height: 18,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(assetImagePath!),
-                              fit: BoxFit.fill,
-                            ),
+              Center(
+                child: Transform.translate(
+                  offset: Offset(0, -6),
+                  child: Container(
+                    width: buttonWidth - 18,
+                    height: buttonHeight - 27,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        if (assetImagePath != null)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 9.0),
+                            child: (Container(
+                              key: Key('icon_container'),
+                              width: 18,
+                              height: 18,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage(assetImagePath!),
+                                  fit: BoxFit.fitHeight,
+                                ),
+                              ),
+                            )),
                           ),
-                        ))),
-                      if (assetImagePath != null) const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(text,
-                            textAlign: TextAlign.center,
-                            style: AppTextStyles.mediumBold),
-                      ),
-                    ],
+                        Expanded(
+                          child: Text(text,
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.mediumBold),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
