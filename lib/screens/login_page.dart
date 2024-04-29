@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           child: CustomButton(
                               text: "Masuk dengan Google",
-                              initialButtonWidth: 270,
+                              size: ButtonSize.large,
                               assetImagePath:
                                   "assets/images/Illustrations/google.png",
                               onPressed: () {
@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           child: TextButton(
                               onPressed: () {
-                                Navigator.push(context,
+                                Navigator.pushReplacement(context,
                                     MaterialPageRoute(builder: (context) {
                                   return HomePage();
                                 }));
