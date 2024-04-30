@@ -41,6 +41,9 @@ dependencies:
   firebase_auth: ^4.17.9
   firebase_core: ^2.27.1
   google_sign_in: ^6.2.1
+  just_audio: ^0.9.37
+  just_audio_background: ^0.0.1-beta.11
+  mocktail: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +81,7 @@ flutter:
     - assets/images/Dialog/
     - assets/images/Game_2/
     - assets/images/Button/
+    - assets/audio/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   fonts:

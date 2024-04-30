@@ -30,8 +30,14 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     // Sign in the user with the credential
-    await auth.signInWithCredential(credential);
-    return null;
+    // await auth.signInWithCredential(credential);
+    // return null;
+
+    // Sign in the user with the credential
+    UserCredential userCredential = await auth.signInWithCredential(credential);
+
+    // Return the user credential
+    return userCredential;
   }
 
   @override
@@ -89,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           child: TextButton(
                               onPressed: () {
-                                Navigator.push(context,
+                                Navigator.pushReplacement(context,
                                     MaterialPageRoute(builder: (context) {
                                   return HomePage();
                                 }));

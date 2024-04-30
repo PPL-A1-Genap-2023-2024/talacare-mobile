@@ -1,11 +1,11 @@
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:talacare/main.dart';
-import 'package:talacare/talacare.dart';
-import 'package:talacare/widgets/overlays/pause_button.dart';
-import 'package:talacare/widgets/overlays/pause_menu.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:talacare/widgets/homepage.dart';
+import 'package:mocktail/mocktail.dart';
+
+
+class MockAudioPlayer extends Mock implements AudioPlayer {}
 
 void main() {
   testWidgets('HomePage Play Button', (WidgetTester tester) async {
@@ -25,5 +25,21 @@ void main() {
     // Tap the PlayButton and trigger a navigation.
     await tester.tap(playIcon);
     await tester.pumpAndSettle();
+  });
+
+  testWidgets('Background Music is Playing', (WidgetTester tester) async {
+    // Create a mock AudioPlayer
+    final mockAudioPlayer = MockAudioPlayer();
+
+    // Build your widget
+    await tester.pumpWidget(
+      MaterialApp(
+        home: HomePage(audioPlayer: mockAudioPlayer),
+      ),
+    );
+
+    verify(mockAudioPlayer.setLoopMode(LoopMode.one)).called(1);
+    verify(mockAudioPlayer.setAudioSource(any)).called(1);
+    verify(mockAudioPlayer.play()).called(1);
   });
 }

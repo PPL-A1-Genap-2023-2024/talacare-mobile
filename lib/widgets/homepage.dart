@@ -6,6 +6,7 @@ import 'package:talacare/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:talacare/authentication/screens/login_page.dart';
+import 'package:just_audio/just_audio.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'HomePage';
@@ -38,6 +39,15 @@ class _HomePageState extends State<HomePage> {
 
   String currentCharacter = 'boy';
 
+  AudioPlayer bgm = AudioPlayer();
+
+  void playBackgroundMusic() {
+    AudioSource source = AudioSource.uri(Uri.parse("asset:///assets/audio/mainmen.mp3"));
+    bgm.setLoopMode(LoopMode.one);
+    bgm.setAudioSource(source);
+    bgm.play();
+  }
+
   Future<void> logout() async {
     if (await GoogleSignIn().isSignedIn()) {
       // Either this line
@@ -49,6 +59,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+    // print("currentUserLoggedIn: ${FirebaseAuth.instance.currentUser?.email}");
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -164,14 +175,12 @@ class _HomePageState extends State<HomePage> {
                 ),
                 onPressed: () async {
                   await logout();
-                  if (FirebaseAuth.instance.currentUser == null){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context){
-                          return LoginPage();
-                        })
-                    );
-                  }
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context){
+                        return LoginPage();
+                      })
+                  );
                 },
               ),
             ],
