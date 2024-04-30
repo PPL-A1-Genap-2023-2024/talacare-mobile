@@ -36,6 +36,8 @@ class HomePageState extends State<HomePage> {
     Image.asset("assets/images/Characters_free/girl.png")
   ];
 
+  AudioPlayer bgm = AudioPlayer();
+
   Future<void> logout() async {
     if (await GoogleSignIn().isSignedIn()) {
       // Either this line
@@ -44,9 +46,17 @@ class HomePageState extends State<HomePage> {
     await FirebaseAuth.instance.signOut();
   }
 
+  void playBackgroundMusic() {
+    AudioSource source = AudioSource.uri(Uri.parse("asset:///assets/audio/mainmenu.mp3"));
+    bgm.setLoopMode(LoopMode.one);
+    bgm.setAudioSource(source);
+    bgm.play();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+    playBackgroundMusic();
     // print("currentUserLoggedIn: ${FirebaseAuth.instance.currentUser?.email}");
 
     return MaterialApp(
