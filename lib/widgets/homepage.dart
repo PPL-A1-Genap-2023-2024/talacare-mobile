@@ -24,29 +24,17 @@ class HomePage extends StatefulWidget {
   }
 
   @override
-  State<HomePage> createState() => _HomePageState(playButtonKey: _playButtonKey);
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final GlobalKey playButtonKey;
-  _HomePageState({required this.playButtonKey});
+class HomePageState extends State<HomePage> {
   final CarouselController _controller = CarouselController();
+  String currentCharacter = 'boy';
 
   List<Image> characterSelection = [
     Image.asset("assets/images/Characters_free/boy.png"),
     Image.asset("assets/images/Characters_free/girl.png")
   ];
-
-  String currentCharacter = 'boy';
-
-  AudioPlayer bgm = AudioPlayer();
-
-  void playBackgroundMusic() {
-    AudioSource source = AudioSource.uri(Uri.parse("asset:///assets/audio/mainmen.mp3"));
-    bgm.setLoopMode(LoopMode.one);
-    bgm.setAudioSource(source);
-    bgm.play();
-  }
 
   Future<void> logout() async {
     if (await GoogleSignIn().isSignedIn()) {
@@ -146,7 +134,7 @@ class _HomePageState extends State<HomePage> {
 
               /* Tombol Mulai */
               IconButton(
-                key: playButtonKey,
+                key: widget.getPlayButtonKey(),
                 icon: Image.asset(
                   "assets/images/Button/tombol_mulai.png",
                 ),

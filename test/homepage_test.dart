@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:talacare/widgets/homepage.dart';
-import 'package:mocktail/mocktail.dart';
-
-
-class MockAudioPlayer extends Mock implements AudioPlayer {}
 
 void main() {
   testWidgets('HomePage Play Button', (WidgetTester tester) async {
@@ -27,19 +22,16 @@ void main() {
     await tester.pumpAndSettle();
   });
 
-  testWidgets('Background Music is Playing', (WidgetTester tester) async {
-    // Create a mock AudioPlayer
-    final mockAudioPlayer = MockAudioPlayer();
+  testWidgets('Background Music is playing on HomePage', (WidgetTester tester) async {
+    // Arrange
+    final subject = HomePage();
 
-    // Build your widget
-    await tester.pumpWidget(
-      MaterialApp(
-        home: HomePage(audioPlayer: mockAudioPlayer),
-      ),
-    );
+    await tester.pumpWidget(MaterialApp(
+      home: subject,
+    ));
 
-    verify(mockAudioPlayer.setLoopMode(LoopMode.one)).called(1);
-    verify(mockAudioPlayer.setAudioSource(any)).called(1);
-    verify(mockAudioPlayer.play()).called(1);
+    final subjectState = tester.state<HomePageState>(find.byType(HomePage));
+    expect(subjectState.bgm, isNotNull);
+    expect(subjectState.bgm.playing, true);
   });
 }
