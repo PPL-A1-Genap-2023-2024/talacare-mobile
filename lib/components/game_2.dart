@@ -19,7 +19,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
   late final TextComponent timerText; 
   late final Viewport screen;
   int score = 0;
-  int timeLimit = 30;
+  int timeLimit = 10;
   late Timer countDown;
   bool timerStarted = false;
 
@@ -111,10 +111,12 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
       draggableContainer.addSecondWaveItems();
     }
     if (score < 5) {
+      timeLimit = 10;
       silhouetteContainer.addNextItem();
     } else {
       instruction.text = "Transfusi darah berhasil!";
       addExitButton();
+      
     }
   }
 
