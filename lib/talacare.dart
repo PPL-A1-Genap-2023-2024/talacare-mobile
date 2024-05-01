@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
+import 'package:flutter/material.dart';
 import 'package:talacare/components/event.dart';
 import 'package:talacare/components/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
@@ -15,7 +16,8 @@ import 'helpers/dialog_reason.dart';
 
 enum GameStatus { playing, victory, transition }
 
-class TalaCare extends FlameGame with HasCollisionDetection {
+class TalaCare extends FlameGame
+    with HasCollisionDetection, WidgetsBindingObserver {
   String playedCharacter;
   Player player = Player(character: 'boy');
   late CameraComponent camOne;
@@ -28,7 +30,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   late GameDialog confirmation;
   late int score;
   late DateTime startTimestamp;
-  late DateTime endTimestamp;
+  int totalTime = 0;
   @override
   late World world;
   late AlignComponent eventAnchor;
@@ -63,6 +65,27 @@ class TalaCare extends FlameGame with HasCollisionDetection {
       addAll([camera, world]);
     }
     return super.onLoad();
+  }
+
+  @override
+  void pauseEngine() {
+    super.pauseEngine();
+    totalTime += DateTime.now().difference(startTimestamp).inMilliseconds;
+  }
+
+  @override
+  void resumeEngine() {
+    super.resumeEngine();
+    startTimestamp = DateTime.now();
+  }
+
+  void lifecycleStateChange(AppLifecycleState state) {
+    super.lifecycleStateChange(state);
+    if (state == AppLifecycleState.paused && !paused) {
+      pauseEngine();
+    } else if (state == AppLifecycleState.resumed) {
+      resumeEngine();
+    }
   }
 
   void switchGame({reason = DialogReason.enterHospital}) {
@@ -162,7 +185,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   }
 
   void victory() {
-    endTimestamp = DateTime.now();
+    totalTime += DateTime.now().difference(startTimestamp).inMilliseconds;
     status = GameStatus.victory;
     if (!eventIsActive) {
       showConfirmation(DialogReason.gameVictory);
