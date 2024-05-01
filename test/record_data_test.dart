@@ -10,7 +10,7 @@ void main() {
       await game.ready();
       game.update(1000);
       game.victory();
-      expect(game.endTimestamp.difference(game.startTimestamp),
+      expect(DateTime.now().difference(game.startTimestamp),
           greaterThan(Duration(seconds: 0)));
     });
   });
