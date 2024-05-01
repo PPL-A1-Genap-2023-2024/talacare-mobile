@@ -22,6 +22,9 @@ class DraggableItem extends SpriteComponent
     anchor = Anchor.center;
     initialPosition = position;
     sprite = Sprite(game.images.fromCache('Game_2/item_${item.name}.png'));
+    if (size.x < 50) {
+      scale = Vector2.all(1.5);
+    }
     add(RectangleHitbox());
     initialPosition = Vector2(position.x, position.y);
     return super.onLoad();
@@ -29,7 +32,7 @@ class DraggableItem extends SpriteComponent
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
-    position += event.localDelta;
+    position += Vector2(scale.x * event.localDelta.x, scale.y * event.localDelta.y);
   }
 
   @override
