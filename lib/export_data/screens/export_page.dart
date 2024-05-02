@@ -1,15 +1,18 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:talacare/config.dart';
 
 class ExportPage extends StatefulWidget {
-  ExportPage({Key? key, http.Client? client})
+  ExportPage({Key? key, http.Client? client, String recipientEmail = ''})
       : client = client ?? http.Client(),
+        recipientEmail = recipientEmail,
         super(key: key);
 
   final GlobalKey _backButtonKey = GlobalKey();
   final GlobalKey _downloadButtonKey = GlobalKey();
   final http.Client client;
+  final String recipientEmail;
 
   GlobalKey getBackButtonKey() {
     return _backButtonKey;
@@ -23,23 +26,35 @@ class ExportPage extends StatefulWidget {
   State<ExportPage> createState() => _ExportPageState(
       backButtonKey: _backButtonKey,
       downloadButtonKey: _downloadButtonKey,
-      client: client);
+      client: client,
+      recipientEmail: recipientEmail);
 }
 
 class _ExportPageState extends State<ExportPage> {
   final GlobalKey backButtonKey;
   final GlobalKey downloadButtonKey;
   final http.Client client;
+  final String recipientEmail;
 
-  _ExportPageState(
-      {required this.backButtonKey,
-      required this.downloadButtonKey,
-      required this.client});
+  _ExportPageState({
+    required this.backButtonKey,
+    required this.downloadButtonKey,
+    required this.client,
+    required this.recipientEmail,
+  });
 
   Future<void> fetchData(http.Client client, BuildContext context) async {
-    Uri url = Uri.parse(urlBackEnd);
+    Uri url = Uri.parse(urlBackEnd + '/export/send_email/');
     try {
-      http.Response response = await client.get(url);
+      http.Response response = await client.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'recipient_email': recipientEmail,
+        }),
+      );
       if (response.statusCode == 200) {
         showDialogMessage(context, "Berhasil Export Data");
       } else {
