@@ -79,6 +79,7 @@ class TalaCare extends FlameGame
     startTimestamp = DateTime.now();
   }
 
+  @override
   void lifecycleStateChange(AppLifecycleState state) {
     super.lifecycleStateChange(state);
     if (state == AppLifecycleState.paused && !paused) {
