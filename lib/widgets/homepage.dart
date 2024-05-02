@@ -173,6 +173,7 @@ class HomePageState extends State<HomePage> {
                 ),
                 onPressed: () async {
                   await logout();
+                  await bgm.stop();
                   Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context){
