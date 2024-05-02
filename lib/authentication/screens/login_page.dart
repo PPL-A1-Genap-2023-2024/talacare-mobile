@@ -42,7 +42,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("currentUser: ${FirebaseAuth.instance.currentUser?.email}");
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFFBC9CCA),
