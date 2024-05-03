@@ -40,24 +40,30 @@ class HomePageState extends State<HomePage> {
 
   Future<void> logout() async {
     if (await GoogleSignIn().isSignedIn()) {
-      // Either this line
-      GoogleSignIn().signOut();
+      await GoogleSignIn().signOut();
+      await FirebaseAuth.instance.signOut();
     }
-    await FirebaseAuth.instance.signOut();
   }
 
   void playBackgroundMusic() {
     AudioSource source = AudioSource.uri(Uri.parse("asset:///assets/audio/mainmenu.mp3"));
     bgm.setLoopMode(LoopMode.one);
     bgm.setAudioSource(source);
-    bgm.play();
+    if (bgm.playing == false){
+      bgm.play();
+    }
+  }
+
+  @override
+  initState() {
+    super.initState();
+
+    playBackgroundMusic();
   }
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    playBackgroundMusic();
-    // print("currentUserLoggedIn: ${FirebaseAuth.instance.currentUser?.email}");
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
