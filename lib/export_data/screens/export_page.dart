@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:talacare/config.dart';
 
 class ExportPage extends StatefulWidget {
-  ExportPage({Key? key, http.Client? client, String recipientEmail = ''})
+  ExportPage({Key? key, http.Client? client, String? recipientEmail})
       : client = client ?? http.Client(),
-        recipientEmail = recipientEmail,
+        recipientEmail = recipientEmail ?? '',
         super(key: key);
 
   final GlobalKey _backButtonKey = GlobalKey();
@@ -44,7 +44,7 @@ class _ExportPageState extends State<ExportPage> {
   });
 
   Future<void> fetchData(http.Client client, BuildContext context) async {
-    Uri url = Uri.parse(urlBackEnd + '/export/send_email/');
+    Uri url = Uri.parse('${urlBackEnd}/export/send_email/');
     try {
       http.Response response = await client.post(
         url,
