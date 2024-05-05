@@ -45,7 +45,7 @@ class ScheduleListState extends State<ScheduleList> {
                       return ReminderEditForm(
                         currentHour: schedule.hour,
                         currentMinute: schedule.minute,
-                        id: index + 1,
+                        id: schedule_list[index][1],
                       );
                     },
                   ),
