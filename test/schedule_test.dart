@@ -6,16 +6,25 @@ import 'package:talacare/schedule_util.dart';
 import 'package:mockito/annotations.dart';
 @GenerateNiceMocks([MockSpec<SharedPreferences>()])
 import 'schedule_test.mocks.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  group('Schedule Functions', () {
+
+  group('Schedule_Functions', () {
     late MockSharedPreferences mockPrefs;
 
     setUp(() {
       mockPrefs = new MockSharedPreferences();
+      tz.initializeTimeZones();
+      /*when(NotificationUtilities.notificationsPlugin.initialize(
+              InitializationSettings(
+                  android: AndroidInitializationSettings('launch_background'))))
+          .thenAnswer((_) => Completer<bool>().future);
+      NotificationUtilities.initNotification();*/
     });
-    test('Add schedule', () {
+    test('Add schedule', () async {
+      //when(NotificationUtilities.scheduleReminder(1, 8, 30)).thenAnswer((realInvocation) => Completer<void>().future);
       when(mockPrefs.containsKey("hour_1")).thenReturn(false);
       when(mockPrefs.containsKey("minute_1")).thenReturn(false);
       when(mockPrefs.getInt("hour_1")).thenReturn(null);
@@ -31,7 +40,7 @@ void main() {
       expect(schedule.length, 1);
     });
 
-    test('Edit_schedule', () {
+    test('Edit schedule', () {
       addSchedule(10, 15, mockPrefs);
 
       String result = editSchedule(11, 30, 1, mockPrefs);
@@ -42,8 +51,8 @@ void main() {
       List schedule = fetchSchedule(mockPrefs);
 
       expect(schedule.length, 1);
-      expect(schedule[0].hour, 11);
-      expect(schedule[0].minute, 30);
+      expect(schedule[0][0].hour, 11);
+      expect(schedule[0][0].minute, 30);
     });
 
     test('Deleting a schedule', () {
