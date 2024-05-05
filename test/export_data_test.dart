@@ -6,6 +6,7 @@ import 'package:mockito/annotations.dart';
 import 'package:talacare/config.dart';
 import 'package:talacare/export_data/screens/export_page.dart';
 import 'package:mockito/mockito.dart';
+import 'package:talacare/helpers/role_checker.dart';
 
 import 'export_data_test.mocks.dart';
 
@@ -126,5 +127,77 @@ void main() {
     await tester.tap(button);
     await tester.pump();
     expect(find.text('Gagal Export Data'), findsNothing);
+  });
+  testWidgets('Check Role Test (User)', (WidgetTester tester) async {
+    Uri uriExample = Uri.parse(urlBackEnd + '/auth/check_role/');
+    MockClient client = MockClient();
+    when(client.post(
+      uriExample,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': '',
+      }),
+    )).thenAnswer((_) async =>
+        Future.value(http.Response('{"email":"","role":"USER"}', 200)));
+    expect(await checkRole(client, ''), false);
+    verify(client.post(
+      uriExample,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': '',
+      }),
+    )).called(1);
+  });
+  testWidgets('Check Role Test (Admin)', (WidgetTester tester) async {
+    Uri uriExample = Uri.parse(urlBackEnd + '/auth/check_role/');
+    MockClient client = MockClient();
+    when(client.post(
+      uriExample,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': '',
+      }),
+    )).thenAnswer((_) async =>
+        Future.value(http.Response('{"email":"","role":"ADMIN"}', 200)));
+    expect(await checkRole(client, ''), true);
+    verify(client.post(
+      uriExample,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': '',
+      }),
+    )).called(1);
+  });
+  testWidgets('Check Role Test (Server Not Responding)',
+      (WidgetTester tester) async {
+    Uri uriExample = Uri.parse(urlBackEnd + '/auth/check_role/');
+    MockClient client = MockClient();
+    when(client.post(
+      uriExample,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': '',
+      }),
+    )).thenAnswer((_) async => throw Exception(''));
+    expect(await checkRole(client, ''), false);
+    verify(client.post(
+      uriExample,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': '',
+      }),
+    )).called(1);
   });
 }
