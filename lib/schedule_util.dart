@@ -8,10 +8,10 @@ List fetchSchedule(SharedPreferences prefs) {
     int? hour = prefs.getInt("hour_$iteration");
     int? minute = prefs.getInt("minute_$iteration");
     if (hour != null && minute != null) {
-      schedule.add(TimeOfDay(hour: hour, minute: minute));
+      schedule.add([TimeOfDay(hour: hour, minute: minute), i]);
     }
   }
-
+  if (schedule.length > 1) schedule = sortSchedule(schedule);
   return schedule;
 }
 
@@ -37,8 +37,11 @@ bool checkIfDifferentSchedule(hour, minute, SharedPreferences prefs) {
     var iteration = i.toString();
     if (prefs.containsKey("hour_$iteration") &&
         prefs.containsKey("minute_$iteration")) {
-      if (!(prefs.getInt("hour_$iteration") == hour) &&
-          !(prefs.getInt("minute_$iteration") == minute)) {
+      if (prefs.getInt("hour_$iteration") == hour &&
+          prefs.getInt("minute_$iteration") == minute) {
+        print(iteration);
+        print(prefs.getInt("hour_$iteration"));
+        print(prefs.getInt("minute_$iteration"));
         return false;
       }
     }
@@ -62,4 +65,22 @@ String deleteSchedule(id, SharedPreferences prefs) {
   prefs.remove("minute_$id");
 
   return "Berhasil menghapus jadwal";
+}
+
+List sortSchedule(List schedule) {
+  for (int i = 0; i < schedule.length - 1; i++) {
+    int minimal_index = i;
+    for (int j = i + 1; j < schedule.length; j++)
+      if (schedule[j][0].hour < schedule[minimal_index][0].hour)
+        minimal_index = j;
+      else if (schedule[j][0].hour == schedule[minimal_index][0].hour &&
+          schedule[j][0].minute < schedule[minimal_index][0].minute)
+        minimal_index = j;
+
+    List temp = schedule[minimal_index];
+    schedule[minimal_index] = schedule[i];
+    schedule[i] = temp;
+  }
+  return schedule;
+  
 }
