@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:talacare/export_data/screens/export_page.dart';
 import 'package:talacare/helpers/playableCharacters.dart';
 import 'package:talacare/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -12,11 +11,6 @@ class HomePage extends StatefulWidget {
 
   final GlobalKey _playButtonKey = GlobalKey();
   final GlobalKey _settingsButtonKey = GlobalKey();
-  final GlobalKey _exportButtonKey = GlobalKey();
-
-  GlobalKey getExportButtonKey() {
-    return _exportButtonKey;
-  }
 
   GlobalKey getPlayButtonKey() {
     return _playButtonKey;
@@ -27,14 +21,13 @@ class HomePage extends StatefulWidget {
   }
 
   @override
-  State<HomePage> createState() => _HomePageState(
-      playButtonKey: _playButtonKey, exportButtonKey: _exportButtonKey);
+  State<HomePage> createState() =>
+      _HomePageState(playButtonKey: _playButtonKey);
 }
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey playButtonKey;
-  final GlobalKey exportButtonKey;
-  _HomePageState({required this.playButtonKey, required this.exportButtonKey});
+  _HomePageState({required this.playButtonKey});
 
   List<Image> characterSelection = [
     Image.asset("assets/images/Characters_free/boy.png"),
@@ -79,16 +72,6 @@ class _HomePageState extends State<HomePage> {
                 icon: Image.asset("assets/images/Button/SettingButton.png"),
                 iconSize: 50,
                 onPressed: () => (),
-              ),
-              IconButton(
-                key: exportButtonKey,
-                icon: Image.asset("assets/images/Button/SettingButton.png"),
-                iconSize: 50,
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ExportPage();
-                  }));
-                },
               ),
             ],
             backgroundColor: Colors.transparent,
