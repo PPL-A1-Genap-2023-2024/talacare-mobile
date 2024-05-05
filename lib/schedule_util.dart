@@ -49,7 +49,6 @@ bool checkIfDifferentSchedule(hour, minute, SharedPreferences prefs) {
 }
 
 String editSchedule(hour, minute, id, SharedPreferences prefs) {
-  print(id.toString());
   if (!checkIfDifferentSchedule(hour, minute, prefs)) {
     return "Sudah ada jadwal dengan waktu yang sama, silahkan pilih waktu yang berbeda";
   }
