@@ -58,7 +58,7 @@ class AuthenticationWrapper extends StatelessWidget {
                 if (isAdminSnapshot.data!) {
                   return ExportPage(recipientEmail: email);
                 } else {
-                  return HomePage();
+                  return HomePage(email: email);
                 }
               } else {
                 return CircularProgressIndicator();
@@ -75,14 +75,17 @@ class AuthenticationWrapper extends StatelessWidget {
 
 class TalaCareGame extends StatelessWidget {
   final String playedCharacter;
-  TalaCareGame({required this.playedCharacter});
+  final String email;
+  TalaCareGame({required this.playedCharacter, this.email = ''});
 
   @override
   Widget build(BuildContext context) {
     final game = TalaCare(playedCharacter: playedCharacter);
 
     return GameWidget(
-      game: kDebugMode ? TalaCare(playedCharacter: playedCharacter) : game,
+      game: kDebugMode
+          ? TalaCare(playedCharacter: playedCharacter, email: email)
+          : game,
       initialActiveOverlays: const [PauseButton.id],
       overlayBuilderMap: {
         PauseButton.id: (BuildContext context, TalaCare gameRef) => PauseButton(

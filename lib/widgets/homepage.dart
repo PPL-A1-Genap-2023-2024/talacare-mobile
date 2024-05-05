@@ -7,7 +7,8 @@ import 'package:talacare/authentication/screens/login_page.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'HomePage';
-  HomePage({super.key});
+  final String email;
+  HomePage({super.key, this.email = ''});
 
   final GlobalKey _playButtonKey = GlobalKey();
   final GlobalKey _settingsButtonKey = GlobalKey();
@@ -22,12 +23,13 @@ class HomePage extends StatefulWidget {
 
   @override
   State<HomePage> createState() =>
-      _HomePageState(playButtonKey: _playButtonKey);
+      _HomePageState(playButtonKey: _playButtonKey, email: email);
 }
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey playButtonKey;
-  _HomePageState({required this.playButtonKey});
+  final String email;
+  _HomePageState({required this.playButtonKey, required this.email});
 
   List<Image> characterSelection = [
     Image.asset("assets/images/Characters_free/boy.png"),
@@ -100,7 +102,8 @@ class _HomePageState extends State<HomePage> {
                 iconSize: 50,
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return TalaCareGame(playedCharacter: currentCharacter);
+                    return TalaCareGame(
+                        playedCharacter: currentCharacter, email: email);
                   }));
                 },
               )

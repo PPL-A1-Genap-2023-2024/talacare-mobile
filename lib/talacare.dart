@@ -7,6 +7,7 @@ import 'package:talacare/components/event.dart';
 import 'package:talacare/components/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/components/game_1.dart';
+import 'package:talacare/helpers/data_sender.dart';
 import 'components/transition.dart';
 import 'helpers/directions.dart';
 import 'package:talacare/components/player.dart';
@@ -30,7 +31,8 @@ class TalaCare extends FlameGame
   late GameDialog confirmation;
   late int score;
   late DateTime startTimestamp;
-  int totalTime = 0;
+  late int totalTime;
+  late bool haveSentRecap;
   @override
   late World world;
   late AlignComponent eventAnchor;
@@ -39,7 +41,11 @@ class TalaCare extends FlameGame
   bool confirmationIsActive = false;
 
   final bool isWidgetTesting;
-  TalaCare({this.isWidgetTesting = false, this.playedCharacter = 'boy'});
+  final String email;
+  TalaCare(
+      {this.isWidgetTesting = false,
+      this.email = '',
+      this.playedCharacter = 'boy'});
 
   @override
   void update(double dt) {
@@ -52,6 +58,8 @@ class TalaCare extends FlameGame
   @override
   FutureOr<void> onLoad() async {
     startTimestamp = DateTime.now();
+    totalTime = 0;
+    haveSentRecap = false;
     if (!isWidgetTesting) {
       playerHealth = 4;
       score = 0;
@@ -186,11 +194,20 @@ class TalaCare extends FlameGame
   }
 
   void victory() {
-    totalTime += DateTime.now().difference(startTimestamp).inMilliseconds;
+    if (!haveSentRecap) {
+      sendRecap();
+      haveSentRecap = true;
+    }
+
     status = GameStatus.victory;
     if (!eventIsActive) {
       showConfirmation(DialogReason.gameVictory);
     }
+  }
+
+  void sendRecap() {
+    totalTime += DateTime.now().difference(startTimestamp).inMilliseconds;
+    sendData(email: email, totalTime: totalTime);
   }
 
   void playAgain() {
