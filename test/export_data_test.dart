@@ -22,7 +22,7 @@ void main() {
     expect(getButtons, findsExactly(2));
   });
   testWidgets('Export Data Sucess Test', (WidgetTester tester) async {
-    Uri uriExample = Uri.parse('${urlBackEnd}/export/send_email/');
+    Uri uriExample = Uri.parse('$urlBackEnd/export/send_email/');
     MockClient client = MockClient();
     when(client.post(
       uriExample,
@@ -56,7 +56,7 @@ void main() {
   });
   testWidgets('Export Data Failed Test (Wrong Request)',
       (WidgetTester tester) async {
-    Uri uriExample = Uri.parse('${urlBackEnd}/export/send_email/');
+    Uri uriExample = Uri.parse('$urlBackEnd/export/send_email/');
     MockClient client = MockClient();
     when(client.post(
       uriExample,
@@ -91,7 +91,7 @@ void main() {
   });
   testWidgets('Export Data Failed (Server Not Responding)',
       (WidgetTester tester) async {
-    Uri uriExample = Uri.parse('${urlBackEnd}/export/send_email/');
+    Uri uriExample = Uri.parse('$urlBackEnd/export/send_email/');
     MockClient client = MockClient();
     when(client.post(
       uriExample,
@@ -129,7 +129,7 @@ void main() {
     expect(find.text('Gagal Export Data'), findsNothing);
   });
   testWidgets('Check Role Test (User)', (WidgetTester tester) async {
-    Uri uriExample = Uri.parse('${urlBackEnd}/auth/check_role/');
+    Uri uriExample = Uri.parse('$urlBackEnd/auth/check_role/');
     MockClient client = MockClient();
     when(client.post(
       uriExample,
@@ -153,7 +153,7 @@ void main() {
     )).called(1);
   });
   testWidgets('Check Role Test (Admin)', (WidgetTester tester) async {
-    Uri uriExample = Uri.parse('${urlBackEnd}/auth/check_role/');
+    Uri uriExample = Uri.parse('$urlBackEnd/auth/check_role/');
     MockClient client = MockClient();
     when(client.post(
       uriExample,
@@ -178,7 +178,7 @@ void main() {
   });
   testWidgets('Check Role Test (Server Not Responding)',
       (WidgetTester tester) async {
-    Uri uriExample = Uri.parse('${urlBackEnd}/auth/check_role/');
+    Uri uriExample = Uri.parse('$urlBackEnd/auth/check_role/');
     MockClient client = MockClient();
     when(client.post(
       uriExample,

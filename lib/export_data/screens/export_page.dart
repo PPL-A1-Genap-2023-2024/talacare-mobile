@@ -44,7 +44,7 @@ class _ExportPageState extends State<ExportPage> {
   });
 
   Future<void> fetchData(http.Client client, BuildContext context) async {
-    Uri url = Uri.parse('${urlBackEnd}/export/send_email/');
+    Uri url = Uri.parse('$urlBackEnd/export/send_email/');
     try {
       http.Response response = await client.post(
         url,

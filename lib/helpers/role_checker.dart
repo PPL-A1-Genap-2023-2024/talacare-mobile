@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:talacare/config.dart';
 
 Future<bool> checkRole(http.Client client, String email) async {
-  Uri url = Uri.parse('${urlBackEnd}/auth/check_role/');
+  Uri url = Uri.parse('$urlBackEnd/auth/check_role/');
   try {
     http.Response response = await client.post(
       url,
