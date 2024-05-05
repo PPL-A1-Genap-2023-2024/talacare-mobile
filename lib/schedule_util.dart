@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talacare/notification_util.dart';
 
 List fetchSchedule(SharedPreferences prefs) {
   var schedule = [];
@@ -17,19 +18,20 @@ List fetchSchedule(SharedPreferences prefs) {
 
 String addSchedule(hour, minute, SharedPreferences prefs) {
   if (!checkIfDifferentSchedule(hour, minute, prefs)) {
-    return "Sudah ada jadwal yang sama";
+    return "Sudah ada jadwal dengan waktu yang sama, silahkan pilih waktu yang berbeda";
   }
 
   for (var i = 1; i < 4; i++) {
     var iteration = i.toString();
     if (!prefs.containsKey("hour_$iteration") &&
         !prefs.containsKey("minute_$iteration")) {
+      NotificationUtilities.scheduleReminder(i, hour, minute);
       prefs.setInt("hour_$iteration", hour);
       prefs.setInt("minute_$iteration", minute);
       return "Berhasil membuat jadwal";
     }
   }
-  return "Jadwal hanya maksimal 3";
+  return "Jadwal hanya maksimal 3, silahkan ubah atau hapus jadwal lain";
 }
 
 bool checkIfDifferentSchedule(hour, minute, SharedPreferences prefs) {
@@ -39,9 +41,6 @@ bool checkIfDifferentSchedule(hour, minute, SharedPreferences prefs) {
         prefs.containsKey("minute_$iteration")) {
       if (prefs.getInt("hour_$iteration") == hour &&
           prefs.getInt("minute_$iteration") == minute) {
-        print(iteration);
-        print(prefs.getInt("hour_$iteration"));
-        print(prefs.getInt("minute_$iteration"));
         return false;
       }
     }
@@ -50,10 +49,12 @@ bool checkIfDifferentSchedule(hour, minute, SharedPreferences prefs) {
 }
 
 String editSchedule(hour, minute, id, SharedPreferences prefs) {
+  print(id.toString());
   if (!checkIfDifferentSchedule(hour, minute, prefs)) {
-    return "Sudah ada jadwal yang sama";
+    return "Sudah ada jadwal dengan waktu yang sama, silahkan pilih waktu yang berbeda";
   }
-
+  NotificationUtilities.cancelNotification(id);
+  NotificationUtilities.scheduleReminder(id, hour, minute);
   prefs.setInt("hour_$id", hour);
   prefs.setInt("minute_$id", minute);
 
@@ -61,6 +62,7 @@ String editSchedule(hour, minute, id, SharedPreferences prefs) {
 }
 
 String deleteSchedule(id, SharedPreferences prefs) {
+  NotificationUtilities.cancelNotification(id);
   prefs.remove("hour_$id");
   prefs.remove("minute_$id");
 
@@ -82,5 +84,4 @@ List sortSchedule(List schedule) {
     schedule[i] = temp;
   }
   return schedule;
-  
 }

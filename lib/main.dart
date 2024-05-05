@@ -1,9 +1,10 @@
 import 'dart:developer';
-
+import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:talacare/notification_util.dart';
 import 'package:talacare/reminder.dart';
 import 'package:talacare/talacare.dart';
 import 'package:http/http.dart' as http;
@@ -18,28 +19,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  //await FirebaseMessaging.instance.setAutoInitEnabled(true);
-  //final fcmToken = await FirebaseMessaging.instance.getToken();
 
-  NotificationSettings settings =
-      await FirebaseMessaging.instance.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
-
-  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    print('User granted permission');
-  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-    print('User granted provisional permission');
-  } else {
-    print('User declined or has not accepted permission');
-  }
-
+  NotificationUtilities.initNotification();
+  tz.initializeTimeZones();
+  NotificationUtilities.requestPermission();
   runApp(MyApp()); //TODO:REMOVE THIS
 
   /*

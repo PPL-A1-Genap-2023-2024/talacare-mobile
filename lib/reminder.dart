@@ -24,7 +24,7 @@ class Reminder extends StatelessWidget {
               },
             ),
             child: const Text('Tambahkan Jadwal Baru'),
-          ),
+          )
         ],
       ),
     );
