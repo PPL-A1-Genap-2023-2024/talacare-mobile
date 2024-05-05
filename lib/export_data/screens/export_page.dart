@@ -73,6 +73,7 @@ class _ExportPageState extends State<ExportPage> {
           title: Text(
             message,
             textAlign: TextAlign.center,
+            style: TextStyle(fontFamily: 'sans-serif'),
           ),
           actions: <Widget>[
             IconButton(
@@ -96,15 +97,21 @@ class _ExportPageState extends State<ExportPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Mengexport Data Pemain',
-              style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+              'Mengekspor Data Pemain',
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'sans-serif'),
+              textAlign: TextAlign.center,
             ),
+            SizedBox(height: 20),
             Container(
               child: Column(
                 children: [
                   Text(
                     'Tekan tombol Export Data untuk mengirim data pemain melalui email',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 15, fontFamily: 'sans-serif'),
+                    textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 50),
                   IconButton(

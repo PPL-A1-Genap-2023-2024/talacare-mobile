@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:talacare/authentication/screens/login_page.dart';
+import 'package:talacare/export_data/screens/export_page.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 import 'package:talacare/widgets/overlays/pause_menu.dart';
@@ -46,7 +47,15 @@ class AuthenticationWrapper extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
         } else if (snapshot.hasData && snapshot.data != null) {
-          return HomePage();
+          String? email = snapshot.data!.email;
+          List<String> specialEmailsList = [''];
+          if (specialEmailsList.contains(email)) {
+            return ExportPage(
+              recipientEmail: email!,
+            );
+          } else {
+            return HomePage();
+          }
         } else {
           return LoginPage();
         }
@@ -65,16 +74,14 @@ class TalaCareGame extends StatelessWidget {
 
     return GameWidget(
       game: kDebugMode ? TalaCare(playedCharacter: playedCharacter) : game,
-      initialActiveOverlays: const [
-        PauseButton.id
-      ],
+      initialActiveOverlays: const [PauseButton.id],
       overlayBuilderMap: {
         PauseButton.id: (BuildContext context, TalaCare gameRef) => PauseButton(
-          gameRef: gameRef,
-        ),
+              gameRef: gameRef,
+            ),
         PauseMenu.id: (BuildContext context, TalaCare gameRef) => PauseMenu(
-          gameRef: gameRef,
-        )
+              gameRef: gameRef,
+            )
       },
     );
   }
