@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:talacare/authentication/screens/login_page.dart';
 import 'package:talacare/export_data/screens/export_page.dart';
+import 'package:talacare/helpers/role_checker.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 import 'package:talacare/widgets/overlays/pause_menu.dart';
 import 'package:talacare/widgets/homepage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'authentication/firebase_options.dart';
+import 'package:http/http.dart' as http;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,15 +49,22 @@ class AuthenticationWrapper extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
         } else if (snapshot.hasData && snapshot.data != null) {
-          String? email = snapshot.data!.email;
-          List<String> specialEmailsList = [''];
-          if (specialEmailsList.contains(email)) {
-            return ExportPage(
-              recipientEmail: email!,
-            );
-          } else {
-            return HomePage();
-          }
+          String email = snapshot.data!.email!;
+          Future<bool> isAdmin = checkRole(http.Client(), email);
+          return FutureBuilder(
+            future: isAdmin,
+            builder: (context, AsyncSnapshot<bool> isAdminSnapshot) {
+              if (isAdminSnapshot.hasData) {
+                if (isAdminSnapshot.data!) {
+                  return ExportPage(recipientEmail: email);
+                } else {
+                  return HomePage();
+                }
+              } else {
+                return CircularProgressIndicator();
+              }
+            },
+          );
         } else {
           return LoginPage();
         }
