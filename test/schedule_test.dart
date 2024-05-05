@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,6 +54,19 @@ void main() {
 
       List schedule = fetchSchedule(mockPrefs);
       expect(schedule.length, 0);
+    });
+
+    test('Sorting a schedule', () {
+      List schedule = [
+        [TimeOfDay(hour: 10, minute: 5), 1],
+        [TimeOfDay(hour: 10, minute: 0), 2]
+      ];
+      List expected_schedule = [
+        [TimeOfDay(hour: 10, minute: 0), 2],
+        [TimeOfDay(hour: 10, minute: 5), 1]
+      ];
+      List sorted_schedule = sortSchedule(schedule);
+      expect(sorted_schedule, expected_schedule);
     });
   });
 }
