@@ -4,6 +4,7 @@ import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart' as material;
+import 'package:talacare/components/button.dart';
 import 'package:talacare/components/circle_progress.dart';
 import 'package:talacare/components/draggable_container.dart';
 import 'package:talacare/components/player.dart';
@@ -120,36 +121,15 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
     }
   }
 
-  FutureOr<void> addExitButton() async {
-    timerStarted = false;
-    final buttonText = TextComponent(
-        anchor: Anchor.center,
-        position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
-        text: "Kembali ke Rumah",
-        textRenderer: TextPaint(style: material.TextStyle(
-            color: Color.fromARGB(255, 165, 151, 102),
-            fontSize: 22
-        ))
-    );
-    final button = RectangleComponent(
-      paint: Paint()..color = Color.fromARGB(255, 253, 233, 168),
-      size: Vector2(200, 50),
-    );
-    final buttonDown = RectangleComponent(
-      paint: Paint()..color = Color.fromARGB(255, 222, 202, 138),
-      size: Vector2(200, 50),
-    );
-    final buttonGroup = ButtonComponent(
-      anchor: Anchor.center,
-      button: button,
-      buttonDown: buttonDown,
-      onReleased: finishGame,
-      position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
-      size: Vector2(200, 50),
-    );
-    add(buttonGroup);
-    add(buttonText);
-  }
+  // FutureOr<void> addExitButton() async {
+  //   timerStarted = false;
+  //   final button = CustomButton(
+  //     text: "Kembali ke Rumah",
+  //     onPressed: finishGame,
+  //     size: ButtonSize.medium,
+  //   );
+  //   add(button);
+  // }
 
   FutureOr<void> addLoseButton() async {
     timerStarted = false;
