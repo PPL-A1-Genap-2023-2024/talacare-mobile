@@ -56,10 +56,13 @@ class DraggableContainer extends RectangleComponent with HasGameRef<TalaCare> {
   }
 
   void disableDragging() {
-    children.forEach((child) {
-      if (child is DraggableItem) {
-        child.isDraggable = false;
-      }
+    // children.forEach((child) {
+    //   if (child is DraggableItem) {
+    //     child.isDraggable = false;
+    //   }
+    // });
+    children.whereType<DraggableItem>().forEach((child) {
+      child.isDraggable = false;
     });
   }
 

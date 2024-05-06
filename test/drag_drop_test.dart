@@ -125,11 +125,12 @@ void main() {
         await game.ready();
         final world = game.children.query<HospitalPuzzle>().first;
         world.draggableContainer.disableDragging();
-        world.draggableContainer.children.forEach((child) {
+        void verifyDraggableItemIsNotDraggable(Component child) {
           if (child is DraggableItem) {
             expect(child.isDraggable, false);
           }
-        });
+        }
+        world.draggableContainer.children.forEach(verifyDraggableItemIsNotDraggable);
       },
     );
   });
