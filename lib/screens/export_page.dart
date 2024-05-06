@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:talacare/config.dart';
+import 'package:talacare/helpers/color_palette.dart';
+import 'package:talacare/helpers/text_styles.dart';
 
 class ExportPage extends StatefulWidget {
   ExportPage({Key? key, http.Client? client, String? recipientEmail})
@@ -73,14 +75,21 @@ class _ExportPageState extends State<ExportPage> {
           title: Text(
             message,
             textAlign: TextAlign.center,
-            style: TextStyle(fontFamily: 'sans-serif'),
+            style: AppTextStyles.h2,
           ),
           actions: <Widget>[
-            IconButton(
-              icon: Image.asset("assets/images/Button/BackButton.png"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Silakan periksa inbox email anda",
+                    textAlign: TextAlign.center, style: AppTextStyles.normal),
+                IconButton(
+                  icon: Image.asset("assets/images/Button/BackButton.png"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
             ),
           ],
         );
@@ -91,17 +100,14 @@ class _ExportPageState extends State<ExportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFD7A9EC),
+      backgroundColor: AppColors.greenPrimary,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               'Mengekspor Data Pemain',
-              style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'sans-serif'),
+              style: AppTextStyles.h1,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20),
@@ -110,7 +116,7 @@ class _ExportPageState extends State<ExportPage> {
                 children: [
                   Text(
                     'Tekan tombol Export Data untuk mengirim data pemain melalui email',
-                    style: TextStyle(fontSize: 15, fontFamily: 'sans-serif'),
+                    style: AppTextStyles.normal,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 50),

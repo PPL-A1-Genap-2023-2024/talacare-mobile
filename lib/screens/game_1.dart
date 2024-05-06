@@ -10,8 +10,8 @@ import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 import 'package:talacare/talacare.dart';
 
-import 'dpad.dart';
-import 'hud/hud.dart';
+import '../components/dpad.dart';
+import '../components/hud/hud.dart';
 
 class HouseAdventure extends World with HasGameRef<TalaCare> {
   final String levelName;

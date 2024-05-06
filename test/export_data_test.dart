@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:talacare/config.dart';
-import 'package:talacare/export_data/screens/export_page.dart';
+import 'package:talacare/screens/export_page.dart';
 import 'package:mockito/mockito.dart';
 import 'package:talacare/helpers/role_checker.dart';
 
