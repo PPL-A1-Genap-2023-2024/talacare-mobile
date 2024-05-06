@@ -2,7 +2,7 @@ import 'package:flame/input.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/draggable_item.dart';
-import 'package:talacare/components/game_2.dart';
+import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/silhouette_item.dart';
 import 'package:talacare/talacare.dart';
 
@@ -97,7 +97,6 @@ void main() {
         }
         expect(world.silhouetteContainer.children.query<SilhouetteItem>().length, 5);
         expect(world.draggableContainer.children.query<DraggableItem>().length, 0);
-        expect(world.children.query<ButtonComponent>().length, 1);
         expect(world.instruction.text, "Transfusi darah berhasil!");
         expect(world.progressBar.circlesAreMarked.contains(false), false);
         expect(world.score, 5);

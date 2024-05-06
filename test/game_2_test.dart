@@ -1,10 +1,9 @@
 import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:talacare/components/game_2.dart';
+import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/hospital_door.dart';
-import 'package:talacare/components/game_1.dart';
-import 'package:talacare/components/player.dart';
+import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/components/point.dart';
 import 'package:talacare/helpers/dialog_reason.dart';
 import 'package:talacare/talacare.dart';
@@ -31,6 +30,10 @@ void main() {
           await game.ready();
           final game_2 = game.children.query<HospitalPuzzle>().first;
           game_2.finishGame();
+          await game.ready();
+          final yesButton = game.confirmation.yesButton;
+          yesButton.onTapDown(createTapDownEvents(game: game));
+          yesButton.onTapUp(createTapUpEvents(game: game));
           game.update(5);
           expect(game.currentGame, initialLevel-1);
           expect(game.playerHealth, 4);
@@ -61,6 +64,10 @@ void main() {
           await game.ready();
           final game_2 = game.children.query<HospitalPuzzle>().first;
           game_2.finishGame();
+          await game.ready();
+          final yesButton = game.confirmation.yesButton;
+          yesButton.onTapDown(createTapDownEvents(game: game));
+          yesButton.onTapUp(createTapUpEvents(game: game));
           game.update(5);
           expect(game.score, initialProgress);
 
@@ -97,10 +104,7 @@ void main() {
           game_2.updateScore();
           expect(game_2.timeLimit, 10);
           game_2.update(10.0);
-          final instructionText = game_2.instruction.text;
-
-          expect(instructionText, "Kamu belum berhasil");
-          expect(game_2.timerStarted, false);
+          expect(game.confirmation.reason,DialogReason.loseGame2);
       },
     );
     testWithGame<TalaCare>(
@@ -126,6 +130,10 @@ void main() {
           await game.ready();
           final game_2 = game.children.query<HospitalPuzzle>().first;
           game_2.loseGame();
+          await game.ready();
+          final yesButton = game.confirmation.yesButton;
+          yesButton.onTapDown(createTapDownEvents(game: game));
+          yesButton.onTapUp(createTapUpEvents(game: game));
           game.update(5);
           expect(game.playerHealth, 2);
           expect(player.moveSpeed, 56.25);  //75% of 75% of 100
