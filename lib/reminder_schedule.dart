@@ -33,17 +33,22 @@ class ScheduleListState extends State<ScheduleList> {
     } else {
       var schedule_list = fetchSchedule(prefs!);
       if (schedule_list.length == 0) {
-        return Text("Kamu Belum Membuat Jadwal Pengingat");
+        return Text(
+          "Kamu Belum Membuat Jadwal Pengingat",
+          style: AppTextStyles.h1,
+        );
       }
 
       return Container(
           constraints: BoxConstraints(maxWidth: screenWidth * 0.88),
           child: ListView.separated(
             itemCount: schedule_list.length,
-            separatorBuilder: (BuildContext context, int index) => SizedBox(height: screenHeight * 0.03),
+            separatorBuilder: (BuildContext context, int index) =>
+                SizedBox(height: screenHeight * 0.03),
             itemBuilder: (context, index) {
               final schedule = schedule_list[index][0];
-              var hourText = schedule.hour % 12 != 0 ? ("${schedule.hour % 12}") : ("12");
+              var hourText =
+                  schedule.hour % 12 != 0 ? ("${schedule.hour % 12}") : ("12");
               var minuteText = schedule.minute < 10
                   ? "0${schedule.minute}"
                   : "${schedule.minute}";
@@ -51,11 +56,9 @@ class ScheduleListState extends State<ScheduleList> {
 
               return Container(
                   decoration: BoxDecoration(
-                    color: AppColors.baseColor,
-                    borderRadius:
-                        BorderRadius.circular(24),
-                        border: Border.all(color: AppColors.plum, width: 6)
-                  ),
+                      color: AppColors.baseColor,
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: AppColors.plum, width: 6)),
                   child: Column(
                     children: [
                       SizedBox(
