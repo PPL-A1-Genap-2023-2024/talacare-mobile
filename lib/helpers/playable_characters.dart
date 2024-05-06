@@ -1,1 +1,1 @@
-enum PlayableCharacters { boy, ayu }
+enum PlayableCharacters { tala, talia }

@@ -25,11 +25,11 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   final CarouselController _controller = CarouselController();
 
-  String currentCharacter = 'boy';
+  String currentCharacter = 'tala';
 
   List<Image> characterSelection = [
-    Image.asset("assets/images/Characters_free/boy.png"),
-    Image.asset("assets/images/Characters_free/girl.png")
+    Image.asset("assets/images/Characters_free/tala.png", fit:BoxFit.cover,),
+    Image.asset("assets/images/Characters_free/talia.png", fit:BoxFit.cover,)
   ];
 
   Future<void> logout() async {
@@ -53,6 +53,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void initState(){
     super.initState();
 
+    AudioManager.getInstance().playBackgroundMusic();
     _listener = AppLifecycleListener(
       onPause: _onPause,
       onResume: _onResume,
@@ -137,10 +138,10 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 height: screenHeight * 0.05,
               ),
 
-              if (currentCharacter == 'boy') ...[
+              if (currentCharacter == 'tala') ...[
                 Container(
                   child: const Text(
-                    "Abi",
+                    "Tala",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Color(0xff745573 ),
@@ -152,7 +153,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
               ] else ...[
                 Container(
                   child: const Text(
-                    "Amel",
+                    "Talia",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Color(0xff745573 ),
@@ -182,13 +183,13 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 },
               ),
 
-              /* Tombol Pengaturan */
-              IconButton(
-                icon: Image.asset(
-                  "assets/images/Button/tombol_pengaturan.png",
-                ),
-                onPressed: () => (),
-              ),
+              /* Tombol Pengaturan Reminder */
+              // IconButton(
+              //   icon: Image.asset(
+              //     "assets/images/Button/tombol_pengaturan.png",
+              //   ),
+              //   onPressed: () => (),
+              // ),
 
               /* Tombol Logout */
               IconButton(

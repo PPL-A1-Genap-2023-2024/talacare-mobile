@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:talacare/helpers/color_palette.dart';
+import 'package:talacare/helpers/text_styles.dart';
 import 'package:talacare/talacare.dart';
-import 'package:talacare/widgets/homepage.dart';
+import 'package:talacare/screens/homepage.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 import 'package:talacare/helpers/audio_manager.dart';
 
@@ -21,82 +23,78 @@ class PauseMenu extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Opacity(
-              opacity: 0.8,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  border: Border.all(color: Colors.white),
-                  // rounding
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
-                ),
-                height: MediaQuery.of(context).size.height * 55 / 100,
-                width: MediaQuery.of(context).size.width * 70 / 100,
-                child: Column(
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.baseColor,
+              border: Border.all(color: AppColors.textColor, width: 8.0),
+              borderRadius: const BorderRadius.all(Radius.circular(15)),
+            ),
+            height: MediaQuery.of(context).size.height * 0.35,
+            width: MediaQuery.of(context).size.width * 0.7,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Padding(
+                    padding: EdgeInsets.only(top: 25),
+                    child: DefaultTextStyle(
+                        child: Center(child: Text('Game dijeda')),
+                        style: AppTextStyles.h1)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const Padding(
-                        padding: EdgeInsets.only(top: 25, bottom: 25),
-                        child: Text(
-                          'Game dijeda',
-                        )),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            children: [
-                              IconButton(
-                                key: _exitButtonKey,
-                                iconSize: 60,
-                                splashColor: Colors.white,
-                                icon: const Icon(Icons.house),
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(builder: (context){
-                                        return HomePage();
-                                      })
-                                  );
-                                  AudioManager.getInstance().playBackgroundMusic();
-                                },
-                              ),
-                              const Text(
-                                'Keluar',
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.black),
-                              ),
-                            ],
-                          ),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          children: [
+                            IconButton(
+                              key: _exitButtonKey,
+                              icon:
+                                  Image.asset('assets/images/Dialog/home.png'),
+                              onPressed: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return HomePage();
+                                }));
+                              },
+                            ),
+                            const DefaultTextStyle(
+                              child: Text('Keluar'),
+                              style: AppTextStyles.normal,
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            children: [
-                              IconButton(
-                                key: _resumeButtonKey,
-                                iconSize: 60,
-                                splashColor: Colors.white,
-                                icon: const Icon(Icons.play_arrow),
-                                onPressed: () {
-                                  gameRef.resumeEngine();
-                                  gameRef.overlays.remove(PauseMenu.id);
-                                  gameRef.overlays.add(PauseButton.id);
-                                },
-                              ),
-                              const Text(
-                                'Lanjut',
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.black),
-                              ),
-                            ],
-                          ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          children: [
+                            IconButton(
+                              key: _resumeButtonKey,
+                              icon:
+                                  Image.asset('assets/images/Dialog/okay.png'),
+                              onPressed: () {
+                                gameRef.resumeEngine();
+                                gameRef.overlays.remove(PauseMenu.id);
+                                gameRef.overlays.add(PauseButton.id);
+                              },
+                            ),
+                            const DefaultTextStyle(
+                              child: Text('Lanjut'),
+                              style: AppTextStyles.normal,
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
-              ))
+              ],
+            ),
+          )
         ],
       ),
     );

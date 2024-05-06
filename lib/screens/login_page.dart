@@ -2,8 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:talacare/helpers/audio_manager.dart';
+import 'package:talacare/components/button.dart';
+import 'package:talacare/helpers/color_palette.dart';
+import 'package:talacare/helpers/text_styles.dart';
 
-import '../../widgets/homepage.dart';
+import 'homepage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -21,10 +24,11 @@ class _LoginPageState extends State<LoginPage> {
 
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+    if (googleUser == null) return null;
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
+        await googleUser.authentication;
 
     // Create a new credential
     final AuthCredential credential = GoogleAuthProvider.credential(
@@ -69,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xFFBC9CCA),
+      backgroundColor: AppColors.greenPrimary,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
@@ -85,35 +89,24 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text('Selamat Datang',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Color(0xFFFFF6E6),
-                              fontSize: 32,
-                              fontFamily: 'Fredoka One',
-                              fontWeight: FontWeight.w600)),
+                          textAlign: TextAlign.center, style: AppTextStyles.h1),
                       const SizedBox(height: 10),
-                      const Text(
-                        'di Talacare',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Color(0xFFD5EF9D),
-                            fontSize: 24,
-                            fontFamily: 'Fredoka One',
-                            fontWeight: FontWeight.w400),
-                      ),
+                      const Text('di Talacare',
+                          textAlign: TextAlign.center, style: AppTextStyles.h2),
                       const SizedBox(height: 30),
                       Image.asset('assets/images/Illustrations/homepage.png'),
                       const SizedBox(height: 20),
                       Container(
                           padding: const EdgeInsets.all(8.0),
                           width: double.infinity,
-                          child: IconButton(
-                            icon: Image.asset(
-                                'assets/images/Illustrations/Login Button.png'),
-                            onPressed: () {
-                              signInWithGoogle();
-                            },
-                          )),
+                          child: CustomButton(
+                              text: "Masuk dengan Google",
+                              size: ButtonSize.large,
+                              assetImagePath:
+                                  "assets/images/Illustrations/google.png",
+                              onPressed: () {
+                                signInWithGoogle();
+                              })),
                       Container(
                           padding: const EdgeInsets.all(8.0),
                           width: double.infinity,
@@ -127,14 +120,9 @@ class _LoginPageState extends State<LoginPage> {
                               style: ButtonStyle(
                                 foregroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Color.fromARGB(255, 255, 246, 230)),
+                                        AppColors.textColor),
                                 textStyle: MaterialStateProperty.all<TextStyle>(
-                                  TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'Fredoka',
-                                  ),
-                                ),
+                                    AppTextStyles.medium),
                               ),
                               child: Text('Masuk tanpa akun')))
                     ],
