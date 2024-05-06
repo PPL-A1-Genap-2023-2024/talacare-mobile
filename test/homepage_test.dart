@@ -1,4 +1,3 @@
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/main.dart';
@@ -25,5 +24,9 @@ void main() {
     // Tap the PlayButton and trigger a navigation.
     await tester.tap(playIcon);
     await tester.pumpAndSettle();
+  });
+
+  testWidgets('Background Music is playing on HomePage', (WidgetTester tester) async {
+    // Will be replaced with audio_manager.test
   });
 }
