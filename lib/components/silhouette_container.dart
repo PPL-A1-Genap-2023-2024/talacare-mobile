@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flame/components.dart';
-import 'package:talacare/components/game_2.dart';
+import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/silhouette_item.dart';
 import 'package:talacare/helpers/item.dart';
 import 'package:talacare/talacare.dart';

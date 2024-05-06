@@ -5,7 +5,7 @@ import 'package:talacare/main.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 import 'package:talacare/widgets/overlays/pause_menu.dart';
-import 'package:talacare/widgets/homepage.dart';
+import 'package:talacare/screens/homepage.dart';
 
 void main() {
   testWidgets('HomePage Play Button', (WidgetTester tester) async {

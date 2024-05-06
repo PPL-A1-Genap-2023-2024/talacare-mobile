@@ -1,9 +1,9 @@
 import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:talacare/components/game_2.dart';
+import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/hospital_door.dart';
-import 'package:talacare/components/game_1.dart';
+import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/components/point.dart';
 import 'package:talacare/helpers/dialog_reason.dart';
 import 'package:talacare/talacare.dart';
