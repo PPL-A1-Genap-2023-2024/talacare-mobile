@@ -77,5 +77,14 @@ void main() {
       List sorted_schedule = sortSchedule(schedule);
       expect(sorted_schedule, expected_schedule);
     });
+
+    test('Checking schedules for same time', () {
+      when(mockPrefs.containsKey("hour_1")).thenReturn(true);
+      when(mockPrefs.containsKey("minute_1")).thenReturn(true);
+      when(mockPrefs.getInt("hour_1")).thenReturn(10);
+      when(mockPrefs.getInt("minute_1")).thenReturn(5);
+      var result = checkIfDifferentSchedule(10, 5, mockPrefs);
+      expect(result, false);
+    });
   });
 }
