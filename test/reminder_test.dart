@@ -13,7 +13,7 @@ void main() {
       ),
     );
 
-    await tester.tap(find.text('Tambahkan Jadwal Baru'));
+    await tester.tap(find.text('Buat Jadwal Baru'));
     await tester.pump();
     await tester.tap(find.text('Pilih Waktu'));
     await tester.pump();
