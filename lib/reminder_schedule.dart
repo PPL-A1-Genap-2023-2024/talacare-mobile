@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:talacare/components/button.dart';
+import 'package:talacare/helpers/color_palette.dart';
+import 'package:talacare/helpers/text_styles.dart';
 import 'package:talacare/reminder.dart';
 import 'package:talacare/reminder_edit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,56 +25,98 @@ class ScheduleListState extends State<ScheduleList> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     if (prefs == null) {
       return CircularProgressIndicator();
     } else {
       var schedule_list = fetchSchedule(prefs!);
+      if (schedule_list.length == 0) {
+        return Text("Kamu Belum Membuat Jadwal Pengingat");
+      }
 
-      return ListView.builder(
-        itemCount: schedule_list.length,
-        itemBuilder: (context, index) {
-          final schedule = schedule_list[index][0];
-          return ListTile(
-            title: Text('ID: ${schedule_list[index][1]}'),
-            subtitle: Text('Time: ${schedule.hour}:${schedule.minute}'),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () => showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ReminderEditForm(
-                        currentHour: schedule.hour,
-                        currentMinute: schedule.minute,
-                        id: schedule_list[index][1],
-                      );
-                    },
+      return Container(
+          constraints: BoxConstraints(maxWidth: screenWidth * 0.88),
+          child: ListView.separated(
+            itemCount: schedule_list.length,
+            separatorBuilder: (BuildContext context, int index) => SizedBox(height: screenHeight * 0.03),
+            itemBuilder: (context, index) {
+              final schedule = schedule_list[index][0];
+              var hourText = schedule.hour % 12 != 0 ? ("${schedule.hour % 12}") : ("12");
+              var minuteText = schedule.minute < 10
+                  ? "0${schedule.minute}"
+                  : "${schedule.minute}";
+              var suffix = schedule.hour < 12 ? "AM" : "PM";
+
+              return Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.baseColor,
+                    borderRadius:
+                        BorderRadius.circular(24),
+                        border: Border.all(color: AppColors.plum, width: 6)
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () async {
-                    final response =
-                        deleteSchedule(schedule_list[index][1], prefs!);
-                    if (response == "Berhasil menghapus jadwal") {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => Reminder()),
-                      );
-                    }
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(response),
-                      duration: Duration(seconds: 2),
-                    ));
-                  },
-                ),
-              ],
-            ),
-          );
-        },
-      );
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: screenHeight * 0.01,
+                      ),
+                      Text(
+                        '${hourText}:${minuteText} ${suffix}',
+                        style: AppTextStyles.h1,
+                      ),
+                      SizedBox(
+                        height: screenHeight * 0.015,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CustomButton(
+                            text: "Ubah",
+                            size: ButtonSize.small,
+                            onPressed: () => showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ReminderEditForm(
+                                  currentHour: schedule.hour,
+                                  currentMinute: schedule.minute,
+                                  id: schedule_list[index][1],
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: screenWidth * 0.04,
+                          ),
+                          CustomButton(
+                            text: "Hapus",
+                            size: ButtonSize.small,
+                            onPressed: () async {
+                              final response = deleteSchedule(
+                                  schedule_list[index][1], prefs!);
+                              if (response == "Berhasil menghapus jadwal") {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Reminder()),
+                                );
+                              }
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(response),
+                                duration: Duration(seconds: 2),
+                              ));
+                            },
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: screenHeight * 0.02,
+                      ),
+                    ],
+                  ));
+            },
+          ));
     }
   }
 }

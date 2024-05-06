@@ -5,6 +5,7 @@ import 'package:talacare/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:talacare/helpers/audio_manager.dart';
+import 'package:talacare/reminder.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'HomePage';
@@ -185,12 +186,17 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
               ),
 
               /* Tombol Pengaturan Reminder */
-              // IconButton(
-              //   icon: Image.asset(
-              //     "assets/images/Button/tombol_pengaturan.png",
-              //   ),
-              //   onPressed: () => (),
-              // ),
+              IconButton(
+                icon: Image.asset(
+                  "assets/images/Button/tombol_pengaturan.png",
+                ),
+                onPressed: () async { 
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Reminder()),
+                  );
+                }
+              ),
 
               /* Tombol Logout */
               IconButton(

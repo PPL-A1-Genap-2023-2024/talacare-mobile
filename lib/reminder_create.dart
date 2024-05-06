@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talacare/components/button.dart';
+import 'package:talacare/helpers/color_palette.dart';
+import 'package:talacare/helpers/text_styles.dart';
 import 'package:talacare/reminder.dart';
 import 'package:talacare/schedule_util.dart';
 
@@ -40,48 +43,82 @@ class _ReminderCreateFormState extends State<ReminderCreateForm> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    var hourText = schedule.hour % 12 != 0 ? ("${schedule.hour % 12}") : ("12");
+    var minuteText =
+        schedule.minute < 10 ? "0${schedule.minute}" : "${schedule.minute}";
+    var suffix = schedule.hour < 12 ? "AM" : "PM";
     return Scaffold(
+      backgroundColor: AppColors.greenPrimary,
       appBar: AppBar(
+        backgroundColor: AppColors.greenPrimary,
+        automaticallyImplyLeading: false,
         title: const Center(
           child: Text(
             'Buat Jadwal Baru',
+            style: AppTextStyles.h1,
           ),
         ),
       ),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
+            child: Center(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(schedule.toString()),
-              const SizedBox(
-                height: 20.0,
+              Container(
+                decoration: BoxDecoration(
+                    color: AppColors.baseColor,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: AppColors.plum, width: 8)),
+                padding: EdgeInsets.all(9),
+                child: Column(
+                  children: [
+                    Text(
+                      "Waktu Pilihan:",
+                      style: AppTextStyles.h1,
+                    ),
+                    SizedBox(
+                      height: screenHeight * 0.01,
+                    ),
+                    Text(
+                      '${hourText}:${minuteText} ${suffix}',
+                      style: AppTextStyles.h1,
+                    ),
+                  ],
+                ),
               ),
-              ElevatedButton(
+              SizedBox(
+                height: screenHeight * 0.03,
+              ),
+              CustomButton(
                 onPressed: () => _selectSchedule(context),
-                child: const Text('Pilih Waktu'),
+                text: 'Pilih Waktu',
               ),
-              ElevatedButton(
-                  onPressed: () async {
-                    final response =
-                        addSchedule(schedule.hour, schedule.minute, prefs);
-                    if (response == "Berhasil membuat jadwal") {
-                      Navigator.pop(context);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => Reminder()),
-                      );
-                    }
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(response),
-                      duration: Duration(seconds: 2),
-                    ));
-                  },
-                  child: const Text("Buat Jadwal"))
+              SizedBox(
+                height: screenHeight * 0.03,
+              ),
+              CustomButton(
+                text: "Buat Jadwal",
+                onPressed: () async {
+                  final response =
+                      addSchedule(schedule.hour, schedule.minute, prefs);
+                  if (response == "Berhasil membuat jadwal") {
+                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Reminder()),
+                    );
+                  }
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(response),
+                    duration: Duration(seconds: 2),
+                  ));
+                },
+              )
             ],
           ),
-        ),
+        )),
       ),
     );
   }
