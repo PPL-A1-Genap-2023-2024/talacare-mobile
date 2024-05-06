@@ -18,8 +18,8 @@ class ScheduleListState extends State<ScheduleList> {
   SharedPreferences? prefs;
 
   ScheduleListState() {
-    SharedPreferences.getInstance().then((prefs_instance) => setState(() {
-          prefs = prefs_instance;
+    SharedPreferences.getInstance().then((prefsInstance) => setState(() {
+          prefs = prefsInstance;
         }));
   }
 
@@ -31,8 +31,8 @@ class ScheduleListState extends State<ScheduleList> {
     if (prefs == null) {
       return CircularProgressIndicator();
     } else {
-      var schedule_list = fetchSchedule(prefs!);
-      if (schedule_list.length == 0) {
+      var scheduleList = fetchSchedule(prefs!);
+      if (scheduleList.isEmpty) {
         return Text(
           "Kamu Belum Membuat Jadwal Pengingat",
           style: AppTextStyles.h1,
@@ -42,11 +42,11 @@ class ScheduleListState extends State<ScheduleList> {
       return Container(
           constraints: BoxConstraints(maxWidth: screenWidth * 0.88),
           child: ListView.separated(
-            itemCount: schedule_list.length,
+            itemCount: scheduleList.length,
             separatorBuilder: (BuildContext context, int index) =>
                 SizedBox(height: screenHeight * 0.03),
             itemBuilder: (context, index) {
-              final schedule = schedule_list[index][0];
+              final schedule = scheduleList[index][0];
               var hourText =
                   schedule.hour % 12 != 0 ? ("${schedule.hour % 12}") : ("12");
               var minuteText = schedule.minute < 10
@@ -65,7 +65,7 @@ class ScheduleListState extends State<ScheduleList> {
                         height: screenHeight * 0.01,
                       ),
                       Text(
-                        '${hourText}:${minuteText} ${suffix}',
+                        '$hourText:$minuteText $suffix',
                         style: AppTextStyles.h1,
                       ),
                       SizedBox(
@@ -83,7 +83,7 @@ class ScheduleListState extends State<ScheduleList> {
                                 return ReminderEditForm(
                                   currentHour: schedule.hour,
                                   currentMinute: schedule.minute,
-                                  id: schedule_list[index][1],
+                                  id: scheduleList[index][1],
                                 );
                               },
                             ),
@@ -96,7 +96,7 @@ class ScheduleListState extends State<ScheduleList> {
                             size: ButtonSize.small,
                             onPressed: () async {
                               final response = deleteSchedule(
-                                  schedule_list[index][1], prefs!);
+                                  scheduleList[index][1], prefs!);
                               if (response == "Berhasil menghapus jadwal") {
                                 Navigator.pushReplacement(
                                   context,

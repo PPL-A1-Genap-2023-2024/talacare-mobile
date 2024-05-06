@@ -70,16 +70,17 @@ String deleteSchedule(id, SharedPreferences prefs) {
 
 List sortSchedule(List schedule) {
   for (int i = 0; i < schedule.length - 1; i++) {
-    int minimal_index = i;
-    for (int j = i + 1; j < schedule.length; j++)
-      if (schedule[j][0].hour < schedule[minimal_index][0].hour)
-        minimal_index = j;
-      else if (schedule[j][0].hour == schedule[minimal_index][0].hour &&
-          schedule[j][0].minute < schedule[minimal_index][0].minute)
-        minimal_index = j;
-
-    List temp = schedule[minimal_index];
-    schedule[minimal_index] = schedule[i];
+    int minimalIndex = i;
+    for (int j = i + 1; j < schedule.length; j++) {
+      if (schedule[j][0].hour < schedule[minimalIndex][0].hour) {
+        minimalIndex = j;
+      } else if (schedule[j][0].hour == schedule[minimalIndex][0].hour &&
+          schedule[j][0].minute < schedule[minimalIndex][0].minute) {
+        minimalIndex = j;
+      }
+    }
+    List temp = schedule[minimalIndex];
+    schedule[minimalIndex] = schedule[i];
     schedule[i] = temp;
   }
   return schedule;

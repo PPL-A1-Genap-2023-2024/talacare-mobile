@@ -15,7 +15,7 @@ void main() {
     late MockSharedPreferences mockPrefs;
 
     setUp(() {
-      mockPrefs = new MockSharedPreferences();
+      mockPrefs = MockSharedPreferences();
       tz.initializeTimeZones();
       /*when(NotificationUtilities.notificationsPlugin.initialize(
               InitializationSettings(
@@ -70,12 +70,12 @@ void main() {
         [TimeOfDay(hour: 10, minute: 5), 1],
         [TimeOfDay(hour: 10, minute: 0), 2]
       ];
-      List expected_schedule = [
+      List expectedSchedule = [
         [TimeOfDay(hour: 10, minute: 0), 2],
         [TimeOfDay(hour: 10, minute: 5), 1]
       ];
-      List sorted_schedule = sortSchedule(schedule);
-      expect(sorted_schedule, expected_schedule);
+      List sortedSchedule = sortSchedule(schedule);
+      expect(sortedSchedule, expectedSchedule);
     });
 
     test('Checking schedules for same time', () {

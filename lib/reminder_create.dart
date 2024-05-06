@@ -48,6 +48,7 @@ class _ReminderCreateFormState extends State<ReminderCreateForm> {
     var minuteText =
         schedule.minute < 10 ? "0${schedule.minute}" : "${schedule.minute}";
     var suffix = schedule.hour < 12 ? "AM" : "PM";
+
     return Scaffold(
       backgroundColor: AppColors.greenPrimary,
       appBar: AppBar(
@@ -82,7 +83,7 @@ class _ReminderCreateFormState extends State<ReminderCreateForm> {
                       height: screenHeight * 0.01,
                     ),
                     Text(
-                      '${hourText}:${minuteText} ${suffix}',
+                      '$hourText:$minuteText $suffix',
                       style: AppTextStyles.h1,
                     ),
                   ],
