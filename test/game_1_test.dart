@@ -5,7 +5,7 @@ import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/components/hospital_door.dart';
 import 'package:talacare/components/hud/hud.dart';
-import 'package:talacare/components/game_1.dart';
+import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/helpers/directions.dart';
 import 'package:talacare/helpers/dialog_reason.dart';
 import 'package:talacare/talacare.dart';

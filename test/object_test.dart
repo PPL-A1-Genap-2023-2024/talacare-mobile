@@ -3,7 +3,7 @@ import 'package:flame/input.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/draggable_item.dart';
-import 'package:talacare/components/game_2.dart';
+import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/silhouette_item.dart';
 import 'package:talacare/talacare.dart';
 

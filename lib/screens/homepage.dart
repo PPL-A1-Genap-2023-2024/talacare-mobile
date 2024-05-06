@@ -3,7 +3,7 @@ import 'package:talacare/helpers/playable_characters.dart';
 import 'package:talacare/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:talacare/authentication/screens/login_page.dart';
+import 'package:talacare/screens/login_page.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'HomePage';
