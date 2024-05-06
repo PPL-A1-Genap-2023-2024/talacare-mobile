@@ -66,12 +66,12 @@ class NotificationUtilities {
   }
 
   static Future<tz.Location> getTimeZone() async {
-    String location_name;
+    String locationName;
     try {
-      location_name = await FlutterTimezone.getLocalTimezone();
+      locationName = await FlutterTimezone.getLocalTimezone();
     } catch (e) {
-      location_name = "Asia/Bangkok";
+      locationName = "Asia/Bangkok";
     }
-    return tz.getLocation(location_name);
+    return tz.getLocation(locationName);
   }
 }
