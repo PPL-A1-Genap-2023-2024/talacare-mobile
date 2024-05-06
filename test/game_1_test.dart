@@ -2,11 +2,12 @@ import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/collision_block.dart';
+import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/components/hospital_door.dart';
 import 'package:talacare/components/hud/hud.dart';
-import 'package:talacare/components/game_1.dart';
+import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/helpers/directions.dart';
-import 'package:talacare/helpers/hospital_reason.dart';
+import 'package:talacare/helpers/dialog_reason.dart';
 import 'package:talacare/talacare.dart';
 
 void main() {
@@ -258,7 +259,7 @@ void main() {
           expect(game.gameOne.dPad.disabled, true);
           await game.ready();
           final confirmation = game.confirmation;
-          expect(confirmation.reason, HospitalReason.playerEnter);
+          expect(confirmation.reason, DialogReason.enterHospital);
           confirmation.yesButton.onTapDown(createTapDownEvents(game: game));
           confirmation.yesButton.onTapUp(createTapUpEvents(game: game));
           expect(game.currentGame, initialLevel+1);
@@ -280,7 +281,7 @@ void main() {
           expect(game.gameOne.dPad.disabled, true);
           await game.ready();
           final confirmation = game.confirmation;
-          expect(confirmation.reason, HospitalReason.playerEnter);
+          expect(confirmation.reason, DialogReason.enterHospital);
           confirmation.noButton.onTapDown(createTapDownEvents(game: game));
           confirmation.noButton.onTapUp(createTapUpEvents(game: game));
           expect(game.currentGame, initialLevel);
@@ -303,10 +304,45 @@ void main() {
           expect(game.gameOne.dPad.disabled, true);
           await game.ready();
           final confirmation = game.confirmation;
-          expect(confirmation.reason, HospitalReason.lowBlood);
+          expect(confirmation.reason, DialogReason.lowBlood);
           confirmation.yesButton.onTapDown(createTapDownEvents(game: game));
           confirmation.yesButton.onTapUp(createTapUpEvents(game: game));
           expect(game.currentGame, 2);
+        }
+    );
+  });
+
+  group('Game Victory Tests', () {
+    testWithGame<TalaCare>(
+        'Get Victory Message after Collect all activity point',
+        TalaCare.new,
+            (game) async {
+          await game.ready();
+          game.score = 8;
+          game.update(5);
+          expect(game.status, GameStatus.victory);
+          await game.ready();
+          GameDialog dialog = game.confirmationAnchor.children.query<GameDialog>().first;
+          expect(dialog.reason, DialogReason.gameVictory);
+        }
+    );
+
+    testWithGame<TalaCare>(
+        'Play Again after Victory',
+        TalaCare.new,
+            (game) async {
+          await game.ready();
+          Vector2 playerSpawn = Vector2.zero();
+          game.player.position.copyInto(playerSpawn);
+          game.victory();
+          await game.ready();
+          GameDialog dialog = game.confirmationAnchor.children.query<GameDialog>().first;
+          dialog.yesButton.onTapDown(createTapDownEvents(game: game));
+          dialog.yesButton.onTapUp(createTapUpEvents(game: game));
+          expect(game.status, GameStatus.playing);
+          expect(game.playerHealth, 4);
+          expect(game.player.position, playerSpawn);
+          expect(game.score, 0);
         }
     );
   });

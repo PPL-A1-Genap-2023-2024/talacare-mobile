@@ -1,6 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:talacare/components/hud/progress.dart';
-import 'package:talacare/helpers/hospital_reason.dart';
+import 'package:talacare/helpers/dialog_reason.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/components/hud/health.dart';
 
@@ -60,6 +60,7 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
   void update(double dt) {
     _updateTimer(dt);
     _updatePlayerHealth();
+    _updateScore();
   }
 
   void _updateTimer(dt){
@@ -79,7 +80,7 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
       healthDurationChecker = healthDuration;
 
       if (game.playerHealth ==  1) {
-        game.showConfirmation(HospitalReason.lowBlood);
+        game.showConfirmation(DialogReason.lowBlood);
       }
     }
   }
@@ -87,5 +88,11 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
   void _updatePlayerMoveSpeed(){
     double currentSpeed = game.player.moveSpeed;
     game.player.moveSpeed = currentSpeed - (currentSpeed * 25/100);
+  }
+
+  void _updateScore(){
+    if (game.score == 8) {
+      game.victory();
+    }
   }
 }

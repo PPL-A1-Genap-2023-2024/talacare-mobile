@@ -45,6 +45,7 @@ class HealthComponent extends SpriteGroupComponent<HeartState>
 
   @override
   void update(double dt) {
+    // print(game.world.children.query<Player>().single.character);
     if (game.playerHealth < heartNumber) {
       current = HeartState.unavailable;
     }

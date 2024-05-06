@@ -2,9 +2,8 @@ import 'package:flame/input.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/draggable_item.dart';
-import 'package:talacare/components/game_2.dart';
+import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/silhouette_item.dart';
-import 'package:talacare/helpers/hospital_reason.dart';
 import 'package:talacare/talacare.dart';
 
 void main() {
@@ -16,7 +15,8 @@ void main() {
       (game) async {
         await game.ready();
         game.currentGame = 2;
-        game.switchGame(reason: HospitalReason.playerEnter);
+        game.switchGame();
+        game.update(5);
         await game.ready();
         final world = game.children.query<HospitalPuzzle>().first;
         expect(world.silhouetteContainer.children.query<SilhouetteItem>().length, 1);
@@ -32,7 +32,8 @@ void main() {
       (game) async {
         await game.ready();
         game.currentGame = 2;
-        game.switchGame(reason: HospitalReason.playerEnter);
+        game.switchGame();
+        game.update(5);
         await game.ready();
         final world = game.children.query<HospitalPuzzle>().first;
         for (int i = 0; i <= 1; i++) {
@@ -54,7 +55,8 @@ void main() {
       (game) async {
         await game.ready();
         game.currentGame = 2;
-        game.switchGame(reason: HospitalReason.playerEnter);
+        game.switchGame();
+        game.update(5);
         await game.ready();
         final world = game.children.query<HospitalPuzzle>().first;
         for (int i = 0; i <= 4; i++) {
@@ -79,7 +81,8 @@ void main() {
       (game) async {
         await game.ready();
         game.currentGame = 2;
-        game.switchGame(reason: HospitalReason.playerEnter);
+        game.switchGame();
+        game.update(5);
         await game.ready();
         final world = game.children.query<HospitalPuzzle>().first;
         for (int i = 0; i <= 4; i++) {
