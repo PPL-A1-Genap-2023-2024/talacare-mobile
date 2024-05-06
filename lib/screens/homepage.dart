@@ -116,6 +116,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         options: CarouselOptions(
                           height: screenHeight * 0.3,
                           enableInfiniteScroll: true,
+                          enlargeCenterPage: true,
                           onPageChanged: (index, reason) {
                             setState(() {
                               currentCharacter = PlayableCharacters.values[index].name;

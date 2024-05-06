@@ -4,7 +4,6 @@ import 'package:talacare/helpers/text_styles.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/screens/homepage.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
-import 'package:talacare/helpers/audio_manager.dart';
 
 class PauseMenu extends StatelessWidget {
   static const String id = 'PauseMenu';
