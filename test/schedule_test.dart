@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:talacare/schedule_util.dart';
+import 'package:talacare/helpers/schedule_util.dart';
 import 'package:mockito/annotations.dart';
 @GenerateNiceMocks([MockSpec<SharedPreferences>()])
 import 'schedule_test.mocks.dart';

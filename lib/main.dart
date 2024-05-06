@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:talacare/screens/login_page.dart';
-import 'package:talacare/notification_util.dart';
+import 'package:talacare/helpers/notification_util.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 import 'package:talacare/widgets/overlays/pause_menu.dart';

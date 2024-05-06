@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:talacare/notification_util.dart';
+import 'package:talacare/helpers/notification_util.dart';
 
 List fetchSchedule(SharedPreferences prefs) {
   var schedule = [];

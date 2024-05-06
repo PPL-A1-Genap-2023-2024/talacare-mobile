@@ -5,7 +5,7 @@ import 'package:talacare/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:talacare/helpers/audio_manager.dart';
-import 'package:talacare/reminder.dart';
+import 'package:talacare/screens/reminder.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'HomePage';

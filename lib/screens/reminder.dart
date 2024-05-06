@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:talacare/components/button.dart';
 import 'package:talacare/helpers/color_palette.dart';
 import 'package:talacare/helpers/text_styles.dart';
-import 'package:talacare/reminder_create.dart';
-import 'package:talacare/reminder_schedule.dart';
+import 'package:talacare/widgets/reminder/reminder_create.dart';
+import 'package:talacare/widgets/reminder/reminder_schedule.dart';
 
 class Reminder extends StatelessWidget {
   Reminder();

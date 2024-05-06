@@ -3,8 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talacare/components/button.dart';
 import 'package:talacare/helpers/color_palette.dart';
 import 'package:talacare/helpers/text_styles.dart';
-import 'package:talacare/reminder.dart';
-import 'package:talacare/schedule_util.dart';
+import 'package:talacare/screens/reminder.dart';
+import 'package:talacare/helpers/schedule_util.dart';
 
 class ReminderEditForm extends StatefulWidget {
   final int currentHour;

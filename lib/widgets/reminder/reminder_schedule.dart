@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:talacare/components/button.dart';
 import 'package:talacare/helpers/color_palette.dart';
 import 'package:talacare/helpers/text_styles.dart';
-import 'package:talacare/reminder.dart';
-import 'package:talacare/reminder_edit.dart';
+import 'package:talacare/screens/reminder.dart';
+import 'package:talacare/widgets/reminder/reminder_edit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:talacare/schedule_util.dart';
+import 'package:talacare/helpers/schedule_util.dart';
 
 class ScheduleList extends StatefulWidget {
   ScheduleList({super.key});
@@ -33,10 +33,11 @@ class ScheduleListState extends State<ScheduleList> {
     } else {
       var scheduleList = fetchSchedule(prefs!);
       if (scheduleList.isEmpty) {
-        return Text(
+        return Center(child:  Text(
           "Kamu Belum Membuat Jadwal Pengingat",
           style: AppTextStyles.h1,
-        );
+          textAlign: TextAlign.center,
+        ));
       }
 
       return Container(

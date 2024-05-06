@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:talacare/reminder.dart';
-import 'package:talacare/reminder_create.dart';
-import 'package:talacare/reminder_edit.dart';
+import 'package:talacare/screens/reminder.dart';
+import 'package:talacare/widgets/reminder/reminder_create.dart';
+import 'package:talacare/widgets/reminder/reminder_edit.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
