@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:talacare/config.dart';
 import 'package:talacare/helpers/color_palette.dart';
 import 'package:talacare/helpers/text_styles.dart';
+import 'package:talacare/main.dart';
 
 class ExportPage extends StatefulWidget {
   ExportPage({Key? key, http.Client? client, String? recipientEmail})
@@ -67,6 +70,13 @@ class _ExportPageState extends State<ExportPage> {
     }
   }
 
+  Future<void> logout() async {
+    if (await GoogleSignIn().isSignedIn()) {
+      await GoogleSignIn().signOut();
+      await FirebaseAuth.instance.signOut();
+    }
+  }
+
   void showDialogMessage(BuildContext context, String message) {
     showDialog(
       context: context,
@@ -106,7 +116,7 @@ class _ExportPageState extends State<ExportPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Mengekspor Data Pemain',
+              'Ekspor Data',
               style: AppTextStyles.h1,
               textAlign: TextAlign.center,
             ),
@@ -114,10 +124,13 @@ class _ExportPageState extends State<ExportPage> {
             Container(
               child: Column(
                 children: [
-                  Text(
-                    'Tekan tombol Export Data untuk mengirim data pemain melalui email',
-                    style: AppTextStyles.normal,
-                    textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+                    child: Text(
+                      'Tekan tombol Export Data untuk mengirim data pemain melalui email',
+                      style: AppTextStyles.normal,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   SizedBox(height: 50),
                   IconButton(
@@ -128,12 +141,19 @@ class _ExportPageState extends State<ExportPage> {
                     },
                   ),
                   IconButton(
-                    icon: Image.asset("assets/images/Button/BackButton.png"),
-                    key: backButtonKey,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+                      icon: Image.asset(
+                        "assets/images/Button/BackButton.png",
+                      ),
+                      onPressed: () async {
+                        await logout();
+                        await Future.delayed(Duration(milliseconds: 500));
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return AuthenticationWrapper();
+                          }),
+                        );
+                      })
                 ],
               ),
             ),

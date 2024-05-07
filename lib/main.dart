@@ -12,6 +12,7 @@ import 'package:talacare/widgets/overlays/pause_menu.dart';
 import 'package:talacare/screens/homepage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'authentication/firebase_options.dart';
+import 'package:talacare/helpers/audio_manager.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
@@ -24,6 +25,7 @@ void main() async {
   await Flame.device.setPortrait();
 
   runApp(MyApp());
+  AudioManager.getInstance().playBackgroundMusic();
 }
 
 class MyApp extends StatelessWidget {

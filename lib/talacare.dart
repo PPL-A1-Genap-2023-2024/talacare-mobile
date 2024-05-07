@@ -20,7 +20,7 @@ enum GameStatus { playing, victory, transition }
 class TalaCare extends FlameGame
     with HasCollisionDetection, WidgetsBindingObserver {
   String playedCharacter;
-  Player player = Player(character: 'boy');
+  Player player = Player(character: 'tala');
   late CameraComponent camOne;
   late HouseAdventure gameOne;
   late int currentGame;
@@ -45,7 +45,7 @@ class TalaCare extends FlameGame
   TalaCare(
       {this.isWidgetTesting = false,
       this.email = '',
-      this.playedCharacter = 'boy'});
+      this.playedCharacter = 'tala'});
 
   @override
   void update(double dt) {
@@ -65,7 +65,6 @@ class TalaCare extends FlameGame
       score = 0;
       status = GameStatus.playing;
       await images.loadAllImages();
-      player = Player(character: 'Adam');
       checkingPlayedCharacter();
       currentGame = 1;
       world = gameOne = HouseAdventure(player: player, levelName: 'Level-01');
