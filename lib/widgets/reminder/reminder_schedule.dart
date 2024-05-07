@@ -41,7 +41,7 @@ class ScheduleListState extends State<ScheduleList> {
       }
 
       return Container(
-          constraints: BoxConstraints(maxWidth: screenWidth * 0.88),
+          constraints: BoxConstraints(maxWidth: screenWidth * 0.8),
           child: ListView.separated(
             itemCount: scheduleList.length,
             separatorBuilder: (BuildContext context, int index) =>
@@ -77,7 +77,7 @@ class ScheduleListState extends State<ScheduleList> {
                         children: [
                           CustomButton(
                             text: "Ubah",
-                            size: ButtonSize.small,
+                            size: ButtonSize.mini,
                             onPressed: () => showModalBottomSheet(
                               context: context,
                               builder: (BuildContext context) {
@@ -94,7 +94,7 @@ class ScheduleListState extends State<ScheduleList> {
                           ),
                           CustomButton(
                             text: "Hapus",
-                            size: ButtonSize.small,
+                            size: ButtonSize.mini,
                             onPressed: () async {
                               final response = deleteSchedule(
                                   scheduleList[index][1], prefs!);
