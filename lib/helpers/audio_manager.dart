@@ -4,6 +4,7 @@ class AudioManager {
   static final AudioManager _instance = AudioManager._internal();
   final AudioPlayer _bgm = AudioPlayer();
   final AudioSource _bgmSource = AudioSource.uri(Uri.parse("asset:///assets/audio/main_menu.mp3"));
+
   final AudioPlayer _sfx = AudioPlayer();
   final AudioSource _sfxSource = AudioSource.uri(Uri.parse("asset:///assets/audio/button_sound.mp3"));
   bool _pauseStatus = false;
@@ -32,7 +33,6 @@ class AudioManager {
     return _sfxSource;
   }
 
-
   Future<void> _initialize() async {
     getBGM().setVolume(0.7);
     await getBGM().setLoopMode(LoopMode.one);
@@ -60,8 +60,9 @@ class AudioManager {
     _pauseStatus = true;
   }
 
-  Future<void> playSoundEffect() async {
-    await getSFX().setAudioSource(getSFXFile());
+  Future<void> playSoundEffect([AudioSource? sfx]) async {
+    sfx ??= getSFXFile();
+    await getSFX().setAudioSource(sfx);
     getSFX().play();
   }
 }

@@ -75,6 +75,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CustomButton(
+              key: Key("Button"),
               text: 'Button',
               onPressed: () {
                 isPressed = true;
@@ -84,7 +85,7 @@ void main() {
         ),
       );
 
-      await tester.tap(find.text('Button'));
+      await tester.tap(find.byKey(Key("Button")));
 
       expect(isPressed, isTrue);
     });

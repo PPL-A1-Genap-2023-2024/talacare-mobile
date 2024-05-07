@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/layout.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/hospital_door.dart';
@@ -30,9 +29,6 @@ class HouseAdventure extends World with HasGameRef<TalaCare> {
 
   @override
   FutureOr<void> onLoad() async {
-    FlameAudio.bgm.initialize();
-    FlameAudio.bgm.play('bgm_game.mp3', volume: 0.5);
-    
     gameRef.camOne.viewfinder.anchor = Anchor.center;
     gameRef.camOne.viewfinder.zoom = 3;
     gameRef.camOne.viewport = FixedAspectRatioViewport(aspectRatio: 0.5625);
