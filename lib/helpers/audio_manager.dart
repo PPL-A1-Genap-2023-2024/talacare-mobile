@@ -3,7 +3,9 @@ import 'package:just_audio/just_audio.dart';
 class AudioManager {
   static final AudioManager _instance = AudioManager._internal();
   final AudioPlayer _bgm = AudioPlayer();
-  final AudioSource _source = AudioSource.uri(Uri.parse("asset:///assets/audio/mainmenu.mp3"));
+  final AudioSource _bgmSource = AudioSource.uri(Uri.parse("asset:///assets/audio/main_menu.mp3"));
+  final AudioPlayer _sfx = AudioPlayer();
+  final AudioSource _sfxSource = AudioSource.uri(Uri.parse("asset:///assets/audio/button_sound.mp3"));
   bool _pauseStatus = false;
 
   factory AudioManager.getInstance() {
@@ -14,37 +16,52 @@ class AudioManager {
     _initialize();
   }
 
-  AudioPlayer getPlayer(){
+  AudioPlayer getBGM(){
     return _bgm;
   }
 
-  AudioSource getSong(){
-    return _source;
+  AudioSource getBGMSong(){
+    return _bgmSource;
   }
 
+  AudioPlayer getSFX(){
+    return _sfx;
+  }
+
+  AudioSource getSFXFile(){
+    return _sfxSource;
+  }
+
+
   Future<void> _initialize() async {
-    await getPlayer().setLoopMode(LoopMode.one);
-    await getPlayer().setAudioSource(getSong());
+    getBGM().setVolume(0.7);
+    await getBGM().setLoopMode(LoopMode.one);
+    await getBGM().setAudioSource(getBGMSong());
   }
 
   void playBackgroundMusic() async {
     if (_pauseStatus){
-      getPlayer().play();
+      getBGM().play();
       _pauseStatus = false;
     } else {
-      if (!getPlayer().playing) {
-        getPlayer().play();
+      if (!getBGM().playing) {
+        getBGM().play();
       }
     }
   }
 
   void stopBackgroundMusic() {
-    getPlayer().stop();
-    getPlayer().seek(Duration.zero);
+    getBGM().stop();
+    getBGM().seek(Duration.zero);
   }
 
   void pauseBackgroundMusic() {
-    getPlayer().pause();
+    getBGM().pause();
     _pauseStatus = true;
+  }
+
+  Future<void> playSoundEffect() async {
+    await getSFX().setAudioSource(getSFXFile());
+    getSFX().play();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:talacare/components/button.dart';
 import 'package:talacare/helpers/playable_characters.dart';
 import 'package:talacare/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -107,7 +108,10 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       "assets/images/Button/tombol_prev.png",
                       width: 50,
                     ),
-                    onPressed: () => _controller.previousPage(),
+                    onPressed: () {
+                      AudioManager.getInstance().playSoundEffect();
+                      _controller.previousPage();
+                    }
                   ),
                   Flexible(
                     child:  CarouselSlider(
@@ -130,7 +134,10 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       "assets/images/Button/tombol_next.png",
                       width: 50,
                     ),
-                    onPressed: () => _controller.nextPage(),
+                    onPressed: () {
+                      AudioManager.getInstance().playSoundEffect();
+                      _controller.nextPage();
+                    },
                   ),
                 ],
               ),
@@ -170,18 +177,13 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
               ),
 
               /* Tombol Mulai */
-              IconButton(
-                key: widget.getPlayButtonKey(),
-                icon: Image.asset(
-                  "assets/images/Button/tombol_mulai.png",
-                ),
-                onPressed: () async {
-                  // Future.delayed(Duration(seconds: 2), () {
-                  //   AudioManager.getInstance().stopBackgroundMusic();
-                  // });
-                  await startGame();
-                  AudioManager.getInstance().stopBackgroundMusic();
-                },
+              CustomButton(
+                  text: "Mulai",
+                  size: ButtonSize.medium,
+                  onPressed: () async {
+                    await startGame();
+                    AudioManager.getInstance().stopBackgroundMusic();
+                  }
               ),
 
               /* Tombol Pengaturan Reminder */
@@ -198,6 +200,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   "assets/images/Button/tombol_keluar.png",
                 ),
                 onPressed: () async {
+                  AudioManager.getInstance().playSoundEffect();
                   await logout();
                   await Future.delayed(Duration(milliseconds: 500));
                   Navigator.pushReplacement(
