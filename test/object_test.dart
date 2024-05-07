@@ -102,7 +102,6 @@ void main() {
         expect(world.silhouetteContainer.childIsHappy, true);
         expect(world.silhouetteContainer.children.query<SilhouetteItem>().length, 5);
         expect(world.draggableContainer.children.query<DraggableItem>().length, 0);
-        expect(world.children.query<ButtonComponent>().length, 1);
         expect(world.instruction.text, "Transfusi darah berhasil!");
         expect(world.progressBar.circlesAreMarked.contains(false), false);
         expect(world.score, 5);

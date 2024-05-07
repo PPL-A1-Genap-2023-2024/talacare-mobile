@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:talacare/screens/game_2.dart';
+import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/helpers/item.dart';
 import 'package:talacare/talacare.dart';
 import 'package:flame/events.dart';
@@ -14,6 +15,7 @@ class DraggableItem extends SpriteComponent
         DragCallbacks {
   final Item item;
   late Vector2 initialPosition;
+  bool isDraggable = true;
 
   DraggableItem({required this.item, required super.position});
 
@@ -39,6 +41,7 @@ class DraggableItem extends SpriteComponent
 
   @override
   Future<void> onDragEnd(DragEndEvent event) async {
+    if (!isDraggable) return;
     super.onDragEnd(event);
     await Future.delayed(Duration(milliseconds: 50));
     position = Vector2(initialPosition.x, initialPosition.y);
