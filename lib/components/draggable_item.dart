@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:talacare/screens/game_2.dart';
-import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/helpers/item.dart';
 import 'package:talacare/talacare.dart';
 import 'package:flame/events.dart';

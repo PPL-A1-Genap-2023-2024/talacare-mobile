@@ -86,7 +86,6 @@ void main() {
           final point = game_1.children.query<ActivityPoint>().first;
           point.onCollision(intersection, player);
           await game.ready();
-          final initialProgress = game.score;
           final door = game_1.children.query<HospitalDoor>().first;
           door.onCollision({Vector2(0.0,0.0), Vector2(0.0,0.0)}, player);
           await game.ready();
