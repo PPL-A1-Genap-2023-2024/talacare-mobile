@@ -3,7 +3,7 @@ import 'package:just_audio/just_audio.dart';
 class AudioManager {
   static final AudioManager _instance = AudioManager._internal();
   final AudioPlayer _bgm = AudioPlayer();
-  final AudioSource _source = AudioSource.uri(Uri.parse("asset:///assets/audio/mainmenu.mp3"));
+  final AudioSource _source = AudioSource.uri(Uri.parse("asset:///assets/audio/bgm_game.mp3"));
   bool _pauseStatus = false;
 
   factory AudioManager.getInstance() {

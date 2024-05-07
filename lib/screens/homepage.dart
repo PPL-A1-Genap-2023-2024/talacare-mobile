@@ -52,7 +52,6 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState(){
     super.initState();
-
     AudioManager.getInstance().playBackgroundMusic();
     _listener = AppLifecycleListener(
       onPause: _onPause,
@@ -180,7 +179,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   //   AudioManager.getInstance().stopBackgroundMusic();
                   // });
                   await startGame();
-                  AudioManager.getInstance().stopBackgroundMusic();
+                  // AudioManager.getInstance().stopBackgroundMusic();
                 },
               ),
 
