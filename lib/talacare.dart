@@ -127,6 +127,32 @@ class TalaCare extends FlameGame
     });
   }
 
+  void switchGameLose({reason = DialogReason.enterHospital}) {
+    removeAll([camera, world]);
+
+    final transition = GameTransition(player: player, reason: reason);
+    transitionCam = CameraComponent(world: transition);
+    addAll([transitionCam, transition]);
+    status = GameStatus.transition;
+    transitionCountdown = Timer(5, onTick: () {
+      removeAll([transitionCam, transition]);
+      status = GameStatus.playing;
+      player.angle = 0;
+      player.scale = Vector2.all(1);
+      player.moveSpeed = 56.25; //75% of 75% of 100
+      player.x = gameOne.hospitalDoor.x;
+      player.y = gameOne.hospitalDoor.y + 50;
+      player.direction = Direction.none;
+      playerHealth = 2; //half
+      player.collisionActive = true;
+
+      world = gameOne;
+      camera = camOne;
+
+      addAll([camera, world]);
+    });
+  }
+
   void checkingPlayedCharacter() {
     if (player.character != playedCharacter) {
       player = Player(character: playedCharacter);
@@ -188,8 +214,15 @@ class TalaCare extends FlameGame
   }
 
   void exitHospital() {
+    removeConfirmation();
     currentGame = 1;
     switchGame();
+  }
+
+  void loseHospital() {
+    removeConfirmation();
+    currentGame = 1;
+    switchGameLose();
   }
 
   void victory() {
