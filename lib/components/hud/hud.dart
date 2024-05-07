@@ -1,9 +1,10 @@
 import 'package:flame/components.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:talacare/components/hud/progress.dart';
+import 'package:talacare/helpers/audio_manager.dart';
 import 'package:talacare/helpers/dialog_reason.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/components/hud/health.dart';
+import 'package:just_audio/just_audio.dart';
 
 class Hud extends PositionComponent with HasGameReference<TalaCare> {
   Hud({
@@ -15,6 +16,7 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
   late Timer countDown;
   late int healthDurationChecker;
   bool timerStarted = false;
+  AudioSource sfx = AudioSource.uri(Uri.parse("asset:///assets/audio/health_notification.mp3"));
 
   @override
   Future<void> onLoad() async {
@@ -81,7 +83,8 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
       healthDurationChecker = healthDuration;
 
       if (game.playerHealth ==  1) {
-        FlameAudio.play('health_notification.mp3');
+        // FlameAudio.play('health_notification.mp3');
+        AudioManager.getInstance().playSoundEffect(sfx);
         game.showConfirmation(DialogReason.lowBlood);
       }
     }

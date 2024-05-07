@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:talacare/components/draggable_item.dart';
+import 'package:talacare/helpers/audio_manager.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/helpers/item.dart';
 import 'package:talacare/talacare.dart';
+import 'package:just_audio/just_audio.dart';
 
 class SilhouetteItem extends SpriteComponent
     with
@@ -17,6 +18,8 @@ class SilhouetteItem extends SpriteComponent
   late final RectangleHitbox hitbox;
 
   SilhouetteItem({required this.item});
+
+  AudioSource sfx = AudioSource.uri(Uri.parse("asset:///assets/audio/puzzle_drop.mp3"));
 
   @override
   FutureOr<void> onLoad() async {
@@ -34,7 +37,9 @@ class SilhouetteItem extends SpriteComponent
     if (other is DraggableItem && other.isDragged == false) {
       if (item.index == other.item.index) {
         world.instruction.text = "Sudah Cocok. Lanjutkan!";
-        FlameAudio.play('puzzle_drop.mp3');
+        // FlameAudio.play('puzzle_drop.mp3');
+        AudioManager.getInstance().playSoundEffect(sfx);
+
         tint(Color.fromARGB(0, 255, 255, 255));
         remove(hitbox);
         world.draggableContainer.removeItem(other);

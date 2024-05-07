@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/helpers/playable_characters.dart';
 import 'package:talacare/main.dart';
@@ -46,6 +47,8 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
         return TalaCareGame(playedCharacter: currentCharacter);
       }),
     );
+    FlameAudio.bgm.initialize();
+    FlameAudio.bgm.play('bgm_game.mp3', volume: 0.5);
   }
 
   /* App Life Cycle Listener */
