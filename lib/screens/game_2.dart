@@ -65,7 +65,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
       anchor: Anchor.topCenter,
       position: Vector2(screen.size.x / 2, screen.size.y * 1 / 14),
       text: "Sisa waktu: $timeLimit detik",
-      textRenderer: TextPaint(style: AppTextStyles.h2)
+      textRenderer: TextPaint(style: AppTextStyles.large)
     );
     add(timerText);
 
