@@ -27,7 +27,7 @@ class DraggableItem extends SpriteComponent
     } else if (size.x > 150) {
       scale = Vector2.all(0.8);
     }
-    add(RectangleHitbox());
+    add(RectangleHitbox(isSolid: true));
     initialPosition = Vector2(position.x, position.y);
     return super.onLoad();
   }
