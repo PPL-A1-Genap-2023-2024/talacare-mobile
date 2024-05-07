@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:talacare/helpers/audio_manager.dart';
 import 'package:talacare/components/button.dart';
 import 'package:talacare/helpers/color_palette.dart';
 import 'package:talacare/helpers/text_styles.dart';
@@ -15,6 +16,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late final AppLifecycleListener _listener;
+
   Future<UserCredential?> signInWithGoogle() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -34,8 +37,36 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     // Sign in the user with the credential
-    await auth.signInWithCredential(credential);
-    return null;
+    UserCredential userCredential = await auth.signInWithCredential(credential);
+
+    // Return the user credential
+    return userCredential;
+  }
+
+  /* App Life Cycle Listener */
+  @override
+  void initState(){
+    super.initState();
+
+    _listener = AppLifecycleListener(
+      onPause: _onPause,
+      onResume: _onResume,
+    );
+  }
+
+  @override
+  void dispose(){
+    _listener.dispose();
+
+    super.dispose();
+  }
+
+  void _onPause(){
+    AudioManager.getInstance().pauseBackgroundMusic();
+  }
+
+  void _onResume(){
+    AudioManager.getInstance().playBackgroundMusic();
   }
 
   @override

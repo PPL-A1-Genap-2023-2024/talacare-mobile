@@ -283,17 +283,17 @@
   <object id="92" name="Hospital" type="Hospital" x="224" y="96" width="31.3333" height="31.6667"/>
   <object id="5" name="Player" type="Player" x="272" y="864" width="22.6048" height="21.7354"/>
   <object id="34" name="Drawing" type="Activity" x="140.459" y="879.124" width="15" height="15"/>
-  <object id="35" name="Drawing" type="Activity" x="129.079" y="483.107" width="15" height="15"/>
+  <object id="35" name="Building" type="Activity" x="129.079" y="483.107" width="15" height="15"/>
   <object id="36" name="Drawing" type="Activity" x="138.183" y="624.216" width="15" height="15"/>
-  <object id="37" name="Drawing" type="Activity" x="416.988" y="479.693" width="15" height="15"/>
+  <object id="37" name="Building" type="Activity" x="416.988" y="479.693" width="15" height="15"/>
   <object id="38" name="Drawing" type="Activity" x="393.09" y="360.205" width="15" height="15"/>
-  <object id="39" name="Drawing" type="Activity" x="142.735" y="363.619" width="15" height="15"/>
+  <object id="39" name="Building" type="Activity" x="142.735" y="363.619" width="15" height="15"/>
   <object id="40" name="Drawing" type="Activity" x="250.843" y="476.279" width="15" height="15"/>
-  <object id="41" name="Drawing" type="Activity" x="387.4" y="738.014" width="15" height="15"/>
+  <object id="41" name="Building" type="Activity" x="387.4" y="738.014" width="15" height="15"/>
   <object id="42" name="Drawing" type="Activity" x="312.294" y="606.009" width="15" height="15"/>
-  <object id="43" name="Drawing" type="Activity" x="127.941" y="792.637" width="15" height="15"/>
+  <object id="43" name="Building" type="Activity" x="127.941" y="792.637" width="15" height="15"/>
   <object id="44" name="Drawing" type="Activity" x="256.533" y="705.013" width="15" height="15"/>
-  <object id="46" name="Drawing" type="Activity" x="237.187" y="401.172" width="15" height="15"/>
+  <object id="46" name="Building" type="Activity" x="237.187" y="401.172" width="15" height="15"/>
   <object id="47" name="Drawing" type="Activity" x="409.022" y="873.434" width="15" height="15"/>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
