@@ -35,6 +35,7 @@ class DraggableItem extends SpriteComponent
 
   @override
   void onDragUpdate(DragUpdateEvent event) {
+    if (!isDraggable) return;
     position += Vector2(scale.x * event.localDelta.x, scale.y * event.localDelta.y);
   }
 
