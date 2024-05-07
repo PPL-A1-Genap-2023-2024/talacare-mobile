@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
-import 'package:flame/input.dart';
-import 'package:flutter/material.dart' as material;
 import 'package:talacare/components/circle_progress.dart';
 import 'package:talacare/components/draggable_container.dart';
 import 'package:talacare/components/player.dart';
@@ -111,6 +109,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
       silhouetteContainer.addNextItem();
     } else {
       instruction.text = "Transfusi darah berhasil!";
+      silhouetteContainer.changeChildSprite();
       addExitButton();
       
     }

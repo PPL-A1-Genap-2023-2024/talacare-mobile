@@ -15,8 +15,9 @@ class ActivityEvent extends SpriteAnimationComponent with HasGameRef<TalaCare> {
       amount: 2,
       stepTime: 0.5
     );
+    var fileName = 'Activity_Events/event_${variant}_${game.playedCharacter}.png';
     animation = SpriteAnimation.fromFrameData(
-      game.images.fromCache('Activity_Events/event_$variant.png'), data);
+      game.images.fromCache(fileName), data);
     return super.onLoad();
   }
 
