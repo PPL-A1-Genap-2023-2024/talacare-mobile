@@ -3,9 +3,9 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
 import 'package:talacare/components/event.dart';
-import 'package:talacare/components/game_2.dart';
+import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
-import 'package:talacare/components/game_1.dart';
+import 'package:talacare/screens/game_1.dart';
 import 'components/transition.dart';
 import 'helpers/directions.dart';
 import 'package:talacare/components/player.dart';
@@ -16,7 +16,7 @@ enum GameStatus {playing, victory, transition}
 
 class TalaCare extends FlameGame with HasCollisionDetection {
   String playedCharacter;
-  Player player = Player(character: 'boy');
+  Player player = Player(character: 'tala');
   late CameraComponent camOne;
   late HouseAdventure gameOne;
   late int currentGame;
@@ -34,7 +34,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   bool confirmationIsActive = false;
   
   final bool isWidgetTesting;
-  TalaCare({this.isWidgetTesting = false, this.playedCharacter = 'boy'});
+  TalaCare({this.isWidgetTesting = false, this.playedCharacter = 'tala'});
 
   @override
   void update(double dt) {
@@ -51,7 +51,6 @@ class TalaCare extends FlameGame with HasCollisionDetection {
       score = 0;
       status = GameStatus.playing;
       await images.loadAllImages();
-      player = Player(character: 'Adam');
       checkingPlayedCharacter();
       currentGame = 1;
       world = gameOne = HouseAdventure(player: player, levelName: 'Level-01');

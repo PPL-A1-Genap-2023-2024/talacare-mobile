@@ -6,7 +6,7 @@ import 'package:talacare/components/hud/hud.dart';
 import 'package:talacare/components/hud/progress.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/components/event.dart';
-import 'package:talacare/components/game_1.dart';
+import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 import 'package:talacare/helpers/directions.dart';
