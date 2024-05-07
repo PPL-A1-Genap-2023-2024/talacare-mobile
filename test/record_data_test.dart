@@ -1,3 +1,4 @@
+import 'package:flame/game.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,7 +8,11 @@ import 'package:talacare/config.dart';
 import 'package:talacare/helpers/data_sender.dart';
 import 'package:talacare/talacare.dart';
 import 'package:http/http.dart' as http;
+import 'package:talacare/widgets/overlays/pause_button.dart';
+import 'package:talacare/widgets/overlays/pause_menu.dart';
 import 'export_data_test.mocks.dart';
+
+class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 @GenerateMocks([http.Client])
 void main() {
@@ -58,6 +63,34 @@ void main() {
       expect(formatDateTime(DateTime(2024, 5, 5)), equals('2024-5-5'));
       expect(formatDateTime(DateTime(2023, 12, 31)), equals('2023-12-31'));
       expect(formatDateTime(DateTime(2024, 2, 29)), equals('2024-2-29'));
+    });
+    testWidgets('Send Data When Back to Homepage', (tester) async {
+      tester.view.physicalSize = const Size(1080, 1920);
+      tester.view.devicePixelRatio = 1.0;
+      MockNavigatorObserver mockObserver = MockNavigatorObserver();
+      final myGame = TalaCare(isWidgetTesting: true);
+      final pauseButton = PauseButton(gameRef: myGame);
+      final pauseMenu = PauseMenu(gameRef: myGame);
+      final GlobalKey pauseButtonKey = pauseButton.getPauseButtonKey();
+      final GlobalKey exitButtonKey = pauseMenu.getExitButtonKey();
+      await tester.pumpWidget(MaterialApp(
+        home: GameWidget(game: myGame, initialActiveOverlays: const [
+          PauseButton.id
+        ], overlayBuilderMap: {
+          PauseButton.id: (BuildContext context, TalaCare gameRef) =>
+              pauseButton,
+          PauseMenu.id: (BuildContext context, TalaCare gameRef) => pauseMenu
+        }),
+        navigatorObservers: [mockObserver],
+      ));
+      await tester.pump();
+      final pauseButtonIcon = find.byKey(pauseButtonKey);
+      await tester.tap(pauseButtonIcon);
+      await tester.pump();
+      expect(myGame.haveSentRecap, false);
+      final exitButtonIcon = find.byKey(exitButtonKey);
+      await tester.tap(exitButtonIcon);
+      expect(myGame.haveSentRecap, true);
     });
   });
 }
