@@ -3,11 +3,11 @@ import 'dart:ui';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
+import 'package:flutter/material.dart' as material;
 import 'package:talacare/components/circle_progress.dart';
 import 'package:talacare/components/draggable_container.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/silhouette_container.dart';
-import 'package:talacare/helpers/text_styles.dart';
 import 'package:talacare/talacare.dart';
 
 class HospitalPuzzle extends World with HasGameRef<TalaCare> {
@@ -41,7 +41,10 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
         anchor: Anchor.center,
         position: Vector2(screen.size.x / 2, screen.size.y * 1 / 4),
         text: "Ayo cocokkan gambar!",
-        textRenderer: TextPaint(style: AppTextStyles.h2)
+        textRenderer: TextPaint(style: material.TextStyle(
+            color: Color.fromARGB(255, 191, 210, 139),
+            fontSize: 28
+        ))
     );
     silhouetteContainer = SilhouetteContainer(
       position: Vector2(screen.size.x / 2, screen.size.y * 8 / 17),
@@ -73,11 +76,22 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
   }
 
   FutureOr<void> addExitButton() async {
-    final button = SpriteComponent(
-      sprite: Sprite(game.images.fromCache('Button/PlayButton.png')),
+    final buttonText = TextComponent(
+        anchor: Anchor.center,
+        position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
+        text: "Kembali ke Rumah",
+        textRenderer: TextPaint(style: material.TextStyle(
+            color: Color.fromARGB(255, 165, 151, 102),
+            fontSize: 22
+        ))
     );
-    final buttonDown = SpriteComponent(
-      sprite: Sprite(game.images.fromCache('Button/PlayButton_pressed.png')),
+    final button = RectangleComponent(
+      paint: Paint()..color = Color.fromARGB(255, 253, 233, 168),
+      size: Vector2(200, 50),
+    );
+    final buttonDown = RectangleComponent(
+      paint: Paint()..color = Color.fromARGB(255, 222, 202, 138),
+      size: Vector2(200, 50),
     );
     final buttonGroup = ButtonComponent(
       anchor: Anchor.center,
@@ -85,8 +99,10 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
       buttonDown: buttonDown,
       onReleased: finishGame,
       position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
+      size: Vector2(200, 50),
     );
     add(buttonGroup);
+    add(buttonText);
   }
 
   void finishGame() {
