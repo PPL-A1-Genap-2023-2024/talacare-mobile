@@ -38,7 +38,7 @@ class SilhouetteItem extends SpriteComponent
       if (item.index == other.item.index) {
         world.instruction.text = "Sudah Cocok. Lanjutkan!";
         // FlameAudio.play('puzzle_drop.mp3');
-        AudioManager.getInstance().playSoundEffect(sfx);
+        // AudioManager.getInstance().playSoundEffect(sfx);
 
         tint(Color.fromARGB(0, 255, 255, 255));
         remove(hitbox);

@@ -181,12 +181,13 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
               /* Tombol Mulai */
               CustomButton(
-                  text: "Mulai",
-                  size: ButtonSize.medium,
-                  onPressed: () async {
-                    await startGame();
-                    AudioManager.getInstance().stopBackgroundMusic();
-                  }
+                key: widget._playButtonKey,
+                text: "Mulai",
+                size: ButtonSize.medium,
+                onPressed: () async {
+                  await startGame();
+                  AudioManager.getInstance().stopBackgroundMusic();
+                }
               ),
 
               /* Tombol Pengaturan Reminder */

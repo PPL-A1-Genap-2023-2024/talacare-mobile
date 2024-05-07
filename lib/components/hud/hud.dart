@@ -84,7 +84,7 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
 
       if (game.playerHealth ==  1) {
         // FlameAudio.play('health_notification.mp3');
-        AudioManager.getInstance().playSoundEffect(sfx);
+        // AudioManager.getInstance().playSoundEffect(sfx);
         game.showConfirmation(DialogReason.lowBlood);
       }
     }

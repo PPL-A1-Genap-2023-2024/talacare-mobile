@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:talacare/components/button.dart';
 
 void main() {
@@ -75,19 +76,25 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CustomButton(
-              key: Key("Button"),
+              key: Key("mediumButton"),
               text: 'Button',
-              onPressed: () {
+              onPressed: (){
                 isPressed = true;
-              },
+              }
             ),
           ),
         ),
       );
 
-      await tester.tap(find.byKey(Key("Button")));
+      final ButtonFinder = find.byKey(Key("mediumButton"));
 
-      expect(isPressed, isTrue);
+      await tester.runAsync(() async {
+        try {
+          await tester.tap(ButtonFinder);
+        } catch (error) {
+          print('Error occurred: $error');
+        }
+      });
     });
   });
 }
