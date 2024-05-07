@@ -82,7 +82,7 @@ class TalaCareGame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final game = TalaCare(playedCharacter: playedCharacter);
+    final game = TalaCare(playedCharacter: playedCharacter, email: email);
 
     return GameWidget(
       game: kDebugMode
