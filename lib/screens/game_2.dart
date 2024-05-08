@@ -114,6 +114,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
       // FlameAudio.play('all_matched.mp3');
       // AudioManager.getInstance().playSoundEffect(sfx);
       instruction.text = "Transfusi darah berhasil!";
+      silhouetteContainer.changeChildSprite();
       addExitButton();
       
     }

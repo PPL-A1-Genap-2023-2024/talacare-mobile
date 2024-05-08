@@ -13,6 +13,10 @@ class PauseMenu extends StatelessWidget {
   final GlobalKey _resumeButtonKey = GlobalKey();
   PauseMenu({super.key, required this.gameRef});
 
+  GlobalKey getExitButtonKey() {
+    return _exitButtonKey;
+  }
+
   GlobalKey getResumeButtonKey() {
     return _resumeButtonKey;
   }
@@ -54,9 +58,11 @@ class PauseMenu extends StatelessWidget {
                                   Image.asset('assets/images/Dialog/home.png'),
                               onPressed: () {
                                 FlameAudio.bgm.stop();
+                                gameRef.haveSentRecap = true;
+                                gameRef.sendRecap();
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return HomePage();
+                                  return HomePage(email: gameRef.email);
                                 }));
                               },
                             ),

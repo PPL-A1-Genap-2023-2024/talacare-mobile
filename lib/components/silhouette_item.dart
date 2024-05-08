@@ -27,7 +27,10 @@ class SilhouetteItem extends SpriteComponent
     position = Vector2(item.x, item.y);
     sprite = Sprite(game.images.fromCache('Game_2/item_${item.name}.png'));
     tint(Color.fromARGB(255, 255, 255, 255));
-    hitbox = RectangleHitbox(size: Vector2(item.x / 2, item.y / 2));
+    hitbox = RectangleHitbox(isSolid: true);
+    if (size.x < 50) {
+      hitbox.scale = Vector2.all(2);
+    }
     add(hitbox);
     return super.onLoad();
   }

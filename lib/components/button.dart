@@ -3,7 +3,7 @@ import 'package:talacare/helpers/color_palette.dart';
 import 'package:talacare/helpers/text_styles.dart';
 import 'package:talacare/helpers/audio_manager.dart';
 
-enum ButtonSize { small, medium, large }
+enum ButtonSize { mini, small, medium, large }
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -25,6 +25,9 @@ class CustomButton extends StatelessWidget {
     double buttonHeight = 72;
 
     switch (size) {
+      case ButtonSize.mini:
+        buttonWidth = 95;
+        break;
       case ButtonSize.small:
         buttonWidth = 150;
         break;
