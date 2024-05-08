@@ -2,19 +2,23 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
+import 'package:flutter/material.dart';
 import 'package:talacare/components/event.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/screens/game_1.dart';
+import 'package:talacare/helpers/data_sender.dart';
 import 'components/transition.dart';
 import 'helpers/directions.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 
 import 'helpers/dialog_reason.dart';
-enum GameStatus {playing, victory, transition}
 
-class TalaCare extends FlameGame with HasCollisionDetection {
+enum GameStatus { playing, victory, transition }
+
+class TalaCare extends FlameGame
+    with HasCollisionDetection, WidgetsBindingObserver {
   String playedCharacter;
   Player player = Player(character: 'tala');
   late CameraComponent camOne;
@@ -26,19 +30,26 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   GameStatus status = GameStatus.playing;
   late GameDialog confirmation;
   late int score;
+  late DateTime startTimestamp;
+  late int totalTime;
+  late bool haveSentRecap;
   @override
   late World world;
   late AlignComponent eventAnchor;
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
-  
+
   final bool isWidgetTesting;
-  TalaCare({this.isWidgetTesting = false, this.playedCharacter = 'tala'});
+  final String email;
+  TalaCare(
+      {this.isWidgetTesting = false,
+      this.email = '',
+      this.playedCharacter = 'tala'});
 
   @override
   void update(double dt) {
-    if (status==GameStatus.transition) {
+    if (status == GameStatus.transition) {
       transitionCountdown.update(dt);
     }
     super.update(dt);
@@ -46,6 +57,9 @@ class TalaCare extends FlameGame with HasCollisionDetection {
 
   @override
   FutureOr<void> onLoad() async {
+    startTimestamp = DateTime.now();
+    totalTime = 0;
+    haveSentRecap = false;
     if (!isWidgetTesting) {
       playerHealth = 4;
       score = 0;
@@ -60,8 +74,29 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     return super.onLoad();
   }
 
+  @override
+  void pauseEngine() {
+    super.pauseEngine();
+    totalTime += DateTime.now().difference(startTimestamp).inMilliseconds;
+  }
 
-  void switchGame({reason=DialogReason.enterHospital}) {
+  @override
+  void resumeEngine() {
+    super.resumeEngine();
+    startTimestamp = DateTime.now();
+  }
+
+  @override
+  void lifecycleStateChange(AppLifecycleState state) {
+    super.lifecycleStateChange(state);
+    if (state == AppLifecycleState.paused && !paused) {
+      pauseEngine();
+    } else if (state == AppLifecycleState.resumed) {
+      resumeEngine();
+    }
+  }
+
+  void switchGame({reason = DialogReason.enterHospital}) {
     removeAll([camera, world]);
 
     final transition = GameTransition(player: player, reason: reason);
@@ -92,7 +127,7 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     });
   }
 
-  void switchGameLose({reason=DialogReason.enterHospital}) {
+  void switchGameLose({reason = DialogReason.enterHospital}) {
     removeAll([camera, world]);
 
     final transition = GameTransition(player: player, reason: reason);
@@ -104,22 +139,22 @@ class TalaCare extends FlameGame with HasCollisionDetection {
       status = GameStatus.playing;
       player.angle = 0;
       player.scale = Vector2.all(1);
-      player.moveSpeed = 56.25;  //75% of 75% of 100
+      player.moveSpeed = 56.25; //75% of 75% of 100
       player.x = gameOne.hospitalDoor.x;
       player.y = gameOne.hospitalDoor.y + 50;
       player.direction = Direction.none;
-      playerHealth = 2;   //half
+      playerHealth = 2; //half
       player.collisionActive = true;
 
       world = gameOne;
       camera = camOne;
-      
+
       addAll([camera, world]);
     });
   }
 
-  void checkingPlayedCharacter(){
-    if (player.character != playedCharacter){
+  void checkingPlayedCharacter() {
+    if (player.character != playedCharacter) {
       player = Player(character: playedCharacter);
     }
   }
@@ -132,9 +167,8 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     if (!eventIsActive) {
       world.remove(point);
       eventAnchor = AlignComponent(
-        child: ActivityEvent(variant: point.variant),
-        alignment: Anchor.center
-      );
+          child: ActivityEvent(variant: point.variant),
+          alignment: Anchor.center);
       camera.viewport.add(eventAnchor);
       eventIsActive = true;
       score += 1;
@@ -168,7 +202,6 @@ class TalaCare extends FlameGame with HasCollisionDetection {
     confirmationIsActive = false;
   }
 
-
   void goToHospital(reason) {
     removeConfirmation();
     currentGame = 2;
@@ -193,10 +226,20 @@ class TalaCare extends FlameGame with HasCollisionDetection {
   }
 
   void victory() {
+    if (!haveSentRecap) {
+      sendRecap();
+      haveSentRecap = true;
+    }
+
     status = GameStatus.victory;
     if (!eventIsActive) {
       showConfirmation(DialogReason.gameVictory);
     }
+  }
+
+  void sendRecap() {
+    totalTime += DateTime.now().difference(startTimestamp).inMilliseconds;
+    sendData(email: email, totalTime: totalTime);
   }
 
   void playAgain() {

@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:talacare/screens/login_page.dart';
+import 'package:talacare/screens/export_page.dart';
+import 'package:talacare/helpers/role_checker.dart';
 import 'package:talacare/helpers/notification_util.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
@@ -13,6 +15,7 @@ import 'package:talacare/screens/homepage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'authentication/firebase_options.dart';
 import 'package:talacare/helpers/audio_manager.dart';
+import 'package:http/http.dart' as http;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +38,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'TalaCare',
@@ -56,7 +58,22 @@ class AuthenticationWrapper extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
         } else if (snapshot.hasData && snapshot.data != null) {
-          return HomePage();
+          String email = snapshot.data!.email!;
+          Future<bool> isAdmin = checkRole(http.Client(), email);
+          return FutureBuilder(
+            future: isAdmin,
+            builder: (context, AsyncSnapshot<bool> isAdminSnapshot) {
+              if (isAdminSnapshot.hasData) {
+                if (isAdminSnapshot.data!) {
+                  return ExportPage(recipientEmail: email);
+                } else {
+                  return HomePage(email: email);
+                }
+              } else {
+                return CircularProgressIndicator();
+              }
+            },
+          );
         } else {
           return LoginPage();
         }
@@ -67,24 +84,25 @@ class AuthenticationWrapper extends StatelessWidget {
 
 class TalaCareGame extends StatelessWidget {
   final String playedCharacter;
-  TalaCareGame({required this.playedCharacter});
+  final String email;
+  TalaCareGame({required this.playedCharacter, this.email = ''});
 
   @override
   Widget build(BuildContext context) {
-    final game = TalaCare(playedCharacter: playedCharacter);
+    final game = TalaCare(playedCharacter: playedCharacter, email: email);
 
     return GameWidget(
-      game: kDebugMode ? TalaCare(playedCharacter: playedCharacter) : game,
-      initialActiveOverlays: const [
-        PauseButton.id
-      ],
+      game: kDebugMode
+          ? TalaCare(playedCharacter: playedCharacter, email: email)
+          : game,
+      initialActiveOverlays: const [PauseButton.id],
       overlayBuilderMap: {
         PauseButton.id: (BuildContext context, TalaCare gameRef) => PauseButton(
-          gameRef: gameRef,
-        ),
+              gameRef: gameRef,
+            ),
         PauseMenu.id: (BuildContext context, TalaCare gameRef) => PauseMenu(
-          gameRef: gameRef,
-        )
+              gameRef: gameRef,
+            )
       },
     );
   }
