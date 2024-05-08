@@ -1,3 +1,4 @@
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/helpers/color_palette.dart';
 import 'package:talacare/helpers/text_styles.dart';
@@ -56,6 +57,7 @@ class PauseMenu extends StatelessWidget {
                               icon:
                                   Image.asset('assets/images/Dialog/home.png'),
                               onPressed: () {
+                                FlameAudio.bgm.stop();
                                 gameRef.haveSentRecap = true;
                                 gameRef.sendRecap();
                                 Navigator.push(context,
@@ -82,6 +84,7 @@ class PauseMenu extends StatelessWidget {
                               icon:
                                   Image.asset('assets/images/Dialog/okay.png'),
                               onPressed: () {
+                                FlameAudio.bgm.resume();
                                 gameRef.resumeEngine();
                                 gameRef.overlays.remove(PauseMenu.id);
                                 gameRef.overlays.add(PauseButton.id);

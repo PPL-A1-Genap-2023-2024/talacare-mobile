@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:talacare/helpers/color_palette.dart';
 import 'package:talacare/helpers/text_styles.dart';
+import 'package:talacare/helpers/audio_manager.dart';
 
 enum ButtonSize { mini, small, medium, large }
 
@@ -128,7 +129,11 @@ class CustomButton extends StatelessWidget {
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(24),
-                    onTap: onPressed,
+                    onTap: () async {
+                      await AudioManager.getInstance().playSoundEffect();
+                      onPressed();
+                    }
+                    // onTap: onPressed,
                   ),
                 ),
               ),

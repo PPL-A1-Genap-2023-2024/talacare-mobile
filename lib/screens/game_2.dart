@@ -6,9 +6,11 @@ import 'package:talacare/components/circle_progress.dart';
 import 'package:talacare/components/draggable_container.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/silhouette_container.dart';
+import 'package:talacare/helpers/audio_manager.dart';
 import 'package:talacare/helpers/text_styles.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/helpers/dialog_reason.dart';
+import 'package:just_audio/just_audio.dart';
 
 class HospitalPuzzle extends World with HasGameRef<TalaCare> {
   final Player player;
@@ -22,6 +24,7 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
   int timeLimit = 10;
   late Timer countDown;
   bool timerStarted = false;
+  AudioSource sfx = AudioSource.uri(Uri.parse("asset:///assets/audio/all_matched.mp3"));
 
   HospitalPuzzle({required this.player});
 
@@ -108,6 +111,8 @@ class HospitalPuzzle extends World with HasGameRef<TalaCare> {
       timeLimit = 10;
       silhouetteContainer.addNextItem();
     } else {
+      // FlameAudio.play('all_matched.mp3');
+      // AudioManager.getInstance().playSoundEffect(sfx);
       instruction.text = "Transfusi darah berhasil!";
       silhouetteContainer.changeChildSprite();
       addExitButton();
