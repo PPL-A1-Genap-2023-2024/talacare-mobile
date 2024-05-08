@@ -1,6 +1,5 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flame/game.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,7 +7,6 @@ import 'package:talacare/components/draggable_item.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/silhouette_item.dart';
 import 'package:talacare/helpers/dialog_reason.dart';
-import 'package:flame/extensions.dart';
 import 'package:talacare/talacare.dart';
 
 void main() {

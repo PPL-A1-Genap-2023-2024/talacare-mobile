@@ -1,4 +1,4 @@
-import 'package:flame/input.dart';
+import 'package:flame/components.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/draggable_item.dart';
@@ -19,6 +19,8 @@ void main() {
         game.update(5);
         await game.ready();
         final world = game.children.query<HospitalPuzzle>().first;
+        expect(world.silhouetteContainer.children.query<SpriteComponent>().length, 2);
+        expect(world.silhouetteContainer.childIsHappy, false);
         expect(world.silhouetteContainer.children.query<SilhouetteItem>().length, 1);
         expect(world.draggableContainer.children.query<DraggableItem>().length, 2);
         expect(world.instruction.text, "Ayo cocokkan gambar!");
@@ -95,6 +97,8 @@ void main() {
           silhouetteItem.onCollision({Vector2(0,0)}, draggableItem);
           await game.ready();
         }
+        expect(world.silhouetteContainer.children.query<SpriteComponent>().length, 6);
+        expect(world.silhouetteContainer.childIsHappy, true);
         expect(world.silhouetteContainer.children.query<SilhouetteItem>().length, 5);
         expect(world.draggableContainer.children.query<DraggableItem>().length, 0);
         expect(world.instruction.text, "Transfusi darah berhasil!");
