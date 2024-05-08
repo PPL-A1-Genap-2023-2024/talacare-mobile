@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:flame/flame.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:talacare/screens/login_page.dart';
+import 'package:talacare/helpers/notification_util.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 import 'package:talacare/widgets/overlays/pause_menu.dart';
@@ -18,10 +20,15 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  
   await Flame.device.fullScreen();
   await Flame.device.setPortrait();
 
   runApp(MyApp());
+
+  NotificationUtilities.initNotification();
+  tz.initializeTimeZones();
+  NotificationUtilities.requestPermission();
   AudioManager.getInstance().playBackgroundMusic();
 }
 
