@@ -170,7 +170,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
         await game.ready();
 
         expect(game.world.children.contains(point), isFalse);
-        expect(game.coolDownTimers.containsKey(point), isTrue);
+        expect(game.cooldownTimerManager.coolDownTimers.containsKey(point), isTrue);
       }
     );
     
@@ -190,7 +190,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
         game.update(game.cooldownDuration);
 
         expect(game.world.children.contains(point), isTrue);
-        expect(game.coolDownTimers.containsKey(point), isFalse);
+        expect(game.cooldownTimerManager.coolDownTimers.containsKey(point), isFalse);
       }
     );
 
@@ -203,21 +203,21 @@ TestWidgetsFlutterBinding.ensureInitialized();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.children.query<Player>().first;
         final point = level.children.query<ActivityPoint>().first;
-        final double cooldownProgress = game.cooldownDuration/2;
-
+        final cooldownProgress = game.cooldownDuration/2;
+        final timers = game.cooldownTimerManager.coolDownTimers;
         point.onCollision(intersection, player);
         await game.ready();
         
         game.update(cooldownProgress);
 
         expect(game.world.children.contains(point), isFalse);
-        expect(game.coolDownTimers.containsKey(point), isTrue);
-        expect(game.coolDownTimers[point]?.progress, cooldownProgress/game.cooldownDuration);
+        expect(timers.containsKey(point), isTrue);
+        expect(timers[point]?.progress, cooldownProgress/game.cooldownDuration);
 
         game.update(game.cooldownDuration - cooldownProgress);
 
         expect(game.world.children.contains(point), isTrue);
-        expect(game.coolDownTimers.containsKey(point), isFalse);
+        expect(timers.containsKey(point), isFalse);
       }
     );
   });
