@@ -54,6 +54,21 @@ class TalaCare extends FlameGame
     if (status == GameStatus.transition) {
       transitionCountdown.update(dt);
     }
+
+    List<ActivityPoint> completedTimers = [];
+
+    coolDownTimers.forEach((point, timer) {
+      timer.update(dt);
+      if (timer.finished) {
+        completedTimers.add(point);
+      }
+    });
+
+    // Remove the completed timers
+    for (final point in completedTimers) {
+      coolDownTimers.remove(point);
+    }
+
     super.update(dt);
   }
 
@@ -174,6 +189,9 @@ class TalaCare extends FlameGame
       camera.viewport.add(eventAnchor);
       eventIsActive = true;
       score += 1;
+      coolDownTimers[point] = Timer(cooldownDuration, onTick: () {
+        world.add(point);
+      },);
     }
   }
 
