@@ -4,6 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/components/event.dart';
+import 'package:talacare/helpers/cooldown_timer_manager.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/screens/game_1.dart';
@@ -39,7 +40,7 @@ class TalaCare extends FlameGame
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
-  Map<ActivityPoint, Timer> coolDownTimers = {};
+  late CooldownTimerManager cooldownTimerManager;
   final double cooldownDuration = 6;
 
   final bool isWidgetTesting;
@@ -54,20 +55,7 @@ class TalaCare extends FlameGame
     if (status == GameStatus.transition) {
       transitionCountdown.update(dt);
     }
-
-    List<ActivityPoint> completedTimers = [];
-
-    coolDownTimers.forEach((point, timer) {
-      timer.update(dt);
-      if (timer.finished) {
-        completedTimers.add(point);
-      }
-    });
-
-    // Remove the completed timers
-    for (final point in completedTimers) {
-      coolDownTimers.remove(point);
-    }
+    cooldownTimerManager.update(dt);
 
     super.update(dt);
   }
@@ -77,6 +65,8 @@ class TalaCare extends FlameGame
     startTimestamp = DateTime.now();
     totalTime = 0;
     haveSentRecap = false;
+    cooldownTimerManager = CooldownTimerManager(cooldownDuration: cooldownDuration);
+
     if (!isWidgetTesting) {
       playerHealth = 4;
       score = 0;
@@ -189,9 +179,9 @@ class TalaCare extends FlameGame
       camera.viewport.add(eventAnchor);
       eventIsActive = true;
       score += 1;
-      coolDownTimers[point] = Timer(cooldownDuration, onTick: () {
+      cooldownTimerManager.startCooldown(point, () {
         world.add(point);
-      },);
+      });
     }
   }
 
