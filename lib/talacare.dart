@@ -39,6 +39,8 @@ class TalaCare extends FlameGame
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
+  Map<ActivityPoint, Timer> coolDownTimers = {};
+  final double cooldownDuration = 6;
 
   final bool isWidgetTesting;
   final String email;
