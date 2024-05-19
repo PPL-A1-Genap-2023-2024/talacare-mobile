@@ -77,7 +77,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
         }
     );
     testWithGame<TalaCare>(
-      'Activity disappears after a set duration (3 seconds)', 
+      'Activity disappears after a set duration (10 seconds)',
       TalaCare.new,
       (game) async {
         final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
@@ -88,7 +88,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
         point.onCollision(intersection, player);
         await game.ready();
         final event = game.eventAnchor.children.query<ActivityEvent>().first;
-        event.update(3);
+        event.update(10);
         await game.ready();
         expect(game.eventAnchor.children.query<ActivityEvent>(), isEmpty);
         expect(game.eventIsActive, false);

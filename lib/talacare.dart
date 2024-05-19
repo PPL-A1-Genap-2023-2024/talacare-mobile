@@ -44,8 +44,8 @@ class TalaCare extends FlameGame
   final String email;
   TalaCare(
       {this.isWidgetTesting = false,
-      this.email = '',
-      this.playedCharacter = 'tala'});
+        this.email = '',
+        this.playedCharacter = 'tala'});
 
   @override
   void update(double dt) {

@@ -7,17 +7,17 @@ class ActivityEvent extends SpriteAnimationComponent with HasGameRef<TalaCare> {
   String variant;
 
   ActivityEvent({this.variant = 'drawing'});
-  
+
   @override
   FutureOr<void> onLoad() {
     var data = SpriteAnimationData.sequenced(
-      textureSize: Vector2.all(350),
-      amount: 2,
-      stepTime: 0.5
+        textureSize: Vector2.all(350),
+        amount: 2,
+        stepTime: 0.5
     );
     var fileName = 'Activity_Events/event_${variant}_${game.playedCharacter}.png';
     animation = SpriteAnimation.fromFrameData(
-      game.images.fromCache(fileName), data);
+        game.images.fromCache(fileName), data);
     return super.onLoad();
   }
 
