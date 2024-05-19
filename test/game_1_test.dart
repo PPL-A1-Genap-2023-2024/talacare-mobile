@@ -5,6 +5,7 @@ import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/components/hospital_door.dart';
 import 'package:talacare/components/hud/hud.dart';
+import 'package:talacare/components/player.dart';
 import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/helpers/directions.dart';
 import 'package:talacare/helpers/dialog_reason.dart';
@@ -347,5 +348,22 @@ void main() {
     );
   });
 
-
+  group('Player State Tests', () {
+    testWithGame<TalaCare>(
+      'Player turns pale when health is 50% or below',
+      TalaCare.new,
+      (game) async {
+        await game.ready();
+        for (int i = 4; i > 0; i--) {
+          game.playerHealth = i;
+          game.player.update(0);
+          if (i > 2) {
+            expect(game.player.current, (PlayerAnimationState.idle, PlayerHealthState.healthy, Direction.none));
+          } else {
+            expect(game.player.current, (PlayerAnimationState.idle, PlayerHealthState.pale, Direction.none));
+          }
+        }
+      }
+    );
+  });
 }
