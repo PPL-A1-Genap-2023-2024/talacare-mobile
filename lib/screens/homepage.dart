@@ -3,6 +3,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/components/button.dart';
 import 'package:talacare/helpers/playable_characters.dart';
+import 'package:talacare/helpers/time_limit.dart';
 import 'package:talacare/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -51,14 +52,17 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   Future<void> startGame({String email = ''}) async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) {
-        return TalaCareGame(playedCharacter: currentCharacter, email: email);
-      }),
-    );
-    FlameAudio.bgm.initialize();
-    FlameAudio.bgm.play('bgm_game.mp3', volume: 0.5);
+    bool isAllowed = await checkPlayerAppUsage();
+    if (isAllowed) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) {
+          return TalaCareGame(playedCharacter: currentCharacter, email: email);
+        }),
+      );
+      FlameAudio.bgm.initialize();
+      FlameAudio.bgm.play('bgm_game.mp3', volume: 0.5);
+    }
   }
 
   /* App Life Cycle Listener */
@@ -116,15 +120,14 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                  icon: Image.asset(
-                    "assets/images/Button/tombol_prev.png",
-                    width: 50,
-                  ),
-                  onPressed: () {
+                    icon: Image.asset(
+                      "assets/images/Button/tombol_prev.png",
+                      width: 50,
+                    ),
+                    onPressed: () {
                       AudioManager.getInstance().playSoundEffect();
                       _controller.previousPage();
-                    }
-                ),
+                    }),
                 Flexible(
                   child: CarouselSlider(
                       items: characterSelection,
@@ -147,9 +150,9 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     width: 50,
                   ),
                   onPressed: () {
-                      AudioManager.getInstance().playSoundEffect();
-                      _controller.nextPage();
-                    },
+                    AudioManager.getInstance().playSoundEffect();
+                    _controller.nextPage();
+                  },
                 ),
               ],
             ),
@@ -181,21 +184,19 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 ),
               ),
             ],
-            
             SizedBox(
               height: screenHeight * 0.05,
             ),
 
             /* Tombol Mulai */
             CustomButton(
-              key: widget._playButtonKey,
-              text: "Mulai",
-              size: ButtonSize.medium,
-              onPressed: () async {
-                await startGame(email: email);
-                AudioManager.getInstance().stopBackgroundMusic();
-              }
-            ),
+                key: widget._playButtonKey,
+                text: "Mulai",
+                size: ButtonSize.medium,
+                onPressed: () async {
+                  await startGame(email: email);
+                  AudioManager.getInstance().stopBackgroundMusic();
+                }),
 
             /* Tombol Pengaturan Reminder */
             IconButton(
