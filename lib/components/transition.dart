@@ -4,6 +4,7 @@ import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:talacare/components/mother.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/talacare.dart';
 
@@ -13,6 +14,7 @@ import '../helpers/directions.dart';
 class GameTransition extends World with HasGameRef<TalaCare> {
   final Player player;
   final DialogReason reason;
+  late Mother mother;
   late SpriteAnimationComponent nurse;
   bool nurseTransition = false;
   late TiledComponent transition;
@@ -34,7 +36,7 @@ class GameTransition extends World with HasGameRef<TalaCare> {
         rows: 1);
     nurse.animation = spriteSheet.createAnimation(
         row: 0,
-        stepTime: 0.1,
+        stepTime: 0.25,
         from: 0,
         to: 5
     );
@@ -51,6 +53,7 @@ class GameTransition extends World with HasGameRef<TalaCare> {
           if ((gameRef.currentGame == 1) | (reason == DialogReason.enterHospital)) {
             player.direction = (gameRef.currentGame == 1) ? Direction.left : Direction.right;
             player.position = Vector2(spawnPoint.x, spawnPoint.y);
+            player.moveSpeed = 100;
             add(player);
             gameRef.transitionCam.follow(player);
           } else {
@@ -69,6 +72,12 @@ class GameTransition extends World with HasGameRef<TalaCare> {
 
             nurseTransition = true;
           }
+        } else if (spawnPoint.name == 'Mother') {
+          mother = Mother();
+          mother.direction = (gameRef.currentGame == 1) ? Direction.left : Direction.right;
+          mother.scale = Vector2.all(4);
+          mother.position = Vector2(spawnPoint.x, spawnPoint.y);
+          add(mother);
         }
       }
     }
@@ -79,10 +88,15 @@ class GameTransition extends World with HasGameRef<TalaCare> {
 
   @override
   void update(double dt) {
+    double movement = 100 * dt;
     if (nurseTransition) {
-      double movement = 100 * dt;
       nurse.position.x += movement;
       player.position.x += movement;
+    }
+    if (gameRef.currentGame == 1) {
+      mother.position.x -= movement;
+    } else {
+      mother.position.x += movement;
     }
     super.update(dt);
   }
