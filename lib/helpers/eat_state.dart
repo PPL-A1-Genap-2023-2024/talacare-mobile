@@ -1,0 +1,1 @@
+enum EatState { openmouth, good, bad }
