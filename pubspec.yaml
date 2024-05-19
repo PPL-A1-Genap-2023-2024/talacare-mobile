@@ -91,6 +91,7 @@ flutter:
     - assets/images/Dialog/
     - assets/images/Game_2/
     - assets/images/Button/
+    - assets/images/Food/
     - assets/audio/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
