@@ -12,7 +12,7 @@ void main() {
       (WidgetTester tester) async {
     MockSharedPreferences mockPrefs = MockSharedPreferences();
     DateTime dateNow = DateTime.now();
-    int duration = 6000;
+    int duration = 6000; // Less than 7200 Seconds = 2 Hours
     when(mockPrefs.getInt('duration')).thenReturn(duration);
     when(mockPrefs.getInt('lastLogin'))
         .thenReturn(dateNow.millisecondsSinceEpoch);
@@ -25,7 +25,7 @@ void main() {
       (WidgetTester tester) async {
     MockSharedPreferences mockPrefs = MockSharedPreferences();
     DateTime dateNow = DateTime.now();
-    int duration = 8000;
+    int duration = 8000; // More than 7200 Seconds = 2 Hours
     when(mockPrefs.getInt('duration')).thenReturn(duration);
     when(mockPrefs.getInt('lastLogin'))
         .thenReturn(dateNow.millisecondsSinceEpoch);
@@ -40,7 +40,7 @@ void main() {
     MockSharedPreferences mockPrefs = MockSharedPreferences();
     DateTime dateNow = DateTime.now();
     DateTime dateLastLogin = DateTime(2024, 5, 15);
-    int duration = 8000;
+    int duration = 8000; // More than 7200 Seconds = 2 Hours
     when(mockPrefs.getInt('duration')).thenReturn(duration);
     when(mockPrefs.getInt('lastLogin'))
         .thenReturn(dateLastLogin.millisecondsSinceEpoch);

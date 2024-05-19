@@ -1,5 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+int SECONDS_IN_2HOUR = 7200;
+
 Future<bool> checkPlayerAppUsage(
     {SharedPreferences? prefs, DateTime? dateNow}) async {
   prefs ??= await SharedPreferences.getInstance();
@@ -10,7 +12,7 @@ Future<bool> checkPlayerAppUsage(
   if (date.year == dateNow.year &&
       date.month == dateNow.month &&
       date.day == dateNow.day) {
-    if (duration <= 7200) {
+    if (duration <= SECONDS_IN_2HOUR) {
       return true;
     } else {
       return false;
