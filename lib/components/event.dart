@@ -8,8 +8,8 @@ class ActivityEvent extends SpriteComponent with HasGameRef<TalaCare>, TapCallba
   String variant;
   late List<Sprite> eventSprites;
   int currentSpriteIndex = 0;
-  double progress = 0.0;
-  final double progressIncrement = 0.1;
+  int progress = 0;
+  final int progressIncrement = 1;
   late bool success;
 
   ActivityEvent({this.variant = 'drawing'});
@@ -60,8 +60,8 @@ class ActivityEvent extends SpriteComponent with HasGameRef<TalaCare>, TapCallba
     sprite = eventSprites[currentSpriteIndex];
 
     progress += progressIncrement;
-
-    if (progress >= 1.0) {
+    // print('Progress: $progress');
+    if (progress >= 10) {
       success = true;
       game.onActivityEnd(this, success);
     }

@@ -43,22 +43,26 @@ TestWidgetsFlutterBinding.ensureInitialized();
           }
         }
     );
-    // testWithGame<TalaCare>(
-    //   'Point disappears and activity is active upon collision', 
-    //   TalaCare.new,
-    //   (game) async {
-    //     final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
-    //     await game.ready();
-    //     final level = game.children.query<HouseAdventure>().first;
-    //     final player = level.children.query<Player>().first;
-    //     final point = level.children.query<ActivityPoint>().first;
-    //     point.onCollision(intersection, player);
-    //     await game.ready();
-    //     expect(game.eventAnchor.children.query<ActivityPoint>(), isEmpty);
-    //     expect(game.eventIsActive, true);
-    //     expect(game.score, 1);
-    //   }
-    // );
+    testWithGame<TalaCare>(
+      'Point disappears and activity is active upon collision', 
+      TalaCare.new,
+      (game) async {
+        final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+        await game.ready();
+        final level = game.children.query<HouseAdventure>().first;
+        final player = level.children.query<Player>().first;
+        final point = level.children.query<ActivityPoint>().first;
+        point.onCollision(intersection, player);
+        await game.ready();
+        expect(game.eventAnchor.children.query<ActivityPoint>(), isEmpty);
+        expect(game.eventIsActive, true);
+        final event = game.eventAnchor.children.query<ActivityEvent>().first;
+        for(int i=0;i<10;i++){
+          await event.onTapUp(MockTapUpEvent());
+        }
+        expect(game.score, 1);
+      }
+    );
     // testWithGame<TalaCare>(
     //     'Progress becomes done upon collision',
     //     TalaCare.new,
@@ -72,6 +76,10 @@ TestWidgetsFlutterBinding.ensureInitialized();
     //       Hud hud = game.camera.viewport.children.query<Hud>().first;
     //       List<ProgressComponent> progressList = hud.children.query<ProgressComponent>();
     //       game.update(5);
+    //       final event = game.eventAnchor.children.query<ActivityEvent>().first;
+    //       for(int i=0;i<10;i++){
+    //         await event.onTapUp(MockTapUpEvent());
+    //       }
     //       for (ProgressComponent progress in progressList) {
     //         if (progress.progressNumber == 1) {
     //           expect(progress.current, ProgressState.done);
@@ -81,24 +89,24 @@ TestWidgetsFlutterBinding.ensureInitialized();
     //       }
     //     }
     // );
-    // testWithGame<TalaCare>(
-    //   'Activity disappears after a set duration (3 seconds)', 
-    //   TalaCare.new,
-    //   (game) async {
-    //     final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
-    //     await game.ready();
-    //     final level = game.children.query<HouseAdventure>().first;
-    //     final player = level.children.query<Player>().first;
-    //     final point = level.children.query<ActivityPoint>().first;
-    //     point.onCollision(intersection, player);
-    //     await game.ready();
-    //     final event = game.eventAnchor.children.query<ActivityEvent>().first;
-    //     event.update(3);
-    //     await game.ready();
-    //     expect(game.eventAnchor.children.query<ActivityEvent>(), isEmpty);
-    //     expect(game.eventIsActive, false);
-    //   }
-    // );
+    testWithGame<TalaCare>(
+      'Activity disappears after a set duration (10 seconds (when lose))', 
+      TalaCare.new,
+      (game) async {
+        final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+        await game.ready();
+        final level = game.children.query<HouseAdventure>().first;
+        final player = level.children.query<Player>().first;
+        final point = level.children.query<ActivityPoint>().first;
+        point.onCollision(intersection, player);
+        await game.ready();
+        final event = game.eventAnchor.children.query<ActivityEvent>().first;
+        event.update(10);
+        await game.ready();
+        expect(game.eventAnchor.children.query<ActivityEvent>(), isEmpty);
+        expect(game.eventIsActive, false);
+      }
+    );
     testWithGame<TalaCare>(
       'Player is able to move when activity hasn\'t been activated', 
       TalaCare.new,
@@ -176,12 +184,12 @@ TestWidgetsFlutterBinding.ensureInitialized();
         final event = game.eventAnchor.children.query<ActivityEvent>().first;
 
         expect(event.currentSpriteIndex, 0);
-        expect(event.progress, 0.0);
+        expect(event.progress, 0);
 
         await event.onTapUp(MockTapUpEvent());
 
         expect(event.currentSpriteIndex, 1);
-        expect(event.progress, 0.1);
+        expect(event.progress, 1);
       },
     );
 
@@ -198,10 +206,10 @@ TestWidgetsFlutterBinding.ensureInitialized();
         point.onCollision(intersection, player);
         await game.ready();
         final event = game.eventAnchor.children.query<ActivityEvent>().first;
-        event.progress = 0.9;
+        event.progress = 9;
 
         await event.onTapUp(MockTapUpEvent());
-        expect(event.progress, 1.0);
+        expect(event.progress, 10);
 
         expect(event.success, true);
       },
