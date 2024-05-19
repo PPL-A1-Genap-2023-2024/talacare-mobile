@@ -5,6 +5,7 @@ import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/components/hospital_door.dart';
 import 'package:talacare/components/hud/hud.dart';
+import 'package:talacare/components/mother.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/helpers/directions.dart';
@@ -48,7 +49,17 @@ void main() {
         expect(numberOfActivityPoints, level.taken);
       }
     );
-
+    testWithGame<TalaCare>(
+      'Mother appears in the map',
+      TalaCare.new,
+      (game) async {
+        await game.ready();
+        final level = game.children.query<HouseAdventure>().first;
+        expect(level.children.query<Mother>().length, 1);
+        final mother = level.children.query<Mother>().first;
+        expect(mother.direction, Direction.none);
+      }
+    );
   });
 
   group('Dynamic Wall Collision Tests', () {
