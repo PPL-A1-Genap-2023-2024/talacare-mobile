@@ -34,7 +34,16 @@ void main() {
     verify(mockPrefs.getInt('duration')).called(1);
     verify(mockPrefs.getInt('lastLogin')).called(1);
   });
-
+  testWidgets('Special Case When First Time Play Test',
+      (WidgetTester tester) async {
+    MockSharedPreferences mockPrefs = MockSharedPreferences();
+    when(mockPrefs.getInt('duration')).thenReturn(null);
+    when(mockPrefs.getInt('lastLogin')).thenReturn(null);
+    bool result = await checkPlayerAppUsage(prefs: mockPrefs);
+    expect(result, true);
+    verify(mockPrefs.getInt('duration')).called(1);
+    verify(mockPrefs.getInt('lastLogin')).called(1);
+  });
   testWidgets('Allow More Than 2 Hours On Different Day Test',
       (WidgetTester tester) async {
     MockSharedPreferences mockPrefs = MockSharedPreferences();
