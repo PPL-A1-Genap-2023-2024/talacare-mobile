@@ -55,4 +55,17 @@ void main() {
     verify(mockPrefs.setInt('lastLogin', dateNow.millisecondsSinceEpoch))
         .called(1);
   });
+  testWidgets('Save Usage Data Test', (WidgetTester tester) async {
+    MockSharedPreferences mockPrefs = MockSharedPreferences();
+    int newDurationInMillisecond = 1000;
+    int newDuration = (newDurationInMillisecond / 1000).round();
+    int duration = 1;
+    when(mockPrefs.getInt('duration')).thenReturn(duration);
+    when(mockPrefs.setInt('duration', duration + newDuration))
+        .thenAnswer((_) async => true);
+    await saveUsageData(
+        prefs: mockPrefs, newDurationInMillisecond: newDurationInMillisecond);
+    verify(mockPrefs.getInt('duration')).called(1);
+    verify(mockPrefs.setInt('duration', duration + newDuration)).called(1);
+  });
 }
