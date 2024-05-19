@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ import 'helpers/dialog_reason.dart';
 enum GameStatus { playing, victory, transition }
 
 class TalaCare extends FlameGame
-    with HasCollisionDetection, WidgetsBindingObserver {
+    with HasCollisionDetection, WidgetsBindingObserver, TapCallbacks {
   String playedCharacter;
   Player player = Player(character: 'tala');
   late CameraComponent camOne;
@@ -171,15 +172,17 @@ class TalaCare extends FlameGame
           alignment: Anchor.center);
       camera.viewport.add(eventAnchor);
       eventIsActive = true;
-      score += 1;
     }
   }
 
-  void onActivityEnd(ActivityEvent event) {
+  void onActivityEnd(ActivityEvent event, bool success) {
     if (eventIsActive) {
       eventAnchor.remove(event);
       camera.viewport.remove(eventAnchor);
       eventIsActive = false;
+    }
+    if(success){
+      score += 1;
     }
   }
 
@@ -247,4 +250,6 @@ class TalaCare extends FlameGame
     removeAll([world, camera]);
     onLoad();
   }
+
+  
 }
