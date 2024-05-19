@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:talacare/config.dart';
@@ -20,7 +21,9 @@ Future<void> sendData(
       body: jsonEncode(
           <String, String>{'email': email, 'date': date, 'duration': duration}),
     );
-  } catch (e) {}
+  } catch (e) {
+    log("Error occured while sending data: $e");
+  }
 }
 
 String formatMilliseconds(int milliseconds) {
