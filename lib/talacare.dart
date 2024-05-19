@@ -41,7 +41,7 @@ class TalaCare extends FlameGame
   bool eventIsActive = false;
   bool confirmationIsActive = false;
   late CooldownTimerManager cooldownTimerManager;
-  final double cooldownDuration = 6;
+  final double cooldownDuration = 10;
 
   final bool isWidgetTesting;
   final String email;
