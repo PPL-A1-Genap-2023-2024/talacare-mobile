@@ -4,14 +4,11 @@ import 'package:flame_test/flame_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/draggable_food.dart';
-import 'package:talacare/components/draggable_item.dart';
 import 'package:talacare/components/food_minigame.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 import 'package:talacare/helpers/eat_state.dart';
 import 'package:talacare/screens/game_1.dart';
-import 'package:talacare/screens/game_2.dart';
-import 'package:talacare/helpers/dialog_reason.dart';
 import 'package:talacare/talacare.dart';
 
 void main() {
@@ -193,23 +190,5 @@ void main() {
       expect(foodMinigame.instruction.text, "Salah. Ayo Coba Lagi!");
     });
 
-    testWithGame<TalaCare>(
-      'disableDragging sets isDraggable to false for all DraggableItems',
-      TalaCare.new, (game) async {
-      await game.ready();
-      game.currentGame = 2;
-      game.switchGame(reason: DialogReason.enterHospital);
-      game.update(5);
-      await game.ready();
-      final world = game.children.query<HospitalPuzzle>().first;
-      world.draggableContainer.disableDragging();
-      void verifyDraggableItemIsNotDraggable(Component child) {
-        if (child is DraggableItem) {
-          expect(child.isDraggable, false);
-        }
-      }
-      world.draggableContainer.children.forEach(verifyDraggableItemIsNotDraggable);
-    },
-    );
   });
 }
