@@ -178,8 +178,6 @@ class TalaCare extends FlameGame
     }
   }
 
-
-
   void onActivityEnd(ActivityEvent event) {
     if (eventIsActive) {
       eventAnchor.remove(event);
@@ -195,14 +193,15 @@ class TalaCare extends FlameGame
     gameOne.dPad.disable();
     player.direction = Direction.none;
     camOne.viewport.remove(gameOne.dpadAnchor);
-    switch(point.variant) {
+    camOne.viewport.add(gameOne.transparentLayer);
+    switch (point.variant) {
       case "eating":
-        minigame = FoodMinigame(point:point);
+        minigame = FoodMinigame(point: point);
         break;
       default:
-        minigame = Minigame(point:point);
+        minigame = Minigame(point: point);
         break;
-    }
+    } 
     camOne.viewport.add(minigame);
   }
 
@@ -212,10 +211,11 @@ class TalaCare extends FlameGame
     camOne.viewport.add(gameOne.hud);
     gameOne.dPad.enable();
     camOne.viewport.add(gameOne.dpadAnchor);
+    camOne.viewport.remove(gameOne.transparentLayer);
     if (isVictory) {
       score += 1;
     } else {
-      world.add(point);
+      // world.add(point);
       // implement cooldown here
     }
   }
