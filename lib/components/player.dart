@@ -8,7 +8,8 @@ import 'package:talacare/talacare.dart';
 
 import '../helpers/directions.dart';
 
-enum PlayerState { idle, running }
+enum PlayerAnimationState {idle, run}
+enum PlayerHealthState {healthy, pale}
 
 class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, ParentIsA<World> {
   String character;
@@ -54,25 +55,35 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
 
     // List of all animations
     animations = {
-      (PlayerState.idle, Direction.right): _spriteAnimation('idle_anim', 0),
-      (PlayerState.running, Direction.right): _spriteAnimation('run', 0),
-      (PlayerState.idle, Direction.up): _spriteAnimation('idle_anim', 6),
-      (PlayerState.running, Direction.up): _spriteAnimation('run', 6),
-      (PlayerState.idle, Direction.left): _spriteAnimation('idle_anim', 12),
-      (PlayerState.running, Direction.left): _spriteAnimation('run', 12),
-      (PlayerState.idle, Direction.down): _spriteAnimation('idle_anim', 18),
-      (PlayerState.running, Direction.down): _spriteAnimation('run', 18),
-      (PlayerState.idle, Direction.none): _spriteAnimation('idle_anim', 18),
-      (PlayerState.running, Direction.none): _spriteAnimation('run', 18),
+      (PlayerAnimationState.idle, PlayerHealthState.healthy, Direction.right): _spriteAnimation('idle_healthy', 0),
+      (PlayerAnimationState.run, PlayerHealthState.healthy, Direction.right): _spriteAnimation('run_healthy', 0),
+      (PlayerAnimationState.idle, PlayerHealthState.healthy, Direction.up): _spriteAnimation('idle_healthy', 6),
+      (PlayerAnimationState.run, PlayerHealthState.healthy, Direction.up): _spriteAnimation('run_healthy', 6),
+      (PlayerAnimationState.idle, PlayerHealthState.healthy, Direction.left): _spriteAnimation('idle_healthy', 12),
+      (PlayerAnimationState.run, PlayerHealthState.healthy, Direction.left): _spriteAnimation('run_healthy', 12),
+      (PlayerAnimationState.idle, PlayerHealthState.healthy, Direction.down): _spriteAnimation('idle_healthy', 18),
+      (PlayerAnimationState.run, PlayerHealthState.healthy, Direction.down): _spriteAnimation('run_healthy', 18),
+      (PlayerAnimationState.idle, PlayerHealthState.healthy, Direction.none): _spriteAnimation('idle_healthy', 18),
+      (PlayerAnimationState.run, PlayerHealthState.healthy, Direction.none): _spriteAnimation('run_healthy', 18),
+      (PlayerAnimationState.idle, PlayerHealthState.pale, Direction.right): _spriteAnimation('idle_pale', 0),
+      (PlayerAnimationState.run, PlayerHealthState.pale, Direction.right): _spriteAnimation('run_pale', 0),
+      (PlayerAnimationState.idle, PlayerHealthState.pale, Direction.up): _spriteAnimation('idle_pale', 6),
+      (PlayerAnimationState.run, PlayerHealthState.pale, Direction.up): _spriteAnimation('run_pale', 6),
+      (PlayerAnimationState.idle, PlayerHealthState.pale, Direction.left): _spriteAnimation('idle_pale', 12),
+      (PlayerAnimationState.run, PlayerHealthState.pale, Direction.left): _spriteAnimation('run_pale', 12),
+      (PlayerAnimationState.idle, PlayerHealthState.pale, Direction.down): _spriteAnimation('idle_pale', 18),
+      (PlayerAnimationState.run, PlayerHealthState.pale, Direction.down): _spriteAnimation('run_pale', 18),
+      (PlayerAnimationState.idle, PlayerHealthState.pale, Direction.none): _spriteAnimation('idle_pale', 18),
+      (PlayerAnimationState.run, PlayerHealthState.pale, Direction.none): _spriteAnimation('run_pale', 18),
     };
 
     // Set current animation
-    current = (PlayerState.idle, Direction.none);
+    current = (PlayerAnimationState.idle, PlayerHealthState.healthy, Direction.none);
   }
 
   SpriteAnimation _spriteAnimation(String state, int start) {
     final spriteSheet = SpriteSheet.fromColumnsAndRows(
-        image: game.images.fromCache('Characters_free/${character}_${state}_16x16.png'),
+        image: game.images.fromCache('Characters_free/${character}_${state}.png'),
         columns: 24,
         rows: 1);
     return spriteSheet.createAnimation(
@@ -84,12 +95,15 @@ class Player extends SpriteAnimationGroupComponent with HasGameRef<TalaCare>, Pa
   }
 
   void _updatePlayerState() {
-    PlayerState playerState = PlayerState.idle;
-
+    PlayerAnimationState playerAnimationState = PlayerAnimationState.idle;
+    PlayerHealthState playerHealthState = PlayerHealthState.healthy;
     if (velocity.x != 0 || velocity.y != 0) {
-      playerState = PlayerState.running;
+      playerAnimationState = PlayerAnimationState.run;
     }
-    current = (playerState, direction);
+    if (game.playerHealth <= 2) {
+      playerHealthState = PlayerHealthState.pale;
+    }
+    current = (playerAnimationState, playerHealthState, direction);
   }
 
   void _updatePlayerMovement(double dt) {
