@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,6 +11,10 @@ import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
 import 'package:talacare/helpers/directions.dart';
+import 'package:mockito/mockito.dart';
+
+class MockTapUpEvent extends Mock implements TapUpEvent {}
+
 
 void main() {
 TestWidgetsFlutterBinding.ensureInitialized();
@@ -152,6 +157,74 @@ TestWidgetsFlutterBinding.ensureInitialized();
         player.position.copyInto(playerPositionAfter);
         expect(playerPositionBefore, isNot(equals(playerPositionAfter)));
       }
+    );
+  });
+
+  group('ActivityEvent', () {
+    
+    testWithGame<TalaCare>(
+      'onTapUp alternates sprites and increases progress',
+      TalaCare.new,
+      (game) async {
+        final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+        await game.ready();
+        final level = game.children.query<HouseAdventure>().first;
+        final player = level.children.query<Player>().first;
+        final point = level.children.query<ActivityPoint>().first;
+        point.onCollision(intersection, player);
+        await game.ready();
+        final event = game.eventAnchor.children.query<ActivityEvent>().first;
+
+        expect(event.currentSpriteIndex, 0);
+        expect(event.progress, 0.0);
+
+        await event.onTapUp(MockTapUpEvent());
+
+        expect(event.currentSpriteIndex, 1);
+        expect(event.progress, 0.1);
+      },
+    );
+
+
+    testWithGame<TalaCare>(
+      'onTapUp completes progress and calls onActivityEnd',
+      TalaCare.new,
+      (game) async {
+        final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+        await game.ready();
+        final level = game.children.query<HouseAdventure>().first;
+        final player = level.children.query<Player>().first;
+        final point = level.children.query<ActivityPoint>().first;
+        point.onCollision(intersection, player);
+        await game.ready();
+        final event = game.eventAnchor.children.query<ActivityEvent>().first;
+        event.progress = 0.9;
+
+        await event.onTapUp(MockTapUpEvent());
+        expect(event.progress, 1.0);
+
+        expect(event.success, true);
+      },
+    );
+
+    testWithGame<TalaCare>(
+      'onUpdate ends activity if duration exceeds 10 seconds',
+      TalaCare.new,
+      (game) async {
+        final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+        await game.ready();
+        final level = game.children.query<HouseAdventure>().first;
+        final player = level.children.query<Player>().first;
+        final point = level.children.query<ActivityPoint>().first;
+        point.onCollision(intersection, player);
+        await game.ready();
+        final event = game.eventAnchor.children.query<ActivityEvent>().first;
+        event.timeElapsed = 11.0;
+
+        event.update(0);
+
+        expect(event.success, false);
+      },
     );
   });
 }
