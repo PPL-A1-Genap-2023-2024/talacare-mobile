@@ -19,7 +19,12 @@ class ActivityPoint extends SpriteComponent with CollisionCallbacks, HasGameRef<
   @override
   void onCollision(intersectionPoints, other) {
     if (other is Player) {
-      game.onActivityStart(this);
+      if (variant == "eating") {
+        game.startMinigame(this);
+      } else {
+        game.onActivityStart(this);
+
+      }
     }
     super.onCollision(intersectionPoints, other);
   }
