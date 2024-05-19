@@ -28,7 +28,7 @@ class Mother extends SpriteAnimationComponent with HasGameRef<TalaCare> {
       }
     }
     final motherSpritesheet = SpriteSheet.fromColumnsAndRows(
-      image: game.images.fromCache('Characters_free/mother_${state}.png'),
+      image: game.images.fromCache('Characters_free/mother_$state.png'),
       columns: 24,
       rows: 1
     );
