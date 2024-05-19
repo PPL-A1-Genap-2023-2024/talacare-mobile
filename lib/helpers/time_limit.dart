@@ -31,6 +31,17 @@ Future<DateAndDurationPair> loadUsageData(SharedPreferences prefs) async {
   return DateAndDurationPair(duration, dateTime);
 }
 
+Future<void> saveUsageData(
+    {SharedPreferences? prefs, required int newDurationInMillisecond}) async {
+  try {
+    prefs ??= await SharedPreferences.getInstance();
+    int newDuration = (newDurationInMillisecond / 1000).round();
+    int duration = prefs.getInt('duration') ?? 0;
+    int totalDuration = duration + newDuration;
+    await prefs.setInt('duration', totalDuration);
+  } catch (e) {}
+}
+
 class DateAndDurationPair {
   late int duration;
   late DateTime date;

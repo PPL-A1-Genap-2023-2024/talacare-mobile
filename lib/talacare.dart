@@ -4,6 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/components/event.dart';
+import 'package:talacare/helpers/time_limit.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/screens/game_1.dart';
@@ -240,6 +241,7 @@ class TalaCare extends FlameGame
   void sendRecap() {
     totalTime += DateTime.now().difference(startTimestamp).inMilliseconds;
     sendData(email: email, totalTime: totalTime);
+    saveUsageData(newDurationInMillisecond: totalTime);
   }
 
   void playAgain() {
