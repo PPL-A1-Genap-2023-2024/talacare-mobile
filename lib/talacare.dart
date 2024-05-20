@@ -4,6 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/components/event.dart';
+import 'package:talacare/components/event_background.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/screens/game_1.dart';
@@ -39,6 +40,7 @@ class TalaCare extends FlameGame
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
+  PositionComponent eventBackground = EventBackground();
 
   final bool isWidgetTesting;
   final String email;
@@ -166,9 +168,13 @@ class TalaCare extends FlameGame
   Future<void> onActivityStart(ActivityPoint point) async {
     if (!eventIsActive) {
       world.remove(point);
+      // Reduce Main Game Opacity
+      camera.viewport.add(eventBackground);
       eventAnchor = AlignComponent(
           child: ActivityEvent(variant: point.variant),
           alignment: Anchor.center);
+      // Set Priority
+      eventAnchor.priority = 10;
       camera.viewport.add(eventAnchor);
       eventIsActive = true;
       score += 1;
@@ -179,6 +185,7 @@ class TalaCare extends FlameGame
     if (eventIsActive) {
       eventAnchor.remove(event);
       camera.viewport.remove(eventAnchor);
+      camera.viewport.remove(eventBackground);
       eventIsActive = false;
     }
   }
