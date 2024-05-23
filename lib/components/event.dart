@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:talacare/components/progress_bar.dart';
 import 'package:talacare/talacare.dart';
 
 class ActivityEvent extends SpriteComponent with HasGameRef<TalaCare>, TapCallbacks {
@@ -11,6 +13,8 @@ class ActivityEvent extends SpriteComponent with HasGameRef<TalaCare>, TapCallba
   int progress = 0;
   final int progressIncrement = 1;
   late bool success;
+  late ProgressBar progressBar;
+  late final Viewport screen;
 
   ActivityEvent({this.variant = 'drawing'});
 
@@ -22,7 +26,6 @@ class ActivityEvent extends SpriteComponent with HasGameRef<TalaCare>, TapCallba
     );
     SpriteAnimation animation = SpriteAnimation.fromFrameData(game.images.fromCache(imageFile), data);
 
-    // Split all frames produced from the image
     List<Sprite> animationSprites = [];
     for (int i = 0; i < animation.frames.length; i++) {
       animationSprites.add(animation.frames[i].sprite);
@@ -36,8 +39,20 @@ class ActivityEvent extends SpriteComponent with HasGameRef<TalaCare>, TapCallba
     var fileName = 'Activity_Events/event_${variant}_${game.playedCharacter}.png';
     eventSprites = prepareSprites(fileName);
 
-    // Set default sprite to show
     sprite = eventSprites[0];
+
+    screen = gameRef.camera.viewport;
+
+    progressBar = ProgressBar(
+      progress: 0.0,
+      width: screen.size.x * 0.8,
+      height: 30,
+    );
+    progressBar.position = Vector2(
+      (screen.size.x - progressBar.width) / 2,
+      (screen.size.y - progressBar.height) / 400
+    );
+    add(progressBar);
 
     return super.onLoad();
   }
@@ -47,7 +62,6 @@ class ActivityEvent extends SpriteComponent with HasGameRef<TalaCare>, TapCallba
     super.update(dt);
 
     timeElapsed += dt;
-    // Event duration
     if (timeElapsed >= 10) {
       success = false;
       game.onActivityEnd(this, success);
@@ -60,7 +74,8 @@ class ActivityEvent extends SpriteComponent with HasGameRef<TalaCare>, TapCallba
     sprite = eventSprites[currentSpriteIndex];
 
     progress += progressIncrement;
-    // print('Progress: $progress');
+    progressBar.updateProgress(progress / 10.0);
+
     if (progress >= 10) {
       success = true;
       game.onActivityEnd(this, success);
@@ -69,3 +84,4 @@ class ActivityEvent extends SpriteComponent with HasGameRef<TalaCare>, TapCallba
     return true;
   }
 }
+
