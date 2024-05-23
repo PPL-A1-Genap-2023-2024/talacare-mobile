@@ -189,7 +189,7 @@ class TalaCare extends FlameGame
     }
     else{
       //add back and implement cooldown
-      
+
     }
   }
 
