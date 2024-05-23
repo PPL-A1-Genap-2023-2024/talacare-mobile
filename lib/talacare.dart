@@ -9,6 +9,8 @@ import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/helpers/data_sender.dart';
+import 'components/food_minigame.dart';
+import 'components/minigame.dart';
 import 'components/transition.dart';
 import 'helpers/directions.dart';
 import 'package:talacare/components/player.dart';
@@ -36,6 +38,7 @@ class TalaCare extends FlameGame
   late bool haveSentRecap;
   @override
   late World world;
+  late Minigame minigame;
   late AlignComponent eventAnchor;
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
@@ -183,6 +186,42 @@ class TalaCare extends FlameGame
     }
     if(success){
       score += 1;
+    }
+    else{
+      //add back and implement cooldown
+      
+    }
+  }
+
+  void startMinigame(ActivityPoint point) {
+    world.remove(point);
+    gameOne.hud.timerStarted = false;
+    camOne.viewport.remove(gameOne.hud);
+    gameOne.dPad.disable();
+    player.direction = Direction.none;
+    camOne.viewport.remove(gameOne.dpadAnchor);
+    switch(point.variant) {
+      case "eating":
+        minigame = FoodMinigame(point:point);
+        break;
+      default:
+        minigame = Minigame(point:point);
+        break;
+    }
+    camOne.viewport.add(minigame);
+  }
+
+  void finishMinigame(ActivityPoint point, bool isVictory) {
+    camOne.viewport.remove(minigame);
+    gameOne.hud.timerStarted = true;
+    camOne.viewport.add(gameOne.hud);
+    gameOne.dPad.enable();
+    camOne.viewport.add(gameOne.dpadAnchor);
+    if (isVictory) {
+      score += 1;
+    } else {
+      world.add(point);
+      // implement cooldown here
     }
   }
 

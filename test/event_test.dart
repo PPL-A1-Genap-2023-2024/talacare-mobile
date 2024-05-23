@@ -51,7 +51,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.children.query<Player>().first;
-        final point = level.children.query<ActivityPoint>().first;
+        final point = level.children.query<ActivityPoint>().where((point) => point.variant != "eating").first;
         point.onCollision(intersection, player);
         await game.ready();
         expect(game.eventAnchor.children.query<ActivityPoint>(), isEmpty);
@@ -73,9 +73,14 @@ TestWidgetsFlutterBinding.ensureInitialized();
           final player = level.children.query<Player>().first;
           final point = level.children.query<ActivityPoint>().where((point) => point.variant != "eating").first;
           point.onCollision(intersection, player);
+          await game.ready();
           Hud hud = game.camera.viewport.children.query<Hud>().first;
           List<ProgressComponent> progressList = hud.children.query<ProgressComponent>();
-          game.update(5);
+          final event = game.eventAnchor.children.query<ActivityEvent>().first;
+          for(int i=0;i<10;i++){
+            await event.onTapUp(MockTapUpEvent());
+          }
+          game.update(1);
           for (ProgressComponent progress in progressList) {
             if (progress.progressNumber == 1) {
               expect(progress.current, ProgressState.done);
@@ -93,7 +98,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.children.query<Player>().first;
-        final point = level.children.query<ActivityPoint>().first;
+        final point = level.children.query<ActivityPoint>().where((point) => point.variant != "eating").first;
         point.onCollision(intersection, player);
         await game.ready();
         final event = game.eventAnchor.children.query<ActivityEvent>().first;
@@ -129,7 +134,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.children.query<Player>().first;
-        final point = level.children.query<ActivityPoint>().first;
+        final point = level.children.query<ActivityPoint>().where((point) => point.variant != "eating").first;
         point.onCollision(intersection, player);
         await game.ready();
         player.position.copyInto(playerPositionBefore);
@@ -139,29 +144,29 @@ TestWidgetsFlutterBinding.ensureInitialized();
         expect(playerPositionBefore, equals(playerPositionAfter));
       }
     );
-    // testWithGame<TalaCare>(
-    //   'Player is able to move after activity has been deactivated', 
-    //   TalaCare.new,
-    //   (game) async {
-    //     var playerPositionBefore = Vector2(0.0, 0.0);
-    //     var playerPositionAfter = Vector2(0.0, 0.0);
-    //     final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
-    //     await game.ready();
-    //     final level = game.children.query<HouseAdventure>().first;
-    //     final player = level.children.query<Player>().first;
-    //     final point = level.children.query<ActivityPoint>().first;
-    //     point.onCollision(intersection, player);
-    //     await game.ready();
-    //     final event = game.eventAnchor.children.query<ActivityEvent>().first;
-    //     event.update(3);
-    //     await game.ready();
-    //     player.position.copyInto(playerPositionBefore);
-    //     player.direction = Direction.up;
-    //     player.update(1);
-    //     player.position.copyInto(playerPositionAfter);
-    //     expect(playerPositionBefore, isNot(equals(playerPositionAfter)));
-    //   }
-    // );
+    testWithGame<TalaCare>(
+      'Player is able to move after activity has been deactivated', 
+      TalaCare.new,
+      (game) async {
+        var playerPositionBefore = Vector2(0.0, 0.0);
+        var playerPositionAfter = Vector2(0.0, 0.0);
+        final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+        await game.ready();
+        final level = game.children.query<HouseAdventure>().first;
+        final player = level.children.query<Player>().first;
+        final point = level.children.query<ActivityPoint>().first;
+        point.onCollision(intersection, player);
+        await game.ready();
+        final event = game.eventAnchor.children.query<ActivityEvent>().first;
+        event.update(10); //lose
+        await game.ready();
+        player.position.copyInto(playerPositionBefore);
+        player.direction = Direction.up;
+        player.update(1);
+        player.position.copyInto(playerPositionAfter);
+        expect(playerPositionBefore, isNot(equals(playerPositionAfter)));
+      }
+    );
   });
 
   group('ActivityEvent', () {
@@ -174,7 +179,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.children.query<Player>().first;
-        final point = level.children.query<ActivityPoint>().first;
+        final point = level.children.query<ActivityPoint>().where((point) => point.variant != "eating").first;
         point.onCollision(intersection, player);
         await game.ready();
         final event = game.eventAnchor.children.query<ActivityEvent>().first;
