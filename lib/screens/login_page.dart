@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:talacare/helpers/analytics_util.dart';
 import 'package:talacare/helpers/audio_manager.dart';
 import 'package:talacare/components/button.dart';
 import 'package:talacare/helpers/color_palette.dart';
@@ -48,6 +49,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState(){
     super.initState();
 
+    AnalyticsUtil.logScreen("Login Screen");
+
     _listener = AppLifecycleListener(
       onPause: _onPause,
       onResume: _onResume,
@@ -80,6 +83,10 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              TextButton(
+                onPressed: () => throw Exception(),
+                child: const Text("Throw Test Exception"),
+              ),
               Form(
                 child: Container(
                   margin: const EdgeInsets.all(8),

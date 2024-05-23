@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/components/button.dart';
+import 'package:talacare/helpers/analytics_util.dart';
 import 'package:talacare/helpers/playable_characters.dart';
 import 'package:talacare/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -65,6 +66,8 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+
+    AnalyticsUtil.logScreen("Homepage");
 
     AudioManager.getInstance().playBackgroundMusic();
     _listener = AppLifecycleListener(
@@ -192,6 +195,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
               text: "Mulai",
               size: ButtonSize.medium,
               onPressed: () async {
+                AnalyticsUtil.logScreen("Game 1");
                 await startGame(email: email);
                 AudioManager.getInstance().stopBackgroundMusic();
               }
@@ -203,6 +207,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   "assets/images/Button/tombol_pengaturan.png",
                 ),
                 onPressed: () async {
+                  AnalyticsUtil.logScreen("Reminder");
                   AudioManager.getInstance().playSoundEffect();
                   Navigator.push(
                     context,

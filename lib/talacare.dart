@@ -4,6 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/components/event.dart';
+import 'package:talacare/helpers/analytics_util.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/screens/game_1.dart';
@@ -168,6 +169,9 @@ class TalaCare extends FlameGame
 
   Future<void> onActivityStart(ActivityPoint point) async {
     if (!eventIsActive) {
+
+      AnalyticsUtil.userTakeActivity();
+
       world.remove(point);
       eventAnchor = AlignComponent(
           child: ActivityEvent(variant: point.variant),
@@ -189,6 +193,9 @@ class TalaCare extends FlameGame
   }
 
   void startMinigame(ActivityPoint point) {
+
+    AnalyticsUtil.userTakeActivity();
+
     world.remove(point);
     gameOne.hud.timerStarted = false;
     camOne.viewport.remove(gameOne.hud);
@@ -207,6 +214,9 @@ class TalaCare extends FlameGame
   }
 
   void finishMinigame(ActivityPoint point, bool isVictory) {
+
+    AnalyticsUtil.userGetActivityPoint();
+
     camOne.viewport.remove(minigame);
     gameOne.hud.timerStarted = true;
     camOne.viewport.add(gameOne.hud);
@@ -240,6 +250,8 @@ class TalaCare extends FlameGame
   }
 
   void goToHospital(reason) {
+    AnalyticsUtil.logScreen("Game 2");
+    AnalyticsUtil.userTriggeredHospitalEvent();
     removeConfirmation();
     currentGame = 2;
     switchGame(reason: reason);

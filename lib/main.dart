@@ -1,4 +1,7 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:talacare/helpers/analytics_util.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:flame/flame.dart';
 import 'package:flutter/foundation.dart';
@@ -22,7 +25,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  
+  AnalyticsUtil.setInstance(FirebaseAnalytics.instance);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   
   await Flame.device.fullScreen();
   await Flame.device.setPortrait();
