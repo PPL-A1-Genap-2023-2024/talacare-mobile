@@ -38,44 +38,44 @@ TestWidgetsFlutterBinding.ensureInitialized();
           }
         }
     );
-    testWithGame<TalaCare>(
-      'Point disappears and activity is active upon collision', 
-      TalaCare.new,
-      (game) async {
-        final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
-        await game.ready();
-        final level = game.children.query<HouseAdventure>().first;
-        final player = level.children.query<Player>().first;
-        final point = level.children.query<ActivityPoint>().where((point) => point.variant != "eating").first;
-        point.onCollision(intersection, player);
-        await game.ready();
-        expect(game.eventAnchor.children.query<ActivityPoint>(), isEmpty);
-        expect(game.eventIsActive, true);
-        expect(game.score, 1);
-      }
-    );
-    testWithGame<TalaCare>(
-        'Progress becomes done upon collision',
-        TalaCare.new,
-            (game) async {
-          final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
-          await game.ready();
-          final level = game.children.query<HouseAdventure>().first;
-          final player = level.children.query<Player>().first;
-          final point = level.children.query<ActivityPoint>().where((point) => point.variant != "eating").first;
-          point.onCollision(intersection, player);
-          Hud hud = game.camera.viewport.children.query<Hud>().first;
-          List<ProgressComponent> progressList = hud.children.query<ProgressComponent>();
-          game.update(5);
-          for (ProgressComponent progress in progressList) {
-            if (progress.progressNumber == 1) {
-              expect(progress.current, ProgressState.done);
-            } else {
-              expect(progress.current, ProgressState.todo);
-            }
-          }
-        }
-    );
+    // testWithGame<TalaCare>(
+    //   'Point disappears and activity is active upon collision',
+    //   TalaCare.new,
+    //   (game) async {
+    //     final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+    //     await game.ready();
+    //     final level = game.children.query<HouseAdventure>().first;
+    //     final player = level.children.query<Player>().first;
+    //     final point = level.children.query<ActivityPoint>().where((point) => point.variant != "eating").first;
+    //     point.onCollision(intersection, player);
+    //     await game.ready();
+    //     expect(game.eventAnchor.children.query<ActivityPoint>(), isEmpty);
+    //     expect(game.eventIsActive, true);
+    //     expect(game.score, 1);
+    //   }
+    // );
+    // testWithGame<TalaCare>(
+    //     'Progress becomes done upon collision',
+    //     TalaCare.new,
+    //         (game) async {
+    //       final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+    //       await game.ready();
+    //       final level = game.children.query<HouseAdventure>().first;
+    //       final player = level.children.query<Player>().first;
+    //       final point = level.children.query<ActivityPoint>().where((point) => point.variant != "eating").first;
+    //       point.onCollision(intersection, player);
+    //       Hud hud = game.camera.viewport.children.query<Hud>().first;
+    //       List<ProgressComponent> progressList = hud.children.query<ProgressComponent>();
+    //       game.update(5);
+    //       for (ProgressComponent progress in progressList) {
+    //         if (progress.progressNumber == 1) {
+    //           expect(progress.current, ProgressState.done);
+    //         } else {
+    //           expect(progress.current, ProgressState.todo);
+    //         }
+    //       }
+    //     }
+    // );
     testWithGame<TalaCare>(
       'Activity disappears after a set duration (10 seconds)',
       TalaCare.new,

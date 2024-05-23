@@ -45,4 +45,10 @@ class Plate extends SpriteComponent with HasGameRef<TalaCare> {
     });
   }
 
+  void disableDragging(){
+    children.whereType<DraggableFood>().forEach((child) {
+      child.isDraggable = false;
+    });
+  }
+
 }

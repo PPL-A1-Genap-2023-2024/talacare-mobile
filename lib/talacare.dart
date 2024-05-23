@@ -3,8 +3,8 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
 import 'package:flutter/material.dart';
+import 'package:talacare/components/clicker_minigame.dart';
 import 'package:talacare/components/event.dart';
-import 'package:talacare/components/event_background.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/screens/game_1.dart';
@@ -43,7 +43,6 @@ class TalaCare extends FlameGame
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
-  PositionComponent eventBackground = EventBackground();
 
   final bool isWidgetTesting;
   final String email;
@@ -168,32 +167,27 @@ class TalaCare extends FlameGame
     player.direction = direction;
   }
 
-  Future<void> onActivityStart(ActivityPoint point) async {
-    if (!eventIsActive) {
-      world.remove(point);
-      // Reduce Main Game Opacity
-      camera.viewport.add(eventBackground);
-      eventAnchor = AlignComponent(
-          child: ActivityEvent(variant: point.variant),
-          alignment: Anchor.center);
-      // Set Priority
-      eventAnchor.priority = 10;
-      camera.viewport.add(eventAnchor);
-      eventIsActive = true;
-      score += 1;
-    }
-  }
-
-
-
-  void onActivityEnd(ActivityEvent event) {
-    if (eventIsActive) {
-      eventAnchor.remove(event);
-      camera.viewport.remove(eventAnchor);
-      camera.viewport.remove(eventBackground);
-      eventIsActive = false;
-    }
-  }
+  // Future<void> onActivityStart(ActivityPoint point) async {
+  //   if (!eventIsActive) {
+  //     world.remove(point);
+  //     eventAnchor = AlignComponent(
+  //         child: ActivityEvent(variant: point.variant),
+  //         alignment: Anchor.center);
+  //     // Set Priority
+  //     eventAnchor.priority = 10;
+  //     camera.viewport.add(eventAnchor);
+  //     eventIsActive = true;
+  //     score += 1;
+  //   }
+  // }
+  //
+  // void onActivityEnd(ActivityEvent event) {
+  //   if (eventIsActive) {
+  //     eventAnchor.remove(event);
+  //     camera.viewport.remove(eventAnchor);
+  //     eventIsActive = false;
+  //   }
+  // }
 
   void startMinigame(ActivityPoint point) {
     world.remove(point);
@@ -202,14 +196,15 @@ class TalaCare extends FlameGame
     gameOne.dPad.disable();
     player.direction = Direction.none;
     camOne.viewport.remove(gameOne.dpadAnchor);
-    switch(point.variant) {
+    camOne.viewport.add(gameOne.transparentLayer);
+    switch (point.variant) {
       case "eating":
-        minigame = FoodMinigame(point:point);
+        minigame = FoodMinigame(point: point);
         break;
       default:
-        minigame = Minigame(point:point);
+        minigame = ClickerMinigame(variant: point.variant, point: point);
         break;
-    }
+    } 
     camOne.viewport.add(minigame);
   }
 
@@ -219,10 +214,11 @@ class TalaCare extends FlameGame
     camOne.viewport.add(gameOne.hud);
     gameOne.dPad.enable();
     camOne.viewport.add(gameOne.dpadAnchor);
+    camOne.viewport.remove(gameOne.transparentLayer);
     if (isVictory) {
       score += 1;
     } else {
-      world.add(point);
+      // world.add(point);
       // implement cooldown here
     }
   }

@@ -39,17 +39,6 @@ class ActivityEvent extends SpriteComponent with HasGameRef<TalaCare>, TapCallba
   }
 
   @override
-  void update(double dt) {
-    super.update(dt);
-
-    timeElapsed += dt;
-    // Event Duration
-    if (timeElapsed >= 10) {
-      game.onActivityEnd(this);
-    }
-  }
-
-  @override
   void onTapUp(TapUpEvent event) {
     // Implement Mechanics
 

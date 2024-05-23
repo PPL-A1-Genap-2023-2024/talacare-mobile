@@ -14,67 +14,102 @@ import 'package:talacare/talacare.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group('Start Food Minigame Tests', () {
-    testWithGame<TalaCare>(
-        'Minigame starts upon collision',
-        TalaCare.new,
-            (game) async {
-          final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
-          await game.ready();
-          final level = game.children.query<HouseAdventure>().first;
-          final player = level.children.query<Player>().first;
-          final point = level.children.query<ActivityPoint>().where((point) => point.variant == "eating").first;
-          point.onCollision(intersection, player);
-          expect(game.gameOne.dPad.disabled, true);
-          expect(game.gameOne.hud.timerStarted, false);
-          expect(game.minigame, isA<FoodMinigame>());
-          await game.ready();
-          final foodMinigameList = game.camOne.viewport.children.query<FoodMinigame>();
-          expect(foodMinigameList, isNotEmpty);
-        }
-    );
+    testWithGame<TalaCare>('Minigame starts upon collision', TalaCare.new,
+        (game) async {
+      final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
+      await game.ready();
+      final level = game.children.query<HouseAdventure>().first;
+      final player = level.children.query<Player>().first;
+      final point = level.children
+          .query<ActivityPoint>()
+          .where((point) => point.variant == "eating")
+          .first;
+      point.onCollision(intersection, player);
+      expect(game.gameOne.dPad.disabled, true);
+      expect(game.gameOne.hud.timerStarted, false);
+      expect(game.minigame, isA<FoodMinigame>());
+      await game.ready();
+      final foodMinigameList =
+          game.camOne.viewport.children.query<FoodMinigame>();
+      expect(foodMinigameList, isNotEmpty);
+    });
 
-    testWithGame<TalaCare>(
-        'Minigame finish when score is 4',
-        TalaCare.new,
-            (game) async {
-          final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
-          await game.ready();
-          final level = game.children.query<HouseAdventure>().first;
-          final player = level.children.query<Player>().first;
-          final point = level.children.query<ActivityPoint>().where((point) => point.variant == "eating").first;
-          point.onCollision(intersection, player);
-          await game.ready();
-          final foodMinigame = game.camOne.viewport.children.query<FoodMinigame>().first;
+    testWithGame<TalaCare>('Minigame finish when score is 4', TalaCare.new,
+        (game) async {
+      final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
+      await game.ready();
+      final level = game.children.query<HouseAdventure>().first;
+      final player = level.children.query<Player>().first;
+      final point = level.children
+          .query<ActivityPoint>()
+          .where((point) => point.variant == "eating")
+          .first;
+      point.onCollision(intersection, player);
+      await game.ready();
+      final foodMinigame =
+          game.camOne.viewport.children.query<FoodMinigame>().first;
 
-          // score is 4
-          foodMinigame.updateScore();
-          foodMinigame.updateScore();
-          foodMinigame.updateScore();
-          foodMinigame.updateScore();
-          await game.ready();
-          expect(game.gameOne.dPad.disabled, false);
-          expect(game.gameOne.hud.timerStarted, true);
-          final foodMinigameList = game.camOne.viewport.children.query<FoodMinigame>();
-          expect(foodMinigameList, isEmpty);
-          expect(game.score, 1);
-        }
-    );
+      // score is 4
+      foodMinigame.updateScore();
+      foodMinigame.updateScore();
+      foodMinigame.updateScore();
+      foodMinigame.updateScore();
+      await game.ready();
+      expect(game.gameOne.dPad.disabled, false);
+      expect(game.gameOne.hud.timerStarted, true);
+      final foodMinigameList =
+          game.camOne.viewport.children.query<FoodMinigame>();
+      expect(foodMinigameList, isEmpty);
+      expect(game.score, 1);
+    });
+
+    testWithGame<TalaCare>('Minigame finish when timer runs out', TalaCare.new,
+        (game) async {
+      final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
+      await game.ready();
+      final level = game.children.query<HouseAdventure>().first;
+      final player = level.children.query<Player>().first;
+      final point = level.children
+          .query<ActivityPoint>()
+          .where((point) => point.variant == "eating")
+          .first;
+      point.onCollision(intersection, player);
+      await game.ready();
+      final foodMinigame =
+          game.camOne.viewport.children.query<FoodMinigame>().first;
+
+      // score is 4
+      foodMinigame.timeLimit = 0;
+      foodMinigame.updateTimer(1);
+      await game.ready();
+      expect(game.gameOne.dPad.disabled, false);
+      expect(game.gameOne.hud.timerStarted, true);
+      final foodMinigameList =
+          game.camOne.viewport.children.query<FoodMinigame>();
+      expect(foodMinigameList, isEmpty);
+      expect(game.score, 0);
+    });
   });
 
   group('Drag And Drop Tests', () {
     testWithGame<TalaCare>(
-        'Dragging food to certain position and not releasing it',
-        TalaCare.new, (game) async {
-      final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+        'Dragging food to certain position and not releasing it', TalaCare.new,
+        (game) async {
+      final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;
       final player = level.children.query<Player>().first;
-      final point = level.children.query<ActivityPoint>().where((point) => point.variant == "eating").first;
+      final point = level.children
+          .query<ActivityPoint>()
+          .where((point) => point.variant == "eating")
+          .first;
       point.onCollision(intersection, player);
       await game.ready();
-      final foodMinigame = game.camOne.viewport.children.query<FoodMinigame>().first;
+      final foodMinigame =
+          game.camOne.viewport.children.query<FoodMinigame>().first;
 
-      List<DraggableFood> draggableFoods = foodMinigame.plate.children.query<DraggableFood>();
+      List<DraggableFood> draggableFoods =
+          foodMinigame.plate.children.query<DraggableFood>();
       DraggableFood draggableFood = draggableFoods[0];
       Vector2 newPosition = Vector2(1000, 1000);
       draggableFood.onDragStart(createDragStartEvents(game: game));
@@ -83,44 +118,53 @@ void main() {
     });
 
     testWithGame<TalaCare>(
-        'Dragging and releasing food not on child', TalaCare.new,
-            (game) async {
-          final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
-          await game.ready();
-          final level = game.children.query<HouseAdventure>().first;
-          final player = level.children.query<Player>().first;
-          final point = level.children.query<ActivityPoint>().where((point) => point.variant == "eating").first;
-          point.onCollision(intersection, player);
-          await game.ready();
-          final foodMinigame = game.camOne.viewport.children.query<FoodMinigame>().first;
-
-          List<DraggableFood> draggableFoods = foodMinigame.plate.children.query<DraggableFood>();
-          DraggableFood draggableFood = draggableFoods[0];
-          Vector2 initialPosition =
-          Vector2(draggableFood.position.x, draggableFood.position.y);
-          Vector2 newPosition = Vector2(0, 0);
-          draggableFood.onDragStart(createDragStartEvents(game: game));
-          draggableFood.position.setFrom(newPosition);
-          draggableFood.onDragEnd(DragEndEvent(1, DragEndDetails()));
-          await Future.delayed(Duration(milliseconds: 100));
-          expect(draggableFood.position, initialPosition);
-        });
-
-    testWithGame<TalaCare>(
-        'Dragging and releasing food on the child',
-        TalaCare.new, (game) async {
-      final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+        'Dragging and releasing food not on child', TalaCare.new, (game) async {
+      final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;
       final player = level.children.query<Player>().first;
-      final point = level.children.query<ActivityPoint>().where((point) => point.variant == "eating").first;
+      final point = level.children
+          .query<ActivityPoint>()
+          .where((point) => point.variant == "eating")
+          .first;
       point.onCollision(intersection, player);
       await game.ready();
-      final foodMinigame = game.camOne.viewport.children.query<FoodMinigame>().first;
+      final foodMinigame =
+          game.camOne.viewport.children.query<FoodMinigame>().first;
 
-      List<DraggableFood> draggableFoods = foodMinigame.plate.children.query<DraggableFood>();
+      List<DraggableFood> draggableFoods =
+          foodMinigame.plate.children.query<DraggableFood>();
+      DraggableFood draggableFood = draggableFoods[0];
+      Vector2 initialPosition =
+          Vector2(draggableFood.position.x, draggableFood.position.y);
+      Vector2 newPosition = Vector2(0, 0);
+      draggableFood.onDragStart(createDragStartEvents(game: game));
+      draggableFood.position.setFrom(newPosition);
+      draggableFood.onDragEnd(DragEndEvent(1, DragEndDetails()));
+      await Future.delayed(Duration(milliseconds: 100));
+      expect(draggableFood.position, initialPosition);
+    });
+
+    testWithGame<TalaCare>(
+        'Dragging and releasing food on the child', TalaCare.new, (game) async {
+      final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
+      await game.ready();
+      final level = game.children.query<HouseAdventure>().first;
+      final player = level.children.query<Player>().first;
+      final point = level.children
+          .query<ActivityPoint>()
+          .where((point) => point.variant == "eating")
+          .first;
+      point.onCollision(intersection, player);
+      await game.ready();
+      final foodMinigame =
+          game.camOne.viewport.children.query<FoodMinigame>().first;
+
+      List<DraggableFood> draggableFoods =
+          foodMinigame.plate.children.query<DraggableFood>();
       DraggableFood goodDraggableFood = draggableFoods[0];
-      Vector2 newPosition = Vector2(foodMinigame.playerEating.x, foodMinigame.playerEating.y);
+      Vector2 newPosition =
+          Vector2(foodMinigame.playerEating.x, foodMinigame.playerEating.y);
       goodDraggableFood.onDragStart(createDragStartEvents(game: game));
       goodDraggableFood.position.setFrom(newPosition);
       goodDraggableFood.onDragEnd(DragEndEvent(1, DragEndDetails()));
@@ -139,22 +183,28 @@ void main() {
     });
 
     testWithGame<TalaCare>(
-        'Dragging and releasing good food on the child',
-        TalaCare.new, (game) async {
-      final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+        'Dragging and releasing good food on the child', TalaCare.new,
+        (game) async {
+      final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;
       final player = level.children.query<Player>().first;
-      final point = level.children.query<ActivityPoint>().where((point) => point.variant == "eating").first;
+      final point = level.children
+          .query<ActivityPoint>()
+          .where((point) => point.variant == "eating")
+          .first;
       point.onCollision(intersection, player);
       await game.ready();
-      final foodMinigame = game.camOne.viewport.children.query<FoodMinigame>().first;
+      final foodMinigame =
+          game.camOne.viewport.children.query<FoodMinigame>().first;
 
-      List<DraggableFood> draggableFoods = foodMinigame.plate.children.query<DraggableFood>();
-      DraggableFood goodDraggableFood = draggableFoods.where((food) => food.type == "good").first;
+      List<DraggableFood> draggableFoods =
+          foodMinigame.plate.children.query<DraggableFood>();
+      DraggableFood goodDraggableFood =
+          draggableFoods.where((food) => food.type == "good").first;
 
-
-      Vector2 newPosition = Vector2(foodMinigame.playerEating.x, foodMinigame.playerEating.y);
+      Vector2 newPosition =
+          Vector2(foodMinigame.playerEating.x, foodMinigame.playerEating.y);
       goodDraggableFood.onDragStart(createDragStartEvents(game: game));
       goodDraggableFood.position.setFrom(newPosition);
       goodDraggableFood.onDragEnd(DragEndEvent(1, DragEndDetails()));
@@ -165,22 +215,28 @@ void main() {
     });
 
     testWithGame<TalaCare>(
-        'Dragging and releasing good food on the child',
-        TalaCare.new, (game) async {
-      final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+        'Dragging and releasing good food on the child', TalaCare.new,
+        (game) async {
+      final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;
       final player = level.children.query<Player>().first;
-      final point = level.children.query<ActivityPoint>().where((point) => point.variant == "eating").first;
+      final point = level.children
+          .query<ActivityPoint>()
+          .where((point) => point.variant == "eating")
+          .first;
       point.onCollision(intersection, player);
       await game.ready();
-      final foodMinigame = game.camOne.viewport.children.query<FoodMinigame>().first;
+      final foodMinigame =
+          game.camOne.viewport.children.query<FoodMinigame>().first;
 
-      List<DraggableFood> draggableFoods = foodMinigame.plate.children.query<DraggableFood>();
-      DraggableFood goodDraggableFood = draggableFoods.where((food) => food.type == "bad").first;
+      List<DraggableFood> draggableFoods =
+          foodMinigame.plate.children.query<DraggableFood>();
+      DraggableFood goodDraggableFood =
+          draggableFoods.where((food) => food.type == "bad").first;
 
-
-      Vector2 newPosition = Vector2(foodMinigame.playerEating.x, foodMinigame.playerEating.y);
+      Vector2 newPosition =
+          Vector2(foodMinigame.playerEating.x, foodMinigame.playerEating.y);
       goodDraggableFood.onDragStart(createDragStartEvents(game: game));
       goodDraggableFood.position.setFrom(newPosition);
       goodDraggableFood.onDragEnd(DragEndEvent(1, DragEndDetails()));
@@ -189,6 +245,5 @@ void main() {
       expect(foodMinigame.playerEating.current, EatState.bad);
       expect(foodMinigame.instruction.text, "Salah. Ayo Coba Lagi!");
     });
-
   });
 }
