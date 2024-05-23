@@ -63,32 +63,28 @@ TestWidgetsFlutterBinding.ensureInitialized();
         expect(game.score, 1);
       }
     );
-    // testWithGame<TalaCare>(
-    //     'Progress becomes done upon collision',
-    //     TalaCare.new,
-    //         (game) async {
-    //       final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
-    //       await game.ready();
-    //       final level = game.children.query<HouseAdventure>().first;
-    //       final player = level.children.query<Player>().first;
-    //       final point = level.children.query<ActivityPoint>().first;
-    //       point.onCollision(intersection, player);
-    //       Hud hud = game.camera.viewport.children.query<Hud>().first;
-    //       List<ProgressComponent> progressList = hud.children.query<ProgressComponent>();
-    //       game.update(5);
-    //       final event = game.eventAnchor.children.query<ActivityEvent>().first;
-    //       for(int i=0;i<10;i++){
-    //         await event.onTapUp(MockTapUpEvent());
-    //       }
-    //       for (ProgressComponent progress in progressList) {
-    //         if (progress.progressNumber == 1) {
-    //           expect(progress.current, ProgressState.done);
-    //         } else {
-    //           expect(progress.current, ProgressState.todo);
-    //         }
-    //       }
-    //     }
-    // );
+    testWithGame<TalaCare>(
+        'Progress becomes done upon collision',
+        TalaCare.new,
+            (game) async {
+          final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+          await game.ready();
+          final level = game.children.query<HouseAdventure>().first;
+          final player = level.children.query<Player>().first;
+          final point = level.children.query<ActivityPoint>().where((point) => point.variant != "eating").first;
+          point.onCollision(intersection, player);
+          Hud hud = game.camera.viewport.children.query<Hud>().first;
+          List<ProgressComponent> progressList = hud.children.query<ProgressComponent>();
+          game.update(5);
+          for (ProgressComponent progress in progressList) {
+            if (progress.progressNumber == 1) {
+              expect(progress.current, ProgressState.done);
+            } else {
+              expect(progress.current, ProgressState.todo);
+            }
+          }
+        }
+    );
     testWithGame<TalaCare>(
       'Activity disappears after a set duration (10 seconds (when lose))', 
       TalaCare.new,
