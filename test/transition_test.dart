@@ -22,8 +22,7 @@ void main() {
           GameTransition transition = game.children.query<GameTransition>().first;
           expect(transition.nurseTransition, false);
           expect(player.direction, Direction.right);
-
-
+          expect(transition.mother.direction, Direction.right);
         }
     );
 
@@ -42,6 +41,7 @@ void main() {
           Vector2 initialNursePosition = Vector2.zero();
           transition.nurse.position.copyInto(initialNursePosition);
           expect(player.direction, Direction.right);
+          expect(transition.mother.direction, Direction.right);
           game.update(1);
           expect(transition.nurse.position.x, initialNursePosition.x+100);
         }
@@ -59,6 +59,7 @@ void main() {
           GameTransition transition = game.children.query<GameTransition>().first;
           expect(transition.nurseTransition, false);
           expect(player.direction, Direction.left);
+          expect(transition.mother.direction, Direction.left);
         }
     );
   });

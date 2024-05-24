@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:talacare/components/circle_progress.dart';
@@ -13,6 +14,7 @@ class FoodMinigame extends Minigame {
   late final CircleProgress progressBar;
   late final Plate plate;
   late final PlayerEating playerEating;
+  late final RectangleComponent background;
   late final TextComponent instruction;
   late final TextComponent timerText;
   late final Viewport screen;
@@ -26,6 +28,12 @@ class FoodMinigame extends Minigame {
 
 
     screen = gameRef.camera.viewport;
+    background = RectangleComponent(
+        anchor: Anchor.center,
+        paint: Paint()..color = Color.fromARGB(255, 245, 228, 244),
+        position: Vector2(screen.size.x / 2, screen.size.y / 2),
+        size: Vector2(screen.size.x * 90 / 100, screen.size.y * 80 / 100)
+    );
     progressBar = CircleProgress(
         position:  Vector2(screen.size.x / 2, screen.size.y * 1 / 7),
         widthInput: screen.size.x * 3 / 5,
@@ -42,9 +50,10 @@ class FoodMinigame extends Minigame {
       position: Vector2(screen.size.x / 2, screen.size.y * 8 / 17),
     );
     plate = Plate(
-        position: Vector2(screen.size.x / 2, screen.size.y * 6 / 7),
+        position: Vector2(screen.size.x / 2, screen.size.y * 3 / 4),
         size: Vector2(screen.size.x, screen.size.y * 2 / 7)
     );
+    add(background);
     add(progressBar);
     add(instruction);
     add(playerEating);
