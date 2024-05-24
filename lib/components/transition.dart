@@ -31,14 +31,14 @@ class GameTransition extends World with HasGameRef<TalaCare> {
     transition.priority = -1;
     nurse = SpriteAnimationComponent();
     final spriteSheet = SpriteSheet.fromColumnsAndRows(
-        image: game.images.fromCache('Hospital/nurse.png'),
-        columns: 6,
+        image: game.images.fromCache('Hospital/nurse_with_bed.png'),
+        columns: 3,
         rows: 1);
     nurse.animation = spriteSheet.createAnimation(
         row: 0,
         stepTime: 0.25,
         from: 0,
-        to: 5
+        to: 3
     );
 
     add(transition);
@@ -48,7 +48,7 @@ class GameTransition extends World with HasGameRef<TalaCare> {
     if (spawnPointsLayer != null) {
       for (final spawnPoint in spawnPointsLayer.objects) {
         if (spawnPoint.name == 'Player') {
-          player.scale = Vector2.all(4);
+          player.scale = Vector2.all(3.5);
           player.collisionActive = false;
           if ((gameRef.currentGame == 1) | (reason == DialogReason.enterHospital)) {
             player.direction = (gameRef.currentGame == 1) ? Direction.left : Direction.right;
@@ -58,7 +58,7 @@ class GameTransition extends World with HasGameRef<TalaCare> {
             gameRef.transitionCam.follow(player);
           } else {
 
-            nurse.scale = Vector2.all(4);
+            nurse.scale = Vector2.all(3.5);
             nurse.position = Vector2(spawnPoint.x, spawnPoint.y);
             add(nurse);
 
@@ -66,7 +66,7 @@ class GameTransition extends World with HasGameRef<TalaCare> {
             player.moveSpeed = 0;
             player.priority = 1;
             player.angle = -math.pi/2;
-            player.position = Vector2(spawnPoint.x + 30, spawnPoint.y + 90);
+            player.position = Vector2(spawnPoint.x + 45, spawnPoint.y + 95);
             add(player);
             gameRef.transitionCam.follow(nurse);
 
@@ -75,7 +75,7 @@ class GameTransition extends World with HasGameRef<TalaCare> {
         } else if (spawnPoint.name == 'Mother') {
           mother = Mother();
           mother.direction = (gameRef.currentGame == 1) ? Direction.left : Direction.right;
-          mother.scale = Vector2.all(4);
+          mother.scale = Vector2.all(3.5);
           mother.position = Vector2(spawnPoint.x, spawnPoint.y);
           add(mother);
         }
