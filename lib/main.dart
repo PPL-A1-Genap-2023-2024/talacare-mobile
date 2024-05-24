@@ -29,9 +29,9 @@ void main() async {
 
   runApp(MyApp());
 
-  NotificationUtilities.initNotification();
+  await NotificationUtilities.initNotification();
   tz.initializeTimeZones();
-  NotificationUtilities.requestPermission();
+  await NotificationUtilities.requestPermission();
   AudioManager.getInstance().playBackgroundMusic();
 }
 

@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level-02.tmx",
+    "activeFile": "Level-01.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -21,19 +21,19 @@
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 2,
-            "selectedLayer": 3,
+            "scale": 1.5,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 279.75,
-                "y": 519.75
+                "x": 263,
+                "y": 717.6666666666666
             }
         },
         "Level-02.tmx": {
             "scale": 0.25,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 854,
-                "y": 82
+                "x": 1090,
+                "y": 686
             }
         },
         "Serene Village.tsx": {
@@ -68,10 +68,10 @@
     "project": "TalaCare.tiled-project",
     "recentFiles": [
         "House Adventure.tsx",
+        "Level-02.tmx",
         "Transition_01.tmx",
         "House Decor.tsx",
         "Level-01.tmx",
-        "Level-02.tmx",
         "Serene Village.tsx"
     ],
     "resizeMap.removeObjects": false,

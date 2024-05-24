@@ -8,6 +8,7 @@ import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/hospital_door.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
+import 'package:talacare/components/transaparent_layer.dart';
 import 'package:talacare/talacare.dart';
 
 import '../components/dpad.dart';
@@ -24,6 +25,8 @@ class HouseAdventure extends World with HasGameRef<TalaCare> {
   late HospitalDoor hospitalDoor;
   late final DPad dPad;
   late AlignComponent dpadAnchor;
+  late Hud hud;
+  late TransparentLayer transparentLayer;
 
   HouseAdventure({required this.levelName, required this.player});
 
@@ -41,7 +44,8 @@ class HouseAdventure extends World with HasGameRef<TalaCare> {
       alignment: Anchor.bottomCenter,
     );
     gameRef.camOne.viewport.add(dpadAnchor);
-    gameRef.camOne.viewport.add(Hud());
+    hud = Hud();
+    gameRef.camOne.viewport.add(hud);
 
     level = await TiledComponent.load("$levelName.tmx", Vector2.all(16));
     add(level);
@@ -52,14 +56,14 @@ class HouseAdventure extends World with HasGameRef<TalaCare> {
       for (final spawnPoint in spawnPointsLayer.objects) {
         switch (spawnPoint.class_) {
           case 'Player':
-            player.initialSpawn = player.position = Vector2(spawnPoint.x, spawnPoint.y);
+            player.initialSpawn =
+                player.position = Vector2(spawnPoint.x, spawnPoint.y);
             add(player);
             break;
           case 'Activity':
             final activity = ActivityPoint(
-              position: Vector2(spawnPoint.x, spawnPoint.y),
-              variant: spawnPoint.name.toLowerCase()
-            );
+                position: Vector2(spawnPoint.x, spawnPoint.y),
+                variant: spawnPoint.name.toLowerCase());
             activityPoints.add(activity);
           case 'Hospital':
             hospitalDoor = HospitalDoor();
@@ -80,8 +84,7 @@ class HouseAdventure extends World with HasGameRef<TalaCare> {
       for (final collision in collisionLayer.objects) {
         final wall = CollisionBlock(
             position: Vector2(collision.x, collision.y),
-            size: Vector2(collision.width, collision.height)
-        );
+            size: Vector2(collision.width, collision.height));
         if (collision.class_ == "Outer") {
           wall.type = WallTypes.values[int.parse(collision.name)];
         }
@@ -90,9 +93,16 @@ class HouseAdventure extends World with HasGameRef<TalaCare> {
       }
     }
     player.collisionBlocks = collisionBlocks;
+
+    transparentLayer = TransparentLayer()
+      ..size = gameRef.size
+      ..position = Vector2.zero();
+
     return super.onLoad();
   }
-  List<ActivityPoint> _addRandomActivities(List<ActivityPoint> activityPoints, int count) {
+
+  List<ActivityPoint> _addRandomActivities(
+      List<ActivityPoint> activityPoints, int count) {
     activityPoints.shuffle();
     int manyActivity = count;
     List<ActivityPoint> selectedActivityPoints = [];
