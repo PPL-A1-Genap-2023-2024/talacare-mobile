@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -5,6 +7,7 @@ import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talacare/components/hud/hud.dart';
 import 'package:talacare/components/hud/progress.dart';
+import 'package:talacare/components/progress_bar.dart';
 import 'package:talacare/talacare.dart';
 import 'package:talacare/components/event.dart';
 import 'package:talacare/screens/game_1.dart';
@@ -79,5 +82,35 @@ void main() {
         expect(event.success, true);
       },
     );
+    testWithGame<FlameGame>(
+      'ProgressBar render method is called',
+      FlameGame.new,
+      (game) async {
+        final progressBar = ProgressBar(
+          progress: 0.5,
+          width: 100.0,
+          height: 20.0,
+        );
+
+        game.add(progressBar);
+        await game.ready();
+
+        final mockCanvas = MockCanvas();
+        
+        progressBar.render(mockCanvas);
+
+        verifyNever(mockCanvas.drawRect(
+          Rect.fromLTWH(0, 0, 100.0, 20.0),
+          Paint()..color = Color(0xff9e9e9e),
+        ));
+
+        verifyNever(mockCanvas.drawRect(
+          Rect.fromLTWH(0, 0, 50.0, 20.0),
+          Paint()..color = Color(0xff4caf50),
+        ));
+      },
+    );
   });
 }
+
+class MockCanvas extends Mock implements Canvas {}
