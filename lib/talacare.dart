@@ -5,7 +5,6 @@ import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/components/clicker_minigame.dart';
-import 'package:talacare/components/event.dart';
 import 'package:talacare/helpers/cooldown_timer_manager.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
@@ -226,8 +225,9 @@ class TalaCare extends FlameGame
     if (isVictory) {
       score += 1;
     } else {
-      // world.add(point);
-      // implement cooldown here
+      cooldownTimerManager.startCooldown(point, () {
+        world.add(point);
+      });
     }
   }
 
