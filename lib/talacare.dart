@@ -190,6 +190,7 @@ class TalaCare extends FlameGame
 
   void startMinigame(ActivityPoint point) {
     world.remove(point);
+    gameOne.remove(player);
     gameOne.hud.timerStarted = false;
     camOne.viewport.remove(gameOne.hud);
     gameOne.dPad.disable();
@@ -208,6 +209,7 @@ class TalaCare extends FlameGame
 
   void finishMinigame(ActivityPoint point, bool isVictory) {
     camOne.viewport.remove(minigame);
+    gameOne.add(player);
     gameOne.hud.timerStarted = true;
     camOne.viewport.add(gameOne.hud);
     gameOne.dPad.enable();
