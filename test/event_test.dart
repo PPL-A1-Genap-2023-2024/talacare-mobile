@@ -276,21 +276,27 @@ TestWidgetsFlutterBinding.ensureInitialized();
   });
 
    group('Activity Point Cooldown Tests', () {
-
     testWithGame<TalaCare>(
-      'ActivityPoint is removed and timer is set on activity start', 
+      'Cooldown timer is set when minigame is lost', 
       TalaCare.new,
       (game) async {
-        final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
         await game.ready();
+
+        // Simulate minigame started
         final level = game.children.query<HouseAdventure>().first;
-        final player = level.children.query<Player>().first;
         final point = level.children.query<ActivityPoint>().first;
 
-        point.onCollision(intersection, player);
+        game.startMinigame(point);
         await game.ready();
 
         expect(game.world.children.contains(point), isFalse);
+        expect(game.minigame, isNotNull);
+        await game.ready();
+  
+        // Simulate minigame lost
+        game.minigame.loseGame();
+        await game.ready();
+
         expect(game.cooldownTimerManager.coolDownTimers.containsKey(point), isTrue);
       }
     );
@@ -299,17 +305,25 @@ TestWidgetsFlutterBinding.ensureInitialized();
       'ActivityPoint is re-added after cooldown', 
       TalaCare.new,
       (game) async {
-        final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
         await game.ready();
+
+        // Simulate minigame started
         final level = game.children.query<HouseAdventure>().first;
-        final player = level.children.query<Player>().first;
         final point = level.children.query<ActivityPoint>().first;
 
-        point.onCollision(intersection, player);
+        game.startMinigame(point);
         await game.ready();
-        
-        game.update(game.cooldownDuration);
 
+        expect(game.world.children.contains(point), isFalse);
+        expect(game.minigame, isNotNull);
+        await game.ready();
+  
+        // Simulate minigame lost
+        game.minigame.loseGame();
+        await game.ready();
+
+        game.update(game.cooldownDuration + 1);
+        
         expect(game.world.children.contains(point), isTrue);
         expect(game.cooldownTimerManager.coolDownTimers.containsKey(point), isFalse);
       }
@@ -319,24 +333,29 @@ TestWidgetsFlutterBinding.ensureInitialized();
       'Update method correctly handles timer updates', 
       TalaCare.new,
       (game) async {
-        final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
         await game.ready();
+
+        // Simulate minigame started
         final level = game.children.query<HouseAdventure>().first;
-        final player = level.children.query<Player>().first;
         final point = level.children.query<ActivityPoint>().first;
         final cooldownProgress = game.cooldownDuration/2;
         final timers = game.cooldownTimerManager.coolDownTimers;
-        point.onCollision(intersection, player);
+
+        game.startMinigame(point);
         await game.ready();
-        
+
+        // Simulate minigame lost
+        game.minigame.loseGame();
+        await game.ready();
+
         game.update(cooldownProgress);
 
         expect(game.world.children.contains(point), isFalse);
         expect(timers.containsKey(point), isTrue);
         expect(timers[point]?.progress, cooldownProgress/game.cooldownDuration);
-
+  
         game.update(game.cooldownDuration - cooldownProgress);
-
+        
         expect(game.world.children.contains(point), isTrue);
         expect(timers.containsKey(point), isFalse);
       }
