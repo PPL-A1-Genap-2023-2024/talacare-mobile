@@ -4,56 +4,51 @@ import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/layout.dart';
-import 'package:talacare/components/circle_progress.dart';
 import 'package:talacare/components/event.dart';
 import 'package:talacare/helpers/text_styles.dart';
+import 'package:talacare/components/progress_bar.dart';
 
-import 'minigame.dart';
+import 'package:talacare/components/minigame.dart';
 
 class ClickerMinigame extends Minigame {
-  late final CircleProgress progressBar;
   late final Viewport screen;
 
+  // Sprite
   String variant;
   late AlignComponent tapableSprite;
-
-  bool firstTap = false;
   late SpriteAnimationComponent instruction;
+  late ActivityEvent activity;
 
   // Timer
-  // late final TextComponent timerText;
   bool timerStarted = false;
   int timeLimit = 5;
   late Timer countDown;
 
-  int score = 0;
+  // Progress
+  bool firstTap = false;
+  late ProgressBar progressBar;
+  int progress = 0;
+  final int progressIncrement = 1;
 
   ClickerMinigame({this.variant = 'drawing', required super.point});
 
   @override
-  FutureOr<void> onLoad() async {
+  FutureOr<void> onLoad() {
     screen = gameRef.camera.viewport;
 
-    progressBar = CircleProgress(
-        position: Vector2(screen.size.x / 2, screen.size.y * 1 / 7),
-        widthInput: screen.size.x * 3 / 5,
-        totalPoints: 4);
+    progressBar = makeActivityProgressBar();
     add(progressBar);
 
-    // timerText = TextComponent(
-    //     anchor: Anchor.topCenter,
-    //     position: Vector2(screen.size.x / 2, screen.size.y * 1 / 14),
-    //     text: "Sisa waktu: $timeLimit detik",
-    //     textRenderer: TextPaint(style: AppTextStyles.large));
-    // add(timerText);
-
+    activity = ActivityEvent(variant: variant);
+    activity.onTapCallback = () {
+      updateProgress();
+    };
     tapableSprite = AlignComponent(
-        child: ActivityEvent(variant: point.variant),
+        child: activity,
         alignment: Anchor.center);
     screen.add(tapableSprite);
 
-    print(screen.size);
-
+    // Instruction Disappear After First Tap
     instruction = makeInstructionAnimation();
     screen.add(instruction);
 
@@ -61,7 +56,6 @@ class ClickerMinigame extends Minigame {
     countDown = Timer(1, repeat: true, onTick: () {
       if (timeLimit > 0) {
         timeLimit--;
-        // timerText.text = "Sisa waktu: $timeLimit detik";
       }
     });
 
@@ -80,7 +74,6 @@ class ClickerMinigame extends Minigame {
     if (timerStarted) {
       countDown.update(dt);
       if (timeLimit <= 0) {
-        // instruction.text = "Waktu kamu sudah habis";
         loseGame();
         if (!firstTap){
           screen.remove(instruction);
@@ -90,11 +83,17 @@ class ClickerMinigame extends Minigame {
     }
   }
 
-  FutureOr<void> updateScore() async {
-    score++;
-    progressBar.updateProgress();
-    if (score >= 4) {
+  void updateProgress(){
+    if(!firstTap){
+      screen.remove(instruction);
+      firstTap = true;
+    }
+    progress += progressIncrement;
+    progressBar.updateProgress(progress / 10.0);
+
+    if (progress > 10){
       finishGame();
+      screen.remove(tapableSprite);
     }
   }
 
@@ -109,9 +108,21 @@ class ClickerMinigame extends Minigame {
 
     return SpriteAnimationComponent(
         animation: animation,
-        scale: Vector2.all(0.6),
+        scale: Vector2.all(0.4),
         position: Vector2(screen.size.x / 2, screen.size.y / 2)
     );
   }
 
+  ProgressBar makeActivityProgressBar(){
+    ProgressBar progressBar = ProgressBar(
+      progress: 0.0,
+      width: screen.size.x * 0.8,
+      height: 30,
+    );
+    progressBar.position = Vector2(
+        (screen.size.x - progressBar.width) / 2,
+        (screen.size.y - progressBar.height) / 10
+    );
+    return progressBar;
+  }
 }
