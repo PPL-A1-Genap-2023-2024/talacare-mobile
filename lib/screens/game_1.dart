@@ -25,6 +25,7 @@ class HouseAdventure extends World with HasGameRef<TalaCare> {
   late HospitalDoor hospitalDoor;
   late final DPad dPad;
   late AlignComponent dpadAnchor;
+  late Hud hud;
 
   HouseAdventure({required this.levelName, required this.player});
 
@@ -42,7 +43,8 @@ class HouseAdventure extends World with HasGameRef<TalaCare> {
       alignment: Anchor.bottomCenter,
     );
     gameRef.camOne.viewport.add(dpadAnchor);
-    gameRef.camOne.viewport.add(Hud());
+    hud = Hud();
+    gameRef.camOne.viewport.add(hud);
 
     level = await TiledComponent.load("$levelName.tmx", Vector2.all(16));
     add(level);
