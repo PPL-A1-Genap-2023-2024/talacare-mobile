@@ -8,25 +8,45 @@ import 'package:talacare/talacare.dart';
 
 import 'food_minigame.dart';
 
-class PlayerEating extends SpriteComponent
+class PlayerEating extends SpriteGroupComponent<EatState>
     with
         CollisionCallbacks,
         HasGameRef<TalaCare> {
   late final RectangleHitbox hitbox;
   final FoodMinigame minigame;
+  double reactionTime = 0;
+  bool isReacting = false;
   PlayerEating({required this.minigame, required super.position});
 
   // AudioSource sfx = AudioSource.uri(Uri.parse("asset:///assets/audio/puzzle_drop.mp3"));
 
 
+
   @override
   FutureOr<void> onLoad() async {
     anchor = Anchor.center;
-    sprite = await game.loadSprite('Food/${game.playedCharacter}_new.png');
-
+    sprites = {};
+    for (EatState state in EatState.values) {
+      sprites?[state] = await game.loadSprite('Food/${game.playedCharacter}_${state.name}.png');
+    }
+    current = EatState.openmouth;
     hitbox = RectangleHitbox(isSolid: true);
     add(hitbox);
     return super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    if (isReacting) {
+      reactionTime += dt;
+    }
+    if (reactionTime >= 2) {
+      current = EatState.openmouth;
+      isReacting = false;
+      reactionTime = 0;
+      minigame.plate.enableDragging();
+    }
   }
 
 
@@ -34,16 +54,24 @@ class PlayerEating extends SpriteComponent
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is DraggableFood && other.isDragged == true) {
-      minigame.mouth.current = EatState.openmouth;
+    if (other is DraggableFood && other.isDragged == false) {
+      if (other.type == "good") {
+        current = EatState.good;
+        isReacting = true;
+        minigame.instruction.text = "Sudah Benar. Lanjutkan!";
+        // FlameAudio.play('puzzle_drop.mp3');
+        // AudioManager.getInstance().playSoundEffect(sfx);
+        tint(Color.fromARGB(0, 255, 255, 255));
+        minigame.plate.removeItem(other);
+        minigame.updateScore();
+      } else {
+        current = EatState.bad;
+        isReacting = true;
+        minigame.instruction.text = "Ayo Coba Lagi!";
+      }
+      minigame.plate.nextWave();
     }
     super.onCollision(intersectionPoints, other);
-  }
-
-  @override
-  void onCollisionEnd(PositionComponent other) {
-    minigame.mouth.current = minigame.lastState;
-    super.onCollisionEnd(other);
   }
 
 }

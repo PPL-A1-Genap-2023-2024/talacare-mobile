@@ -107,7 +107,7 @@ void main() {
         });
 
     testWithGame<TalaCare>(
-        'Mouth Open when food dragged near child',
+        'Dragging and releasing food on the child',
         TalaCare.new, (game) async {
       final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
       await game.ready();
@@ -123,32 +123,19 @@ void main() {
       Vector2 newPosition = Vector2(foodMinigame.playerEating.x, foodMinigame.playerEating.y);
       goodDraggableFood.onDragStart(createDragStartEvents(game: game));
       goodDraggableFood.position.setFrom(newPosition);
+      goodDraggableFood.onDragEnd(DragEndEvent(1, DragEndDetails()));
       foodMinigame.playerEating.onCollision({newPosition}, goodDraggableFood);
       await game.ready();
-      expect(foodMinigame.mouth.current, EatState.openmouth);
-    });
-
-    testWithGame<TalaCare>(
-        'Mouth No longer open when food dragged far from child',
-        TalaCare.new, (game) async {
-      final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
-      await game.ready();
-      final level = game.children.query<HouseAdventure>().first;
-      final player = level.children.query<Player>().first;
-      final point = level.children.query<ActivityPoint>().where((point) => point.variant == "eating").first;
-      point.onCollision(intersection, player);
-      await game.ready();
-      final foodMinigame = game.camOne.viewport.children.query<FoodMinigame>().first;
-
-      List<DraggableFood> draggableFoods = foodMinigame.plate.children.query<DraggableFood>();
-      DraggableFood goodDraggableFood = draggableFoods[0];
-      Vector2 newPosition = Vector2(foodMinigame.playerEating.x, foodMinigame.playerEating.y);
-      goodDraggableFood.onDragStart(createDragStartEvents(game: game));
-      goodDraggableFood.position.setFrom(newPosition);
-      foodMinigame.playerEating.onCollision({newPosition}, goodDraggableFood);
-      foodMinigame.playerEating.onCollisionEnd(goodDraggableFood);
-      await game.ready();
-      expect(foodMinigame.mouth.current, isNot(EatState.openmouth));
+      expect(foodMinigame.playerEating.isReacting, true);
+      draggableFoods.forEach((food) {
+        expect(food.isDraggable, false);
+      });
+      game.update(2);
+      expect(foodMinigame.playerEating.isReacting, false);
+      draggableFoods.forEach((food) {
+        expect(food.isDraggable, true);
+      });
+      expect(foodMinigame.playerEating.current, EatState.openmouth);
     });
 
     testWithGame<TalaCare>(
@@ -167,18 +154,18 @@ void main() {
       DraggableFood goodDraggableFood = draggableFoods.where((food) => food.type == "good").first;
 
 
-      Vector2 newPosition = Vector2(foodMinigame.mouth.x, foodMinigame.mouth.y);
+      Vector2 newPosition = Vector2(foodMinigame.playerEating.x, foodMinigame.playerEating.y);
       goodDraggableFood.onDragStart(createDragStartEvents(game: game));
       goodDraggableFood.position.setFrom(newPosition);
       goodDraggableFood.onDragEnd(DragEndEvent(1, DragEndDetails()));
-      foodMinigame.mouth.onCollision({newPosition}, goodDraggableFood);
+      foodMinigame.playerEating.onCollision({newPosition}, goodDraggableFood);
       expect(foodMinigame.score, 1);
-      expect(foodMinigame.mouth.current, EatState.good);
+      expect(foodMinigame.playerEating.current, EatState.good);
       expect(foodMinigame.instruction.text, "Sudah Benar. Lanjutkan!");
     });
 
     testWithGame<TalaCare>(
-        'Dragging and releasing bad food on the child',
+        'Dragging and releasing good food on the child',
         TalaCare.new, (game) async {
       final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
       await game.ready();
@@ -193,13 +180,13 @@ void main() {
       DraggableFood goodDraggableFood = draggableFoods.where((food) => food.type == "bad").first;
 
 
-      Vector2 newPosition = Vector2(foodMinigame.mouth.x, foodMinigame.mouth.y);
+      Vector2 newPosition = Vector2(foodMinigame.playerEating.x, foodMinigame.playerEating.y);
       goodDraggableFood.onDragStart(createDragStartEvents(game: game));
       goodDraggableFood.position.setFrom(newPosition);
       goodDraggableFood.onDragEnd(DragEndEvent(1, DragEndDetails()));
-      foodMinigame.mouth.onCollision({newPosition}, goodDraggableFood);
+      foodMinigame.playerEating.onCollision({newPosition}, goodDraggableFood);
       expect(foodMinigame.score, 0);
-      expect(foodMinigame.mouth.current, EatState.bad);
+      expect(foodMinigame.playerEating.current, EatState.bad);
       expect(foodMinigame.instruction.text, "Ayo Coba Lagi!");
     });
 

@@ -38,4 +38,11 @@ class Plate extends SpriteComponent with HasGameRef<TalaCare> {
     indicesDisplayed[food.type]?.remove(food.index);
   }
 
+
+  void enableDragging() {
+    children.whereType<DraggableFood>().forEach((child) {
+      child.isDraggable = true;
+    });
+  }
+
 }
