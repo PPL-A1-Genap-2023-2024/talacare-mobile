@@ -1,11 +1,15 @@
+import 'package:flame_test/flame_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talacare/components/game_dialog.dart';
+import 'package:talacare/helpers/dialog_reason.dart';
 import 'package:talacare/helpers/time_limit.dart';
 import 'package:talacare/main.dart';
 import 'package:talacare/screens/homepage.dart';
+import 'package:talacare/talacare.dart';
 
 import 'time_limit_test.mocks.dart';
 
@@ -126,4 +130,18 @@ void main() {
     // expect(find.byType(AlertDialog), findsOneWidget);
     // expect(find.byType(TalaCareGame), findsNothing);
   });
+  testWithGame<TalaCare>(
+    'Time Limit Reached In Game Test',
+    TalaCare.new,
+    (game) async {
+      await game.ready();
+      game.remainingTime = 0;
+      game.checkRemainingTime();
+      GameDialog confirmation = game.confirmation;
+      expect(confirmation.reason, DialogReason.timeLimitExceeded);
+      await game.ready();
+      confirmation.yesButton.onTapDown(createTapDownEvents(game: game));
+      confirmation.yesButton.onTapUp(createTapUpEvents(game: game));
+    },
+  );
 }
