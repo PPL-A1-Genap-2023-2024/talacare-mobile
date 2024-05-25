@@ -89,4 +89,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'talacare-a1.appspot.com',
     measurementId: 'G-2VB7B2S9CM',
   );
+
 }
