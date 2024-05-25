@@ -1,24 +1,26 @@
+import 'package:http/http.dart' as http;
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flame/flame.dart';
+import 'package:flame/game.dart';
+import 'package:talacare/talacare.dart';
+import 'package:talacare/screens/homepage.dart';
+import 'package:talacare/screens/login_page.dart';
+import 'package:talacare/screens/export_page.dart';
+import 'package:talacare/helpers/analytics_util.dart';
+import 'package:talacare/helpers/role_checker.dart';
+import 'package:talacare/helpers/notification_util.dart';
+import 'package:talacare/helpers/audio_manager.dart';
+import 'package:talacare/widgets/overlays/pause_button.dart';
+import 'package:talacare/widgets/overlays/pause_menu.dart';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:talacare/helpers/analytics_util.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:flame/flame.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flame/game.dart';
-import 'package:talacare/screens/login_page.dart';
-import 'package:talacare/screens/export_page.dart';
-import 'package:talacare/helpers/role_checker.dart';
-import 'package:talacare/helpers/notification_util.dart';
-import 'package:talacare/talacare.dart';
-import 'package:talacare/widgets/overlays/pause_button.dart';
-import 'package:talacare/widgets/overlays/pause_menu.dart';
-import 'package:talacare/screens/homepage.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'authentication/firebase_options.dart';
-import 'package:talacare/helpers/audio_manager.dart';
-import 'package:http/http.dart' as http;
+import 'package:talacare/firebase_options.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

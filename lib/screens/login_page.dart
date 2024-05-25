@@ -83,10 +83,6 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextButton(
-                onPressed: () => throw Exception(),
-                child: const Text("Throw Test Exception"),
-              ),
               Form(
                 child: Container(
                   margin: const EdgeInsets.all(8),
