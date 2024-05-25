@@ -7,7 +7,7 @@ import 'package:talacare/helpers/time_limit.dart';
 import 'package:talacare/main.dart';
 import 'package:talacare/screens/homepage.dart';
 
-import 'schedule_test.mocks.dart';
+import 'time_limit_test.mocks.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
