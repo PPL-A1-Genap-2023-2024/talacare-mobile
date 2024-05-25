@@ -1,10 +1,15 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talacare/helpers/time_limit.dart';
+import 'package:talacare/main.dart';
+import 'package:talacare/screens/homepage.dart';
 
 import 'schedule_test.mocks.dart';
+
+class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 @GenerateMocks([SharedPreferences])
 void main() {
@@ -76,5 +81,49 @@ void main() {
         prefs: mockPrefs, newDurationInMillisecond: newDurationInMillisecond);
     verify(mockPrefs.getInt('duration')).called(1);
     verify(mockPrefs.setInt('duration', duration + newDuration)).called(1);
+  });
+  testWidgets('Start Game When Less Than 2 Hours Test',
+      (WidgetTester tester) async {
+    MockNavigatorObserver mockObserver = MockNavigatorObserver();
+    MockSharedPreferences mockPrefs = MockSharedPreferences();
+    DateTime dateNow = DateTime.now();
+    int duration = 6000; // Less than 7200 Seconds = 2 Hours
+    when(mockPrefs.getInt('duration')).thenReturn(duration);
+    when(mockPrefs.getInt('lastLogin'))
+        .thenReturn(dateNow.millisecondsSinceEpoch);
+    HomePage homepage = HomePage();
+    await tester.pumpWidget(MaterialApp(
+      home: homepage,
+      navigatorObservers: [mockObserver],
+    ));
+    await tester.pump();
+    GlobalKey playButtonKey = homepage.getPlayButtonKey();
+    Finder playButton = find.byKey(playButtonKey);
+    await tester.tap(playButton);
+    await tester.pump();
+    expect(find.byType(AlertDialog), findsNothing);
+    expect(find.byType(TalaCareGame), findsOneWidget);
+  });
+  testWidgets('Start Game When More Than 2 Hours Test',
+      (WidgetTester tester) async {
+    MockNavigatorObserver mockObserver = MockNavigatorObserver();
+    MockSharedPreferences mockPrefs = MockSharedPreferences();
+    DateTime dateNow = DateTime.now();
+    int duration = 8000; // More than 7200 Seconds = 2 Hours
+    when(mockPrefs.getInt('duration')).thenReturn(duration);
+    when(mockPrefs.getInt('lastLogin'))
+        .thenReturn(dateNow.millisecondsSinceEpoch);
+    HomePage homepage = HomePage();
+    await tester.pumpWidget(MaterialApp(
+      home: homepage,
+      navigatorObservers: [mockObserver],
+    ));
+    await tester.pump();
+    GlobalKey playButtonKey = homepage.getPlayButtonKey();
+    Finder playButton = find.byKey(playButtonKey);
+    await tester.tap(playButton);
+    await tester.pump();
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.byType(TalaCareGame), findsNothing);
   });
 }
