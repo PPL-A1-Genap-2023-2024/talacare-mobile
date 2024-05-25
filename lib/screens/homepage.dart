@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talacare/components/button.dart';
 import 'package:talacare/helpers/playable_characters.dart';
 import 'package:talacare/helpers/time_limit.dart';
@@ -9,6 +10,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:talacare/helpers/audio_manager.dart';
 import 'package:talacare/screens/reminder.dart';
+import 'package:talacare/helpers/text_styles.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'HomePage';
@@ -51,8 +53,9 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
 
-  Future<void> startGame({String email = ''}) async {
-    bool isAllowed = await checkPlayerAppUsage();
+  Future<void> startGame({String email = '', SharedPreferences? prefs}) async {
+    prefs ??= await SharedPreferences.getInstance();
+    bool isAllowed = await checkPlayerAppUsage(prefs: prefs);
     if (isAllowed) {
       Navigator.push(
         context,
@@ -60,8 +63,39 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
           return TalaCareGame(playedCharacter: currentCharacter, email: email);
         }),
       );
+      AudioManager.getInstance().stopBackgroundMusic();
       FlameAudio.bgm.initialize();
       FlameAudio.bgm.play('bgm_game.mp3', volume: 0.5);
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Peringatan",
+              textAlign: TextAlign.center,
+              style: AppTextStyles.h2,
+            ),
+            actions: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                      "Waktu bermain kamu hari ini sudah habis. Datang lagi besok, ya!",
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.normal),
+                  IconButton(
+                    icon: Image.asset("assets/images/Button/BackButton.png"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -195,7 +229,6 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 size: ButtonSize.medium,
                 onPressed: () async {
                   await startGame(email: email);
-                  AudioManager.getInstance().stopBackgroundMusic();
                 }),
 
             /* Tombol Pengaturan Reminder */
