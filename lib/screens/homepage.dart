@@ -60,7 +60,11 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) {
-          return TalaCareGame(playedCharacter: currentCharacter, email: email);
+          return TalaCareGame(
+            playedCharacter: currentCharacter,
+            email: email,
+            remainingTime: remainingTime,
+          );
         }),
       );
       AudioManager.getInstance().stopBackgroundMusic();

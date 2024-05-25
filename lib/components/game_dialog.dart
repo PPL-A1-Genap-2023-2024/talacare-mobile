@@ -69,6 +69,15 @@ class GameDialog extends SpriteComponent with HasGameRef<TalaCare> {
         yesButton.onPressed = gameRef.loseHospital;
         yesButton.anchor = Anchor.centerRight;
         buttons.add(AlignComponent(child: yesButton, alignment: Anchor.center));
+      case DialogReason.timeLimitExceeded:
+        text = 'Waktu permainan kamu sudah melebihi 2 jam.';
+
+        yesButton = await _loadSpriteButton('home');
+        yesButton.onPressed = () {
+          gameRef.exitToMainMenu(gameRef.context);
+        };
+        yesButton.anchor = Anchor.center;
+        buttons.add(AlignComponent(child: yesButton, alignment: Anchor.center));
     }
     final textBox = TextBoxComponent(text: text);
     textBox.align = Anchor.center;
