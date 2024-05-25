@@ -55,8 +55,8 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   Future<void> startGame({String email = '', SharedPreferences? prefs}) async {
     prefs ??= await SharedPreferences.getInstance();
-    bool isAllowed = await checkPlayerAppUsage(prefs: prefs);
-    if (isAllowed) {
+    int remainingTime = await checkPlayerAppUsage(prefs: prefs);
+    if (remainingTime > 0) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) {

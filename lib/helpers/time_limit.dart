@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const int secondsInTwoHours = 7200;
 
-Future<bool> checkPlayerAppUsage(
+Future<int> checkPlayerAppUsage(
     {SharedPreferences? prefs, DateTime? dateNow}) async {
   prefs ??= await SharedPreferences.getInstance();
   dateNow ??= DateTime.now();
@@ -12,15 +12,11 @@ Future<bool> checkPlayerAppUsage(
   if (date.year == dateNow.year &&
       date.month == dateNow.month &&
       date.day == dateNow.day) {
-    if (duration <= secondsInTwoHours) {
-      return true;
-    } else {
-      return false;
-    }
+    return secondsInTwoHours - duration;
   } else {
     await prefs.setInt('duration', 0);
     await prefs.setInt('lastLogin', dateNow.millisecondsSinceEpoch);
-    return true;
+    return secondsInTwoHours;
   }
 }
 
