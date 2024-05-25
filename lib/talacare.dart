@@ -5,7 +5,7 @@ import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/components/clicker_minigame.dart';
-import 'package:talacare/components/event.dart';
+import 'package:talacare/components/transaparent_layer.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/screens/game_1.dart';
@@ -44,6 +44,7 @@ class TalaCare extends FlameGame
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
+  late TransparentLayer transparentLayer;
 
   final bool isWidgetTesting;
   final String email;
@@ -75,6 +76,9 @@ class TalaCare extends FlameGame
       world = gameOne = HouseAdventure(player: player, levelName: 'Level-01');
       camera = camOne = CameraComponent(world: gameOne);
       addAll([camera, world]);
+      transparentLayer = TransparentLayer()
+        ..size = size
+        ..position = Vector2.zero();
     }
     return super.onLoad();
   }
@@ -197,7 +201,7 @@ class TalaCare extends FlameGame
     gameOne.dPad.disable();
     player.direction = Direction.none;
     camOne.viewport.remove(gameOne.dpadAnchor);
-    camOne.viewport.add(gameOne.transparentLayer);
+    camOne.viewport.add(transparentLayer);
     switch (point.variant) {
       case "eating":
         minigame = FoodMinigame(point: point);
@@ -215,7 +219,7 @@ class TalaCare extends FlameGame
     camOne.viewport.add(gameOne.hud);
     gameOne.dPad.enable();
     camOne.viewport.add(gameOne.dpadAnchor);
-    camOne.viewport.remove(gameOne.transparentLayer);
+    camOne.viewport.remove(transparentLayer);
     if (isVictory) {
       score += 1;
     } else {
@@ -233,12 +237,14 @@ class TalaCare extends FlameGame
         child: confirmation,
         alignment: Anchor.center,
       );
+      camera.viewport.add(transparentLayer);
       camera.viewport.add(confirmationAnchor);
     }
   }
 
   void removeConfirmation() {
     camera.viewport.remove(confirmationAnchor);
+    camera.viewport.remove(transparentLayer);
     gameOne.dPad.enable();
     confirmationIsActive = false;
   }
