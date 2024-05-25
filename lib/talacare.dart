@@ -5,7 +5,6 @@ import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/components/clicker_minigame.dart';
-import 'package:talacare/components/event.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/screens/game_1.dart';
@@ -40,7 +39,6 @@ class TalaCare extends FlameGame
   @override
   late World world;
   late Minigame minigame;
-  late AlignComponent eventAnchor;
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
@@ -168,29 +166,8 @@ class TalaCare extends FlameGame
     player.direction = direction;
   }
 
-  // Future<void> onActivityStart(ActivityPoint point) async {
-  //   if (!eventIsActive) {
-  //     world.remove(point);
-  //     eventAnchor = AlignComponent(
-  //         child: ActivityEvent(variant: point.variant),
-  //         alignment: Anchor.center);
-  //     // Set Priority
-  //     eventAnchor.priority = 10;
-  //     camera.viewport.add(eventAnchor);
-  //     eventIsActive = true;
-  //     score += 1;
-  //   }
-  // }
-  //
-  // void onActivityEnd(ActivityEvent event) {
-  //   if (eventIsActive) {
-  //     eventAnchor.remove(event);
-  //     camera.viewport.remove(eventAnchor);
-  //     eventIsActive = false;
-  //   }
-  // }
-
   void startMinigame(ActivityPoint point) {
+    eventIsActive = true;
     world.remove(point);
     gameOne.hud.timerStarted = false;
     camOne.viewport.remove(gameOne.hud);
@@ -210,6 +187,7 @@ class TalaCare extends FlameGame
   }
 
   void finishMinigame(ActivityPoint point, bool isVictory) {
+    eventIsActive = false;
     camOne.viewport.remove(minigame);
     gameOne.hud.timerStarted = true;
     camOne.viewport.add(gameOne.hud);

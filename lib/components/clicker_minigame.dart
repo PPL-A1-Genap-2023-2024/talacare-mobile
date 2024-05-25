@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
-import 'package:flame/events.dart';
 import 'package:flame/layout.dart';
-import 'package:talacare/components/event.dart';
-import 'package:talacare/helpers/text_styles.dart';
+import 'package:talacare/components/activity_event.dart';
 import 'package:talacare/components/progress_bar.dart';
 
 import 'package:talacare/components/minigame.dart';
@@ -21,7 +18,7 @@ class ClickerMinigame extends Minigame {
 
   // Timer
   bool timerStarted = false;
-  int timeLimit = 5;
+  int timeLimit = 10;
   late Timer countDown;
 
   // Progress
@@ -88,17 +85,23 @@ class ClickerMinigame extends Minigame {
       screen.remove(instruction);
       firstTap = true;
     }
-    progress += progressIncrement;
-    progressBar.updateProgress(progress / 10.0);
 
-    if (progress > 10){
-      finishGame();
-      screen.remove(tapableSprite);
+    if (progress < 10){
+      progress += progressIncrement;
+      progressBar.updateProgress(progress / 10.0);
+    }
+
+    if (progress >= 10){
+      activity.done = true;
+      Future.delayed(Duration(seconds: 1), () {
+        finishGame();
+        screen.remove(tapableSprite);
+      });
     }
   }
 
   SpriteAnimationComponent makeInstructionAnimation() {
-    var fileName = 'Activity_Events/tap_instruction.png';
+    var fileName = 'Activity_Events/tap_instruction2.png';
     var data = SpriteAnimationData.sequenced(
         textureSize: Vector2.all(320),
         amount: 2,
@@ -108,8 +111,8 @@ class ClickerMinigame extends Minigame {
 
     return SpriteAnimationComponent(
         animation: animation,
-        scale: Vector2.all(0.4),
-        position: Vector2(screen.size.x / 2, screen.size.y / 2)
+        scale: Vector2.all(0.5),
+        position: Vector2(screen.size.x / 2, (screen.size.y + 160) / 2)
     );
   }
 
