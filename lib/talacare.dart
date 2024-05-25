@@ -194,14 +194,25 @@ class TalaCare extends FlameGame
   //   }
   // }
 
+  void enableDarkBackground() {
+    gameOne.hud.timerStarted = false;
+    gameOne.hud.isVisible = false;
+    player.direction = Direction.none;
+    gameOne.dPad.disable();
+    gameOne.dPad.isVisible = false;
+    camera.viewport.add(transparentLayer);
+  }
+
+  void disableDarkBackground() {
+    gameOne.hud.timerStarted = true;
+    gameOne.hud.isVisible = true;
+    gameOne.dPad.enable();
+    gameOne.dPad.isVisible = true;
+    camera.viewport.remove(transparentLayer);
+  }
+
   void startMinigame(ActivityPoint point) {
     world.remove(point);
-    gameOne.hud.timerStarted = false;
-    camOne.viewport.remove(gameOne.hud);
-    gameOne.dPad.disable();
-    player.direction = Direction.none;
-    camOne.viewport.remove(gameOne.dpadAnchor);
-    camOne.viewport.add(transparentLayer);
     switch (point.variant) {
       case "eating":
         minigame = FoodMinigame(point: point);
@@ -209,17 +220,14 @@ class TalaCare extends FlameGame
       default:
         minigame = ClickerMinigame(variant: point.variant, point: point);
         break;
-    } 
+    }
+    enableDarkBackground(); 
     camOne.viewport.add(minigame);
   }
 
   void finishMinigame(ActivityPoint point, bool isVictory) {
     camOne.viewport.remove(minigame);
-    gameOne.hud.timerStarted = true;
-    camOne.viewport.add(gameOne.hud);
-    gameOne.dPad.enable();
-    camOne.viewport.add(gameOne.dpadAnchor);
-    camOne.viewport.remove(transparentLayer);
+    disableDarkBackground();
     if (isVictory) {
       score += 1;
     } else {
@@ -232,20 +240,18 @@ class TalaCare extends FlameGame
     if (!confirmationIsActive) {
       confirmation = GameDialog(reason: reason);
       confirmationIsActive = true;
-      gameOne.dPad.disable();
       confirmationAnchor = AlignComponent(
         child: confirmation,
         alignment: Anchor.center,
       );
-      camera.viewport.add(transparentLayer);
+      enableDarkBackground();
       camera.viewport.add(confirmationAnchor);
     }
   }
 
   void removeConfirmation() {
     camera.viewport.remove(confirmationAnchor);
-    camera.viewport.remove(transparentLayer);
-    gameOne.dPad.enable();
+    disableDarkBackground();
     confirmationIsActive = false;
   }
 
