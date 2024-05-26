@@ -4,7 +4,10 @@ import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/layout.dart';
+import 'package:flame_audio/flame_audio.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:talacare/components/event.dart';
+import 'package:talacare/helpers/audio_manager.dart';
 import 'package:talacare/helpers/text_styles.dart';
 import 'package:talacare/components/progress_bar.dart';
 
@@ -61,6 +64,8 @@ class ClickerMinigame extends Minigame {
 
     countDown.start();
 
+    AudioManager.getInstance();
+
     return super.onLoad();
   }
 
@@ -88,10 +93,13 @@ class ClickerMinigame extends Minigame {
       screen.remove(instruction);
       firstTap = true;
     }
+    if(variant == 'drawing')AudioManager.getInstance().playSoundEffect(AudioSource.uri(Uri.parse("asset:///assets/audio/drawing_sound_trim_2.mp3")));
+    else AudioManager.getInstance().playSoundEffect(AudioSource.uri(Uri.parse("asset:///assets/audio/brick_sound_trim_2.mp3")));
     progress += progressIncrement;
     progressBar.updateProgress(progress / 10.0);
 
-    if (progress > 10){
+    if (progress >= 10){
+      AudioManager.getInstance().playSoundEffect(AudioSource.uri(Uri.parse("asset:///assets/audio/all_matched.mp3")));
       finishGame();
       screen.remove(tapableSprite);
     }
