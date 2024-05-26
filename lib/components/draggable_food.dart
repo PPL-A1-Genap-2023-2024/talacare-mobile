@@ -14,7 +14,7 @@ class DraggableFood extends SpriteComponent
   final String type;
   final int index;
   late Vector2 initialPosition;
-  bool isDraggable = true;
+  bool isDraggable = false;
 
   DraggableFood({required this.type, required this.index, required super.position});
 
