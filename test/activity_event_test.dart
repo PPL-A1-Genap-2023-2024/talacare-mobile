@@ -3,6 +3,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:talacare/components/activity_event.dart';
 import 'package:talacare/components/clicker_minigame.dart';
 import 'package:talacare/components/hud/hud.dart';
 import 'package:talacare/components/hud/progress.dart';
@@ -122,14 +123,14 @@ TestWidgetsFlutterBinding.ensureInitialized();
         final point = level.children.query<ActivityPoint>().where((point) => point.variant != "eating").first;
         point.onCollision(intersection, player);
         await game.ready();
+        bool isWorking = false;
+        void isTriggered(){
+          isWorking = true;
+        }
         ClickerMinigame minigame = game.camOne.viewport.children.query<ClickerMinigame>()[0];
-
-        bool callbackCalled = false;
-        minigame.activity.onTapCallback = () {
-          callbackCalled = true;
-        };
+        minigame.activity.trigger = isTriggered;
         minigame.activity.onTapUp(MockTapUpEvent());
-        expect(callbackCalled, true);
+        expect(isWorking, true);
       }
   );
 

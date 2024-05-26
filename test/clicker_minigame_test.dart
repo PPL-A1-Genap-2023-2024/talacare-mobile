@@ -37,7 +37,7 @@ void main() {
             when(spyMinigame.updateProgress()).thenAnswer((_) => minigame.updateProgress());
 
             // Replace the activity event with a spy
-            minigame.activity.onTapCallback = spyMinigame.updateProgress;
+            minigame.activity.trigger = spyMinigame.updateProgress;
 
             // Trigger the tap event
             minigame.activity.onTapUp(MockTapUpEvent());
@@ -71,7 +71,7 @@ void main() {
               minigame.updateProgress();
             }
 
-            await Future.delayed(Duration(seconds: 1));
+            await Future.delayed(const Duration(seconds: 1));
 
             expect(minigame.activity.done, true);
             expect(minigame.screen.children.query<AlignComponent>()[0].isRemoving, true);

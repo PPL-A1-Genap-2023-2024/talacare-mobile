@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:talacare/components/clicker_minigame.dart';
 import 'package:talacare/talacare.dart';
 import 'package:flutter/material.dart';
 
@@ -13,10 +14,9 @@ class ActivityEvent extends SpriteComponent with HasGameRef<TalaCare>, TapCallba
 
   bool done = false;
 
-  // Callback function to be called when the event is tapped
-  VoidCallback onTapCallback = () {};
+  VoidCallback trigger;
 
-  ActivityEvent({this.variant = 'drawing'});
+  ActivityEvent({this.variant = 'drawing', required this.trigger});
 
   List<Sprite> prepareSprites(String imageFile) {
     var data = SpriteAnimationData.sequenced(
@@ -46,7 +46,7 @@ class ActivityEvent extends SpriteComponent with HasGameRef<TalaCare>, TapCallba
   @override
   bool onTapUp(TapUpEvent event) {
     if (!done){
-      onTapCallback();
+      trigger();
 
       currentSpriteIndex = (currentSpriteIndex + 1) % 2;
       sprite = eventSprites[currentSpriteIndex];

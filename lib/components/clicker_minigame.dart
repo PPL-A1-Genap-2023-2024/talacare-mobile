@@ -36,10 +36,7 @@ class ClickerMinigame extends Minigame {
     progressBar = makeActivityProgressBar();
     add(progressBar);
 
-    activity = ActivityEvent(variant: variant);
-    activity.onTapCallback = () {
-      updateProgress();
-    };
+    activity = ActivityEvent(variant: variant, trigger: updateProgress);
     tapableSprite = AlignComponent(
         child: activity,
         alignment: Anchor.center);
