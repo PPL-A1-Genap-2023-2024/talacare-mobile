@@ -3,12 +3,28 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationUtilities {
-  static final FlutterLocalNotificationsPlugin notificationsPlugin =
+  static NotificationUtilities _instance =
+      NotificationUtilities._internal();
+
+  static NotificationUtilities getInstance() {
+    return _instance;
+  }
+
+  NotificationUtilities._internal();
+
+  FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  static Future<void> initNotification() async {
-    NotificationUtilities.getTimeZone()
-        .then((location) => tz.setLocalLocation(location));
+  static void setInstance(NotificationUtilities instance) {
+    _instance = instance;
+  }
+
+  static void setPlugin(FlutterLocalNotificationsPlugin notificationsPlugin) {
+    notificationsPlugin = notificationsPlugin;
+  }
+
+  Future<void> initNotification() async {
+    getTimeZone().then((location) => tz.setLocalLocation(location));
     AndroidInitializationSettings initializationSettingsAndroid =
         const AndroidInitializationSettings('launch_background');
 
@@ -18,7 +34,7 @@ class NotificationUtilities {
     notificationsPlugin.initialize(initializationSettings);
   }
 
-  static Future<void> requestPermission() async {
+  Future<void> requestPermission() async {
     if (await notificationsPlugin
             .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin>()!
@@ -31,12 +47,12 @@ class NotificationUtilities {
     }
   }
 
-  static Future<void> scheduleReminder(id, hour, minute) async {
+  Future<void> scheduleReminder(id, hour, minute) async {
     await notificationsPlugin.zonedSchedule(
         id,
         'Pengingat Minum Obat',
         'Jangan lupa minum obat kelasi besi, ya!',
-        NotificationUtilities.getTime(hour, minute),
+        getTime(hour, minute),
         const NotificationDetails(
           android: AndroidNotificationDetails(
             'channel1',
@@ -51,11 +67,11 @@ class NotificationUtilities {
         matchDateTimeComponents: DateTimeComponents.time);
   }
 
-  static Future<void> cancelNotification(int id) async {
+  Future<void> cancelNotification(int id) async {
     await notificationsPlugin.cancel(id);
   }
 
-  static tz.TZDateTime getTime(hour, minute) {
+  tz.TZDateTime getTime(hour, minute) {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
         tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
@@ -65,7 +81,7 @@ class NotificationUtilities {
     return scheduledDate;
   }
 
-  static Future<tz.Location> getTimeZone() async {
+  Future<tz.Location> getTimeZone() async {
     String locationName;
     try {
       locationName = await FlutterTimezone.getLocalTimezone();

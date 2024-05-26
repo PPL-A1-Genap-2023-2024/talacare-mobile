@@ -25,7 +25,7 @@ String addSchedule(hour, minute, SharedPreferences prefs) {
     var iteration = i.toString();
     if (!prefs.containsKey("hour_$iteration") &&
         !prefs.containsKey("minute_$iteration")) {
-      NotificationUtilities.scheduleReminder(i, hour, minute);
+      NotificationUtilities.getInstance().scheduleReminder(i, hour, minute);
       prefs.setInt("hour_$iteration", hour);
       prefs.setInt("minute_$iteration", minute);
       return "Berhasil membuat jadwal";
@@ -52,8 +52,8 @@ String editSchedule(hour, minute, id, SharedPreferences prefs) {
   if (!checkIfDifferentSchedule(hour, minute, prefs)) {
     return "Sudah ada jadwal dengan waktu yang sama, silahkan pilih waktu yang berbeda";
   }
-  NotificationUtilities.cancelNotification(id);
-  NotificationUtilities.scheduleReminder(id, hour, minute);
+  NotificationUtilities.getInstance().cancelNotification(id);
+  NotificationUtilities.getInstance().scheduleReminder(id, hour, minute);
   prefs.setInt("hour_$id", hour);
   prefs.setInt("minute_$id", minute);
 
@@ -61,7 +61,7 @@ String editSchedule(hour, minute, id, SharedPreferences prefs) {
 }
 
 String deleteSchedule(id, SharedPreferences prefs) {
-  NotificationUtilities.cancelNotification(id);
+  NotificationUtilities.getInstance().cancelNotification(id);
   prefs.remove("hour_$id");
   prefs.remove("minute_$id");
 
