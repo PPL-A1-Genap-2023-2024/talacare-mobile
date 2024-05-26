@@ -1,37 +1,39 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talacare/helpers/notification_util.dart';
 import 'package:talacare/helpers/schedule_util.dart';
 import 'package:mockito/annotations.dart';
-@GenerateNiceMocks([MockSpec<SharedPreferences>()])
 import 'schedule_test.mocks.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 
+@GenerateNiceMocks([MockSpec<SharedPreferences>()])
+@GenerateNiceMocks([MockSpec<NotificationUtilities>()])
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('Schedule_Functions', () {
     late MockSharedPreferences mockPrefs;
+    late MockNotificationUtilities mockNotifs;
 
     setUp(() {
       mockPrefs = MockSharedPreferences();
+      mockNotifs = MockNotificationUtilities();
+      NotificationUtilities.setInstance(mockNotifs);
       tz.initializeTimeZones();
-      /*when(NotificationUtilities.notificationsPlugin.initialize(
-              InitializationSettings(
-                  android: AndroidInitializationSettings('launch_background'))))
-          .thenAnswer((_) => Completer<bool>().future);
-      NotificationUtilities.initNotification();*/
     });
-    /*test('Add schedule', () async {
-      //when(NotificationUtilities.scheduleReminder(1, 8, 30)).thenAnswer((realInvocation) => Completer<void>().future);
+    test('Add schedule', () async {
       when(mockPrefs.containsKey("hour_1")).thenReturn(false);
       when(mockPrefs.containsKey("minute_1")).thenReturn(false);
       when(mockPrefs.getInt("hour_1")).thenReturn(null);
       when(checkIfDifferentSchedule(8, 30, mockPrefs)).thenReturn(true);
+      when(mockNotifs.scheduleReminder(1, 8, 30))
+          .thenAnswer((realInvocation) => Completer<void>().future);
       String result = addSchedule(8, 30, mockPrefs);
       expect(result, "Berhasil membuat jadwal");
-    });*/
+    });
 
     test('Fetching schedule', () {
       when(mockPrefs.getInt("hour_1")).thenReturn(9);
@@ -40,9 +42,13 @@ void main() {
       expect(schedule.length, 1);
     });
 
-    /*test('Edit schedule', () {
+    test('Edit schedule', () {
+      when(mockNotifs.scheduleReminder(1, 10, 15))
+          .thenAnswer((realInvocation) => Completer<void>().future);
       addSchedule(10, 15, mockPrefs);
 
+      when(mockNotifs.cancelNotification(1)).thenAnswer((realInvocation) => Completer<void>().future);
+      when(mockNotifs.scheduleReminder(1, 11, 30)).thenAnswer((realInvocation) => Completer<void>().future);
       String result = editSchedule(11, 30, 1, mockPrefs);
       expect(result, "Berhasil mengubah jadwal");
 
@@ -53,9 +59,9 @@ void main() {
       expect(schedule.length, 1);
       expect(schedule[0][0].hour, 11);
       expect(schedule[0][0].minute, 30);
-    });*/
+    });
 
-    /*test('Deleting a schedule', () {
+    test('Deleting a schedule', () {
       addSchedule(8, 0, mockPrefs);
 
       String result = deleteSchedule(1, mockPrefs);
@@ -63,7 +69,7 @@ void main() {
 
       List schedule = fetchSchedule(mockPrefs);
       expect(schedule.length, 0);
-    });*/
+    });
 
     test('Sorting a schedule', () {
       List schedule = [
