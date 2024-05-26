@@ -5,5 +5,6 @@
  </imagelayer>
  <objectgroup id="3" name="SpawnPoint">
   <object id="2" name="Player" x="264" y="210.667" width="64" height="64"/>
+  <object id="3" name="Mother" x="150" y="210.667" width="64" height="64"/>
  </objectgroup>
 </map>

@@ -5,7 +5,7 @@ import 'package:talacare/talacare.dart';
 import '../helpers/directions.dart';
 import 'dpad_arrow.dart';
 
-class DPad extends SpriteComponent with HasGameRef<TalaCare> {
+class DPad extends SpriteComponent with HasGameRef<TalaCare>, HasVisibility {
 
 
   late final DPadArrow leftButton;
