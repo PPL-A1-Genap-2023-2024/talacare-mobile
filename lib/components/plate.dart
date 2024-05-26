@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:talacare/components/draggable_food.dart';
 import 'package:talacare/talacare.dart';
@@ -23,6 +22,7 @@ class Plate extends SpriteComponent with HasGameRef<TalaCare> {
       ));
     }
     nextWave();
+    enableDragging();
     return super.onLoad();
   }
 
