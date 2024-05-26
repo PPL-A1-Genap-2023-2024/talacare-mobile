@@ -12,6 +12,12 @@ void main() {
             body: Column(
               children: [
                 CustomButton(
+                  key: Key("miniButton"),
+                  text: 'Mini',
+                  onPressed: () {},
+                  size: ButtonSize.mini,
+                ),
+                CustomButton(
                   key: Key("smallButton"),
                   text: 'Small',
                   onPressed: () {},
@@ -35,14 +41,17 @@ void main() {
         ),
       );
 
+      final miniButtonFinder = find.byKey(Key("miniButton"));
       final smallButtonFinder = find.byKey(Key("smallButton"));
       final mediumButtonFinder = find.byKey(Key("mediumButton"));
       final largeButtonFinder = find.byKey(Key("largeButton"));
 
+      final miniButtonWidth = tester.getSize(miniButtonFinder).width;
       final smallButtonWidth = tester.getSize(smallButtonFinder).width;
       final mediumButtonWidth = tester.getSize(mediumButtonFinder).width;
       final largeButtonWidth = tester.getSize(largeButtonFinder).width;
 
+      expect(miniButtonWidth, equals(95));
       expect(smallButtonWidth, equals(150));
       expect(mediumButtonWidth, equals(200));
       expect(largeButtonWidth, equals(270));
@@ -76,12 +85,11 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: CustomButton(
-              key: Key("mediumButton"),
-              text: 'Button',
-              onPressed: (){
-                isPressed = true;
-              }
-            ),
+                key: Key("mediumButton"),
+                text: 'Button',
+                onPressed: () {
+                  isPressed = true;
+                }),
           ),
         ),
       );

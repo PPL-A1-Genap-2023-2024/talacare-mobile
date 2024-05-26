@@ -3,14 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i4;
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart'
-    as _i2;
+    as _i6;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:shared_preferences/shared_preferences.dart' as _i4;
-import 'package:talacare/helpers/notification_util.dart' as _i6;
-import 'package:timezone/timezone.dart' as _i3;
+import 'package:shared_preferences/shared_preferences.dart' as _i3;
+import 'package:talacare/helpers/notification_util.dart' as _i5;
+import 'package:timezone/timezone.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -25,19 +25,8 @@ import 'package:timezone/timezone.dart' as _i3;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeFlutterLocalNotificationsPlugin_0 extends _i1.SmartFake
-    implements _i2.FlutterLocalNotificationsPlugin {
-  _FakeFlutterLocalNotificationsPlugin_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
-class _FakeLocation_1 extends _i1.SmartFake implements _i3.Location {
-  _FakeLocation_1(
+class _FakeLocation_0 extends _i1.SmartFake implements _i2.Location {
+  _FakeLocation_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -49,7 +38,7 @@ class _FakeLocation_1 extends _i1.SmartFake implements _i3.Location {
 /// A class which mocks [SharedPreferences].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSharedPreferences extends _i1.Mock implements _i4.SharedPreferences {
+class MockSharedPreferences extends _i1.Mock implements _i3.SharedPreferences {
   @override
   Set<String> getKeys() => (super.noSuchMethod(
         Invocation.method(
@@ -125,7 +114,7 @@ class MockSharedPreferences extends _i1.Mock implements _i4.SharedPreferences {
       ) as List<String>?);
 
   @override
-  _i5.Future<bool> setBool(
+  _i4.Future<bool> setBool(
     String? key,
     bool? value,
   ) =>
@@ -137,12 +126,12 @@ class MockSharedPreferences extends _i1.Mock implements _i4.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i5.Future<bool>.value(false),
-        returnValueForMissingStub: _i5.Future<bool>.value(false),
-      ) as _i5.Future<bool>);
+        returnValue: _i4.Future<bool>.value(false),
+        returnValueForMissingStub: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> setInt(
+  _i4.Future<bool> setInt(
     String? key,
     int? value,
   ) =>
@@ -154,12 +143,12 @@ class MockSharedPreferences extends _i1.Mock implements _i4.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i5.Future<bool>.value(false),
-        returnValueForMissingStub: _i5.Future<bool>.value(false),
-      ) as _i5.Future<bool>);
+        returnValue: _i4.Future<bool>.value(false),
+        returnValueForMissingStub: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> setDouble(
+  _i4.Future<bool> setDouble(
     String? key,
     double? value,
   ) =>
@@ -171,12 +160,12 @@ class MockSharedPreferences extends _i1.Mock implements _i4.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i5.Future<bool>.value(false),
-        returnValueForMissingStub: _i5.Future<bool>.value(false),
-      ) as _i5.Future<bool>);
+        returnValue: _i4.Future<bool>.value(false),
+        returnValueForMissingStub: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> setString(
+  _i4.Future<bool> setString(
     String? key,
     String? value,
   ) =>
@@ -188,12 +177,12 @@ class MockSharedPreferences extends _i1.Mock implements _i4.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i5.Future<bool>.value(false),
-        returnValueForMissingStub: _i5.Future<bool>.value(false),
-      ) as _i5.Future<bool>);
+        returnValue: _i4.Future<bool>.value(false),
+        returnValueForMissingStub: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> setStringList(
+  _i4.Future<bool> setStringList(
     String? key,
     List<String>? value,
   ) =>
@@ -205,103 +194,93 @@ class MockSharedPreferences extends _i1.Mock implements _i4.SharedPreferences {
             value,
           ],
         ),
-        returnValue: _i5.Future<bool>.value(false),
-        returnValueForMissingStub: _i5.Future<bool>.value(false),
-      ) as _i5.Future<bool>);
+        returnValue: _i4.Future<bool>.value(false),
+        returnValueForMissingStub: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> remove(String? key) => (super.noSuchMethod(
+  _i4.Future<bool> remove(String? key) => (super.noSuchMethod(
         Invocation.method(
           #remove,
           [key],
         ),
-        returnValue: _i5.Future<bool>.value(false),
-        returnValueForMissingStub: _i5.Future<bool>.value(false),
-      ) as _i5.Future<bool>);
+        returnValue: _i4.Future<bool>.value(false),
+        returnValueForMissingStub: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> commit() => (super.noSuchMethod(
+  _i4.Future<bool> commit() => (super.noSuchMethod(
         Invocation.method(
           #commit,
           [],
         ),
-        returnValue: _i5.Future<bool>.value(false),
-        returnValueForMissingStub: _i5.Future<bool>.value(false),
-      ) as _i5.Future<bool>);
+        returnValue: _i4.Future<bool>.value(false),
+        returnValueForMissingStub: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 
   @override
-  _i5.Future<bool> clear() => (super.noSuchMethod(
+  _i4.Future<bool> clear() => (super.noSuchMethod(
         Invocation.method(
           #clear,
           [],
         ),
-        returnValue: _i5.Future<bool>.value(false),
-        returnValueForMissingStub: _i5.Future<bool>.value(false),
-      ) as _i5.Future<bool>);
+        returnValue: _i4.Future<bool>.value(false),
+        returnValueForMissingStub: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 
   @override
-  _i5.Future<void> reload() => (super.noSuchMethod(
+  _i4.Future<void> reload() => (super.noSuchMethod(
         Invocation.method(
           #reload,
           [],
         ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 }
 
 /// A class which mocks [NotificationUtilities].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockNotificationUtilities extends _i1.Mock
-    implements _i6.NotificationUtilities {
+    implements _i5.NotificationUtilities {
   @override
-  _i2.FlutterLocalNotificationsPlugin get notificationsPlugin =>
-      (super.noSuchMethod(
-        Invocation.getter(#notificationsPlugin),
-        returnValue: _FakeFlutterLocalNotificationsPlugin_0(
-          this,
-          Invocation.getter(#notificationsPlugin),
-        ),
-        returnValueForMissingStub: _FakeFlutterLocalNotificationsPlugin_0(
-          this,
-          Invocation.getter(#notificationsPlugin),
-        ),
-      ) as _i2.FlutterLocalNotificationsPlugin);
-
-  @override
-  set notificationsPlugin(
-          _i2.FlutterLocalNotificationsPlugin? _notificationsPlugin) =>
+  void setPlugin(_i6.FlutterLocalNotificationsPlugin? notificationsPlugin) =>
       super.noSuchMethod(
-        Invocation.setter(
-          #notificationsPlugin,
-          _notificationsPlugin,
+        Invocation.method(
+          #setPlugin,
+          [notificationsPlugin],
         ),
         returnValueForMissingStub: null,
       );
 
   @override
-  _i5.Future<void> initNotification() => (super.noSuchMethod(
+  _i4.Future<void> initNotification(
+          {dynamic settings = const _i6.InitializationSettings(
+              android:
+                  _i6.AndroidInitializationSettings(r'launch_background'))}) =>
+      (super.noSuchMethod(
         Invocation.method(
           #initNotification,
           [],
+          {#settings: settings},
         ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
-  _i5.Future<void> requestPermission() => (super.noSuchMethod(
+  _i4.Future<void> requestPermission() => (super.noSuchMethod(
         Invocation.method(
           #requestPermission,
           [],
         ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
-  _i5.Future<void> scheduleReminder(
+  _i4.Future<void> scheduleReminder(
     dynamic id,
     dynamic hour,
     dynamic minute,
@@ -315,27 +294,27 @@ class MockNotificationUtilities extends _i1.Mock
             minute,
           ],
         ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
-  _i5.Future<void> cancelNotification(int? id) => (super.noSuchMethod(
+  _i4.Future<void> cancelNotification(int? id) => (super.noSuchMethod(
         Invocation.method(
           #cancelNotification,
           [id],
         ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
-  _i5.Future<_i3.Location> getTimeZone() => (super.noSuchMethod(
+  _i4.Future<_i2.Location> getTimeZone() => (super.noSuchMethod(
         Invocation.method(
           #getTimeZone,
           [],
         ),
-        returnValue: _i5.Future<_i3.Location>.value(_FakeLocation_1(
+        returnValue: _i4.Future<_i2.Location>.value(_FakeLocation_0(
           this,
           Invocation.method(
             #getTimeZone,
@@ -343,12 +322,12 @@ class MockNotificationUtilities extends _i1.Mock
           ),
         )),
         returnValueForMissingStub:
-            _i5.Future<_i3.Location>.value(_FakeLocation_1(
+            _i4.Future<_i2.Location>.value(_FakeLocation_0(
           this,
           Invocation.method(
             #getTimeZone,
             [],
           ),
         )),
-      ) as _i5.Future<_i3.Location>);
+      ) as _i4.Future<_i2.Location>);
 }
