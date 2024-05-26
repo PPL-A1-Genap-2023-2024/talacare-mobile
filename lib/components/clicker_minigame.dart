@@ -1,0 +1,128 @@
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flame/camera.dart';
+import 'package:flame/components.dart';
+import 'package:flame/events.dart';
+import 'package:flame/layout.dart';
+import 'package:talacare/components/event.dart';
+import 'package:talacare/helpers/text_styles.dart';
+import 'package:talacare/components/progress_bar.dart';
+
+import 'package:talacare/components/minigame.dart';
+
+class ClickerMinigame extends Minigame {
+  late final Viewport screen;
+
+  // Sprite
+  String variant;
+  late AlignComponent tapableSprite;
+  late SpriteAnimationComponent instruction;
+  late ActivityEvent activity;
+
+  // Timer
+  bool timerStarted = false;
+  int timeLimit = 5;
+  late Timer countDown;
+
+  // Progress
+  bool firstTap = false;
+  late ProgressBar progressBar;
+  int progress = 0;
+  final int progressIncrement = 1;
+
+  ClickerMinigame({this.variant = 'drawing', required super.point});
+
+  @override
+  FutureOr<void> onLoad() {
+    screen = gameRef.camera.viewport;
+
+    progressBar = makeActivityProgressBar();
+    add(progressBar);
+
+    activity = ActivityEvent(variant: variant);
+    activity.onTapCallback = () {
+      updateProgress();
+    };
+    tapableSprite = AlignComponent(
+        child: activity,
+        alignment: Anchor.center);
+    screen.add(tapableSprite);
+
+    // Instruction Disappear After First Tap
+    instruction = makeInstructionAnimation();
+    screen.add(instruction);
+
+    timerStarted = true;
+    countDown = Timer(1, repeat: true, onTick: () {
+      if (timeLimit > 0) {
+        timeLimit--;
+      }
+    });
+
+    countDown.start();
+
+    return super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+    updateTimer(dt);
+  }
+
+  void updateTimer(double dt) {
+    if (timerStarted) {
+      countDown.update(dt);
+      if (timeLimit <= 0) {
+        loseGame();
+        if (!firstTap){
+          screen.remove(instruction);
+        }
+        screen.remove(tapableSprite);
+      }
+    }
+  }
+
+  void updateProgress(){
+    if(!firstTap){
+      screen.remove(instruction);
+      firstTap = true;
+    }
+    progress += progressIncrement;
+    progressBar.updateProgress(progress / 10.0);
+
+    if (progress > 10){
+      finishGame();
+      screen.remove(tapableSprite);
+    }
+  }
+
+  SpriteAnimationComponent makeInstructionAnimation() {
+    var fileName = 'Activity_Events/tap_instruction.png';
+    var data = SpriteAnimationData.sequenced(
+        textureSize: Vector2.all(320),
+        amount: 2,
+        stepTime: 0.3
+    );
+    SpriteAnimation animation = SpriteAnimation.fromFrameData(game.images.fromCache(fileName), data);
+
+    return SpriteAnimationComponent(
+        animation: animation,
+        scale: Vector2.all(0.4),
+        position: Vector2(screen.size.x / 2, screen.size.y / 2)
+    );
+  }
+
+  ProgressBar makeActivityProgressBar(){
+    ProgressBar progressBar = ProgressBar(
+      progress: 0.0,
+      width: screen.size.x * 0.8,
+      height: 30,
+    );
+    progressBar.position = Vector2(
+        (screen.size.x - progressBar.width) / 2,
+        (screen.size.y - progressBar.height) / 10
+    );
+    return progressBar;
+  }
+}
