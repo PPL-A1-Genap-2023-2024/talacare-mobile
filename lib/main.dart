@@ -13,7 +13,7 @@ import 'package:talacare/widgets/overlays/pause_button.dart';
 import 'package:talacare/widgets/overlays/pause_menu.dart';
 import 'package:talacare/screens/homepage.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'authentication/firebase_options.dart';
+import 'package:talacare/firebase_options.dart';
 import 'package:talacare/helpers/audio_manager.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,9 +28,9 @@ void main() async {
 
   runApp(MyApp());
 
-  NotificationUtilities.initNotification();
+  await NotificationUtilities.initNotification();
   tz.initializeTimeZones();
-  NotificationUtilities.requestPermission();
+  await NotificationUtilities.requestPermission();
   AudioManager.getInstance().playBackgroundMusic();
 }
 

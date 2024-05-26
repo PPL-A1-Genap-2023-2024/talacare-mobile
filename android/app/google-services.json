@@ -14,6 +14,94 @@
       },
       "oauth_client": [
         {
+          "client_id": "629337717277-033mfloeaftlar2fs742l2lknlrb4l3a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ac.ui.talacare.a1",
+            "certificate_hash": "bafc928fa9465b7212815d77dbe5b299debd0f6e"
+          }
+        },
+        {
+          "client_id": "629337717277-4jpa3mfaiic65816ht3ab82sr3r0vop4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ac.ui.talacare.a1",
+            "certificate_hash": "bcf2e605183be24b220fc8c6c142c436cea3f1ca"
+          }
+        },
+        {
+          "client_id": "629337717277-5dq0qd7n76l79esrv9cfbnbuf0vnng67.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ac.ui.talacare.a1",
+            "certificate_hash": "8a9bbd51a1e0b904908f73915e15bf7b0c45104d"
+          }
+        },
+        {
+          "client_id": "629337717277-6sibhonk9ni13j65q36qn4c30kr791tf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ac.ui.talacare.a1",
+            "certificate_hash": "619ecb2f2cad67a300174f1d8bf01d6747cb9e79"
+          }
+        },
+        {
+          "client_id": "629337717277-7tttcj8f93k2akf9g7h9i59ufd39ft4f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ac.ui.talacare.a1",
+            "certificate_hash": "63c40959016853140ad42fec41acb25ec3670c51"
+          }
+        },
+        {
+          "client_id": "629337717277-9krdn36bfcrjh6fuk7t9uri6tuhn9k3p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ac.ui.talacare.a1",
+            "certificate_hash": "b16a690505dbe0145ce9894b765f53c6255e7cfe"
+          }
+        },
+        {
+          "client_id": "629337717277-cc5citukbqgrkithnu2qspafipg8mv03.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ac.ui.talacare.a1",
+            "certificate_hash": "1a9619d82bd8c02b186caa11969438416a6feb1f"
+          }
+        },
+        {
+          "client_id": "629337717277-i0qcvcr4dn24p0o95uen9bgc3mm59due.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ac.ui.talacare.a1",
+            "certificate_hash": "923b33d20e9ced5c831259d9d5a65f9536a022ce"
+          }
+        },
+        {
+          "client_id": "629337717277-m5pm91onnobpjpb6tfck70kcaiu6sf7i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ac.ui.talacare.a1",
+            "certificate_hash": "ebf06783f585039a972640d3bf693819c2777cc6"
+          }
+        },
+        {
+          "client_id": "629337717277-os9a68afvurntk0m88aq0m543i0s8our.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ac.ui.talacare.a1",
+            "certificate_hash": "231e7fa0b1df6aefcd7a0cf2ab35eec89246e004"
+          }
+        },
+        {
+          "client_id": "629337717277-pcic7uu928j9qqjfn2riijk7lvicjnru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ac.ui.talacare.a1",
+            "certificate_hash": "7dbe56d9ca13f5ca4d85e7e9f0a4ca7ed8927c84"
+          }
+        },
+        {
           "client_id": "629337717277-d4uvcv956a60t6okc9c4csbvj0kjvfvl.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +117,13 @@
             {
               "client_id": "629337717277-d4uvcv956a60t6okc9c4csbvj0kjvfvl.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "629337717277-k0uct9i97bbbgklvj223a77pvjq8poc1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.talacare.RunnerTests"
+              }
             }
           ]
         }
