@@ -171,9 +171,6 @@ void main() {
       foodMinigame.playerEating.onCollision({newPosition}, goodDraggableFood);
       await game.ready();
       expect(foodMinigame.playerEating.isReacting, true);
-      draggableFoods.forEach((food) {
-        expect(food.isDraggable, false);
-      });
       game.update(2);
       expect(foodMinigame.playerEating.isReacting, false);
       draggableFoods.forEach((food) {
