@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/components/clicker_minigame.dart';
 import 'package:talacare/components/event.dart';
@@ -302,6 +303,7 @@ class TalaCare extends FlameGame
 
   void exitToMainMenu(BuildContext? context) {
     if (context != null) {
+      FlameAudio.bgm.stop();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
