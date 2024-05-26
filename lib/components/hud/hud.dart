@@ -6,7 +6,7 @@ import 'package:talacare/talacare.dart';
 import 'package:talacare/components/hud/health.dart';
 import 'package:just_audio/just_audio.dart';
 
-class Hud extends PositionComponent with HasGameReference<TalaCare> {
+class Hud extends PositionComponent with HasGameReference<TalaCare>, HasVisibility {
   Hud({
     super.priority = 5,
   });
