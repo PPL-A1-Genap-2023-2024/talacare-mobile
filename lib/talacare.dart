@@ -185,9 +185,7 @@ class TalaCare extends FlameGame
   }
 
   void checkingPlayedCharacter() {
-    if (player.character != playedCharacter) {
-      player = Player(character: playedCharacter);
-    }
+    player = Player(character: playedCharacter);
   }
 
   void changeDirection(Direction direction) {
