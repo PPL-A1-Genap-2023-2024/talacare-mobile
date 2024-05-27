@@ -12,7 +12,6 @@ import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/helpers/data_sender.dart';
-import 'package:talacare/screens/homepage.dart';
 import 'components/food_minigame.dart';
 import 'components/minigame.dart';
 import 'components/transition.dart';
@@ -293,14 +292,7 @@ class TalaCare extends FlameGame
   void exitToMainMenu(BuildContext? context) {
     if (context != null) {
       FlameAudio.bgm.stop();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomePage(
-            email: email,
-          ),
-        ),
-      );
+      Navigator.of(context).pop();
     }
   }
 
