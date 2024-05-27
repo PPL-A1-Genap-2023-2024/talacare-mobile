@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:talacare/components/draggable_food.dart';
 import 'package:talacare/talacare.dart';
@@ -10,9 +9,18 @@ class Plate extends SpriteComponent with HasGameRef<TalaCare> {
 
   @override
   FutureOr<void> onLoad() async {
-    sprite = Sprite(game.images.fromCache('Food/dish_big.png'));
+    sprite = Sprite(game.images.fromCache('Food/table.png'));
     anchor = Anchor.center;
     indicesDisplayed["bad"] = indicesDisplayed["good"] = List.generate(8, (index) => index + 1);
+    Sprite plateSprite = Sprite(game.images.fromCache('Food/dish.png'));
+    for (int i = 0; i<2; i++) {
+      add(SpriteComponent(
+          sprite:plateSprite,
+          scale: Vector2.all(2),
+          position: Vector2(size.x * (i+1)/3, size.y / 2),
+          anchor: Anchor.center
+      ));
+    }
     nextWave();
     enableDragging();
     return super.onLoad();

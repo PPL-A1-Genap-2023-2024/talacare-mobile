@@ -6,9 +6,9 @@ import 'package:flame/layout.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/hospital_door.dart';
+import 'package:talacare/components/mother.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
-import 'package:talacare/components/transaparent_layer.dart';
 import 'package:talacare/talacare.dart';
 
 import '../components/dpad.dart';
@@ -26,7 +26,6 @@ class HouseAdventure extends World with HasGameRef<TalaCare> {
   late final DPad dPad;
   late AlignComponent dpadAnchor;
   late Hud hud;
-  late TransparentLayer transparentLayer;
 
   HouseAdventure({required this.levelName, required this.player});
 
@@ -60,6 +59,10 @@ class HouseAdventure extends World with HasGameRef<TalaCare> {
                 player.position = Vector2(spawnPoint.x, spawnPoint.y);
             add(player);
             break;
+          case 'Mother':
+            final mother = Mother();
+            mother.position = Vector2(spawnPoint.x, spawnPoint.y);
+            add(mother);
           case 'Activity':
             final activity = ActivityPoint(
                 position: Vector2(spawnPoint.x, spawnPoint.y),
@@ -93,11 +96,6 @@ class HouseAdventure extends World with HasGameRef<TalaCare> {
       }
     }
     player.collisionBlocks = collisionBlocks;
-
-    transparentLayer = TransparentLayer()
-      ..size = gameRef.size
-      ..position = Vector2.zero();
-
     return super.onLoad();
   }
 
