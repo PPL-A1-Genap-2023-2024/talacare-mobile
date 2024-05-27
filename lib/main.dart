@@ -58,7 +58,7 @@ class AuthenticationWrapper extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return  _buildLoadingWidget();
+          return _buildLoadingWidget();
         } else if (snapshot.hasData && snapshot.data != null) {
           String email = snapshot.data!.email!;
           Future<bool> isAdmin = checkRole(http.Client(), email);
@@ -86,15 +86,15 @@ class AuthenticationWrapper extends StatelessWidget {
 
 Widget _buildLoadingWidget() {
   return SizedBox.expand(
-      child: Container(
-        color: AppColors.greenPrimary,
-        child: const Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(AppColors.plum),
-          ),
+    child: Container(
+      color: AppColors.greenPrimary,
+      child: const Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(AppColors.plum),
         ),
       ),
-    );
+    ),
+  );
 }
 
 class TalaCareGame extends StatelessWidget {
@@ -116,13 +116,7 @@ class TalaCareGame extends StatelessWidget {
         context: context);
 
     return GameWidget(
-      game: kDebugMode
-          ? TalaCare(
-              playedCharacter: playedCharacter,
-              email: email,
-              remainingTime: remainingTime,
-              context: context)
-          : game,
+      game: game,
       initialActiveOverlays: const [PauseButton.id],
       overlayBuilderMap: {
         PauseButton.id: (BuildContext context, TalaCare gameRef) => PauseButton(
