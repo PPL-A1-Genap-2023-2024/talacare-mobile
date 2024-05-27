@@ -3,13 +3,16 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/layout.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:talacare/components/clicker_minigame.dart';
 import 'package:talacare/components/transaparent_layer.dart';
+import 'package:talacare/helpers/time_limit.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/helpers/data_sender.dart';
+import 'package:talacare/screens/homepage.dart';
 import 'components/food_minigame.dart';
 import 'components/minigame.dart';
 import 'components/transition.dart';
@@ -35,7 +38,6 @@ class TalaCare extends FlameGame
   late GameDialog confirmation;
   late int score;
   late DateTime startTimestamp;
-  late int totalTime;
   late bool haveSentRecap;
   @override
   late World world;
@@ -45,19 +47,25 @@ class TalaCare extends FlameGame
   bool eventIsActive = false;
   bool confirmationIsActive = false;
   late TransparentLayer transparentLayer;
+  int totalTime = 0;
 
   final bool isWidgetTesting;
   final String email;
+  int remainingTime;
+  BuildContext? context;
   TalaCare(
       {this.isWidgetTesting = false,
-        this.email = '',
-        this.playedCharacter = 'tala'});
+      this.email = '',
+      this.playedCharacter = 'tala',
+      this.remainingTime = 1,
+      this.context});
 
   @override
   void update(double dt) {
     if (status == GameStatus.transition) {
       transitionCountdown.update(dt);
     }
+    checkRemainingTime();
     super.update(dt);
   }
 
@@ -85,8 +93,9 @@ class TalaCare extends FlameGame
 
   @override
   void pauseEngine() {
-    super.pauseEngine();
     totalTime += DateTime.now().difference(startTimestamp).inMilliseconds;
+    remainingTime -= (totalTime / 1000).round();
+    super.pauseEngine();
   }
 
   @override
@@ -102,6 +111,14 @@ class TalaCare extends FlameGame
       pauseEngine();
     } else if (state == AppLifecycleState.resumed) {
       resumeEngine();
+    }
+  }
+
+  void checkRemainingTime() {
+    int timeDiff = DateTime.now().difference(startTimestamp).inSeconds;
+    if (timeDiff >= remainingTime && !confirmationIsActive) {
+      sendRecap();
+      showConfirmation(DialogReason.timeLimitExceeded);
     }
   }
 
@@ -293,6 +310,21 @@ class TalaCare extends FlameGame
   void sendRecap() {
     totalTime += DateTime.now().difference(startTimestamp).inMilliseconds;
     sendData(email: email, totalTime: totalTime);
+    saveUsageData(newDurationInMillisecond: totalTime);
+  }
+
+  void exitToMainMenu(BuildContext? context) {
+    if (context != null) {
+      FlameAudio.bgm.stop();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(
+            email: email,
+          ),
+        ),
+      );
+    }
   }
 
   void playAgain() {
@@ -300,6 +332,4 @@ class TalaCare extends FlameGame
     removeAll([world, camera]);
     onLoad();
   }
-
-  
 }

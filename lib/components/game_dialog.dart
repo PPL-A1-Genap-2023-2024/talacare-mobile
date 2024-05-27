@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:flame/layout.dart';
+import 'package:flutter/material.dart';
 import 'package:talacare/helpers/text_styles.dart';
 import 'package:talacare/talacare.dart';
 
@@ -22,7 +23,6 @@ class GameDialog extends SpriteComponent with HasGameRef<TalaCare> {
     String iconVariant = "";
     final buttons = <AlignComponent>[];
     switch (reason) {
-
       case DialogReason.lowBlood:
         text = 'Kamu perlu transfusi darah!';
         iconVariant = 'hospital';
@@ -72,25 +72,39 @@ class GameDialog extends SpriteComponent with HasGameRef<TalaCare> {
         yesButton.onPressed = gameRef.loseHospital;
         yesButton.anchor = Anchor.centerRight;
         buttons.add(AlignComponent(child: yesButton, alignment: Anchor.center));
+
+      case DialogReason.timeLimitExceeded:
+        text =
+            '\n\nWaktu bermain kamu hari ini sudah habis.\n\nDatang lagi \nbesok, ya!';
+        yesButton = await _loadSpriteButton('home');
+        yesButton.onPressed = () {
+          gameRef.exitToMainMenu(gameRef.context);
+        };
+        yesButton.anchor = Anchor.center;
+        buttons.add(AlignComponent(child: yesButton, alignment: Anchor.center));
     }
 
-    final iconRow = RectangleComponent(
-      anchor: Anchor.center,
-      paint: Paint()..color = Color.fromARGB(0, 0, 0, 0),
-      size: Vector2.all(125)
-    );
-    final icon = SpriteComponent(
-      anchor: Anchor.bottomCenter,
-      position: Vector2(iconRow.size.x / 2, iconRow.size.y),
-      sprite: await game.loadSprite('Dialog/dialog_icon_$iconVariant.png')
-    );
-    iconRow.add(icon);
-    add(AlignComponent(child: iconRow, alignment: Anchor.topCenter));
+    if (iconVariant != "") {
+      final iconRow = RectangleComponent(
+          anchor: Anchor.center,
+          paint: Paint()..color = Color.fromARGB(0, 0, 0, 0),
+          size: Vector2.all(125));
+      final icon = SpriteComponent(
+          anchor: Anchor.bottomCenter,
+          position: Vector2(iconRow.size.x / 2, iconRow.size.y),
+          sprite: await game.loadSprite('Dialog/dialog_icon_$iconVariant.png'));
+      iconRow.add(icon);
+      add(AlignComponent(child: iconRow, alignment: Anchor.topCenter));
+    }
 
     final textBox = TextBoxComponent(text: text);
     textBox.align = Anchor.center;
     textBox.textRenderer = TextPaint(style: AppTextStyles.largeBold);
-    add(AlignComponent(child: textBox, alignment: Anchor.center));
+    if (iconVariant != "") {
+      add(AlignComponent(child: textBox, alignment: Anchor.center));
+    } else {
+      add(AlignComponent(child: textBox, alignment: Anchor.topCenter));
+    }
 
     final buttonRow = PositionComponent();
     buttonRow.size = Vector2(280, 150);

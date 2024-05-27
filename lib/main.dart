@@ -23,7 +23,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  
   await Flame.device.fullScreen();
   await Flame.device.setPortrait();
 
@@ -85,15 +84,28 @@ class AuthenticationWrapper extends StatelessWidget {
 class TalaCareGame extends StatelessWidget {
   final String playedCharacter;
   final String email;
-  TalaCareGame({required this.playedCharacter, this.email = ''});
+  final int remainingTime;
+  TalaCareGame({
+    required this.playedCharacter,
+    this.email = '',
+    this.remainingTime = 1, // assign default value to make tests not error
+  });
 
   @override
   Widget build(BuildContext context) {
-    final game = TalaCare(playedCharacter: playedCharacter, email: email);
+    final game = TalaCare(
+        playedCharacter: playedCharacter,
+        email: email,
+        remainingTime: remainingTime,
+        context: context);
 
     return GameWidget(
       game: kDebugMode
-          ? TalaCare(playedCharacter: playedCharacter, email: email)
+          ? TalaCare(
+              playedCharacter: playedCharacter,
+              email: email,
+              remainingTime: remainingTime,
+              context: context)
           : game,
       initialActiveOverlays: const [PauseButton.id],
       overlayBuilderMap: {

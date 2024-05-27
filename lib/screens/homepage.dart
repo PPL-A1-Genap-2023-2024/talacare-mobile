@@ -1,13 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talacare/components/button.dart';
 import 'package:talacare/helpers/playable_characters.dart';
+import 'package:talacare/helpers/time_limit.dart';
 import 'package:talacare/main.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:talacare/helpers/audio_manager.dart';
 import 'package:talacare/screens/reminder.dart';
+import 'package:talacare/helpers/text_styles.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'HomePage';
@@ -50,15 +53,54 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
 
-  Future<void> startGame({String email = ''}) async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) {
-        return TalaCareGame(playedCharacter: currentCharacter, email: email);
-      }),
-    );
-    FlameAudio.bgm.initialize();
-    FlameAudio.bgm.play('bgm_game.mp3', volume: 0.5);
+  Future<void> startGame({String email = '', SharedPreferences? prefs}) async {
+    prefs ??= await SharedPreferences.getInstance();
+    int remainingTime = await checkPlayerAppUsage(prefs: prefs);
+    if (remainingTime > 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) {
+          return TalaCareGame(
+            playedCharacter: currentCharacter,
+            email: email,
+            remainingTime: remainingTime,
+          );
+        }),
+      );
+      AudioManager.getInstance().stopBackgroundMusic();
+      FlameAudio.bgm.initialize();
+      FlameAudio.bgm.play('bgm_game.mp3', volume: 0.5);
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Peringatan",
+              textAlign: TextAlign.center,
+              style: AppTextStyles.h2,
+            ),
+            actions: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                      "Waktu bermain kamu hari ini sudah habis. Datang lagi besok, ya!",
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.normal),
+                  IconButton(
+                    icon: Image.asset("assets/images/Button/BackButton.png"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   /* App Life Cycle Listener */
@@ -116,15 +158,14 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                  icon: Image.asset(
-                    "assets/images/Button/tombol_prev.png",
-                    width: 50,
-                  ),
-                  onPressed: () {
+                    icon: Image.asset(
+                      "assets/images/Button/tombol_prev.png",
+                      width: 50,
+                    ),
+                    onPressed: () {
                       AudioManager.getInstance().playSoundEffect();
                       _controller.previousPage();
-                    }
-                ),
+                    }),
                 Flexible(
                   child: CarouselSlider(
                       items: characterSelection,
@@ -147,9 +188,9 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     width: 50,
                   ),
                   onPressed: () {
-                      AudioManager.getInstance().playSoundEffect();
-                      _controller.nextPage();
-                    },
+                    AudioManager.getInstance().playSoundEffect();
+                    _controller.nextPage();
+                  },
                 ),
               ],
             ),
@@ -181,21 +222,18 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 ),
               ),
             ],
-            
             SizedBox(
               height: screenHeight * 0.05,
             ),
 
             /* Tombol Mulai */
             CustomButton(
-              key: widget._playButtonKey,
-              text: "Mulai",
-              size: ButtonSize.medium,
-              onPressed: () async {
-                await startGame(email: email);
-                AudioManager.getInstance().stopBackgroundMusic();
-              }
-            ),
+                key: widget._playButtonKey,
+                text: "Mulai",
+                size: ButtonSize.medium,
+                onPressed: () async {
+                  await startGame(email: email);
+                }),
 
             /* Tombol Pengaturan Reminder */
             IconButton(
