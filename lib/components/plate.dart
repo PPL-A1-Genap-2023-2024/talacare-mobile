@@ -30,10 +30,12 @@ class Plate extends SpriteComponent with HasGameRef<TalaCare> {
     children.whereType<DraggableFood>().forEach((child) {
       remove(child);
     });
+    List<int> positions = [1,2];
+    positions.shuffle();
     int i = 0;
     indicesDisplayed.forEach((key, value) {
       value.shuffle();
-      DraggableFood food = DraggableFood(type: key, index: value[0], position: Vector2(size.x * (i+1)/3, size.y / 2));
+      DraggableFood food = DraggableFood(type: key, index: value[0], position: Vector2(size.x * positions[i]/3, size.y / 2));
       add(food);
 
       i++;

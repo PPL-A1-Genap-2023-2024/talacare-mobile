@@ -8,11 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:talacare/components/clicker_minigame.dart';
 import 'package:talacare/components/transaparent_layer.dart';
 import 'package:talacare/helpers/time_limit.dart';
+import 'package:talacare/helpers/cooldown_timer_manager.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/helpers/data_sender.dart';
-import 'package:talacare/screens/homepage.dart';
 import 'components/food_minigame.dart';
 import 'components/minigame.dart';
 import 'components/transition.dart';
@@ -45,6 +45,8 @@ class TalaCare extends FlameGame
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
+  late CooldownTimerManager cooldownTimerManager;
+  final double cooldownDuration = 10;
   late TransparentLayer transparentLayer;
   int totalTime = 0;
 
@@ -65,6 +67,8 @@ class TalaCare extends FlameGame
       transitionCountdown.update(dt);
     }
     checkRemainingTime();
+    cooldownTimerManager.update(dt);
+
     super.update(dt);
   }
 
@@ -73,6 +77,8 @@ class TalaCare extends FlameGame
     startTimestamp = DateTime.now();
     totalTime = 0;
     haveSentRecap = false;
+    cooldownTimerManager = CooldownTimerManager(cooldownDuration: cooldownDuration);
+
     playerHealth = 4;
     score = 0;
     status = GameStatus.playing;
@@ -225,8 +231,9 @@ class TalaCare extends FlameGame
     if (isVictory) {
       score += 1;
     } else {
-      // world.add(point);
-      // implement cooldown here
+      cooldownTimerManager.startCooldown(point, () {
+        world.add(point);
+      });
     }
   }
 
@@ -293,14 +300,7 @@ class TalaCare extends FlameGame
   void exitToMainMenu(BuildContext? context) {
     if (context != null) {
       if(!isWidgetTesting)FlameAudio.bgm.stop();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomePage(
-            email: email,
-          ),
-        ),
-      );
+      Navigator.of(context).pop();
     }
   }
 

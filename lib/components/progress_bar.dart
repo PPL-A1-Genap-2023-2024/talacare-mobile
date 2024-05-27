@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 class ProgressBar extends PositionComponent {
   double progress;
+  @override
   final double width;
+  @override
   final double height;
   final Paint backgroundPaint;
   final Paint foregroundPaint;

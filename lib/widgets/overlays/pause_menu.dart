@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:talacare/helpers/color_palette.dart';
 import 'package:talacare/helpers/text_styles.dart';
 import 'package:talacare/talacare.dart';
-import 'package:talacare/screens/homepage.dart';
 import 'package:talacare/widgets/overlays/pause_button.dart';
 
 class PauseMenu extends StatelessWidget {
@@ -61,10 +60,7 @@ class PauseMenu extends StatelessWidget {
                                 gameRef.haveSentRecap = true;
                                 gameRef.startTimestamp = DateTime.now();
                                 gameRef.sendRecap();
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return HomePage(email: gameRef.email);
-                                }));
+                                Navigator.of(context).pop();
                               },
                             ),
                             const DefaultTextStyle(

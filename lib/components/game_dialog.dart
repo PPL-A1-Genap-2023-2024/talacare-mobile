@@ -53,6 +53,7 @@ class GameDialog extends SpriteComponent with HasGameRef<TalaCare> {
         buttons.add(
             AlignComponent(child: yesButton, alignment: Anchor.centerRight));
         noButton = await _loadSpriteButton('home');
+        noButton.onPressed = backToMenu;
         noButton.anchor = Anchor.centerRight;
         buttons
             .add(AlignComponent(child: noButton, alignment: Anchor.centerLeft));
@@ -122,5 +123,9 @@ class GameDialog extends SpriteComponent with HasGameRef<TalaCare> {
 
   void yesToHospital() {
     game.goToHospital(reason);
+  }
+
+  void backToMenu() {
+    game.exitToMainMenu(game.context);
   }
 }

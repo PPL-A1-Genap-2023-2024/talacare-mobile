@@ -11,6 +11,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:talacare/helpers/audio_manager.dart';
 import 'package:talacare/screens/reminder.dart';
 import 'package:talacare/helpers/text_styles.dart';
+import 'package:talacare/helpers/color_palette.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'HomePage';
@@ -144,7 +145,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
               'Yuk pilih karaktermu dulu',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Color(0xff745573),
+                  color: AppColors.plum,
                   fontSize: 24,
                   fontFamily: 'Fredoka One',
                   fontWeight: FontWeight.w400),
@@ -199,27 +200,16 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ),
             if (currentCharacter == 'tala') ...[
               Container(
-                child: const Text(
-                  "Tala",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Color(0xff745573),
-                      fontSize: 16,
-                      fontFamily: 'Fredoka One',
-                      fontWeight: FontWeight.w400),
-                ),
+                child: Text("Tala",
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.h1.copyWith(color: AppColors.butter)),
               ),
             ] else ...[
               Container(
-                child: const Text(
-                  "Talia",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Color(0xff745573),
-                      fontSize: 16,
-                      fontFamily: 'Fredoka One',
-                      fontWeight: FontWeight.w400),
-                ),
+                child: Text("Talia",
+                    textAlign: TextAlign.center,
+                    style:
+                        AppTextStyles.h1.copyWith(color: AppColors.baseColor)),
               ),
             ],
             SizedBox(
@@ -234,12 +224,14 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 onPressed: () async {
                   await startGame(email: email);
                 }),
+            SizedBox(
+              height: screenHeight * 0.01,
+            ),
 
             /* Tombol Pengaturan Reminder */
-            IconButton(
-                icon: Image.asset(
-                  "assets/images/Button/tombol_pengaturan.png",
-                ),
+            CustomButton(
+                text: "Reminder",
+                size: ButtonSize.medium,
                 onPressed: () async {
                   AudioManager.getInstance().playSoundEffect();
                   Navigator.push(
