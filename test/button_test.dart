@@ -87,11 +87,11 @@ void main() {
         ),
       );
 
-      final ButtonFinder = find.byKey(Key("mediumButton"));
+      final buttonFinder = find.byKey(Key("mediumButton"));
 
       await tester.runAsync(() async {
         try {
-          await tester.tap(ButtonFinder);
+          await tester.tap(buttonFinder);
         } catch (error) {
           print('Error occurred: $error');
         }

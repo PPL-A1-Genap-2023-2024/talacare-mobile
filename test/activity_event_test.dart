@@ -3,7 +3,6 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame_test/flame_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:talacare/components/activity_event.dart';
 import 'package:talacare/components/clicker_minigame.dart';
 import 'package:talacare/components/hud/hud.dart';
 import 'package:talacare/components/hud/progress.dart';
@@ -134,4 +133,115 @@ TestWidgetsFlutterBinding.ensureInitialized();
       }
   );
 
+ group('Activity Point Cooldown Tests', () {
+    testWithGame<TalaCare>(
+      'Cooldown timer is set when minigame is lost', 
+      TalaCare.new,
+      (game) async {
+        await game.ready();
+
+        // Simulate minigame started
+        final level = game.children.query<HouseAdventure>().first;
+        final point = level.children.query<ActivityPoint>().first;
+
+        game.startMinigame(point);
+        await game.ready();
+
+        expect(game.world.children.contains(point), isFalse);
+        expect(game.minigame, isNotNull);
+        await game.ready();
+  
+        // Simulate minigame lost
+        game.minigame.loseGame();
+        await game.ready();
+
+        expect(game.cooldownTimerManager.coolDownTimers.containsKey(point), isTrue);
+      }
+    );
+
+    testWithGame<TalaCare>(
+      'Cooldown timer is not set when minigame is won', 
+      TalaCare.new,
+      (game) async {
+        await game.ready();
+
+        // Simulate minigame started
+        final level = game.children.query<HouseAdventure>().first;
+        final point = level.children.query<ActivityPoint>().first;
+
+        game.startMinigame(point);
+        await game.ready();
+
+        expect(game.world.children.contains(point), isFalse);
+        expect(game.minigame, isNotNull);
+        await game.ready();
+  
+        // Simulate minigame lost
+        game.minigame.finishGame();
+        await game.ready();
+
+        expect(game.cooldownTimerManager.coolDownTimers.containsKey(point), isFalse);
+      }
+    );
+    
+    testWithGame<TalaCare>(
+      'ActivityPoint is re-added after cooldown', 
+      TalaCare.new,
+      (game) async {
+        await game.ready();
+
+        // Simulate minigame started
+        final level = game.children.query<HouseAdventure>().first;
+        final point = level.children.query<ActivityPoint>().first;
+
+        game.startMinigame(point);
+        await game.ready();
+
+        expect(game.world.children.contains(point), isFalse);
+        expect(game.minigame, isNotNull);
+        await game.ready();
+  
+        // Simulate minigame lost
+        game.minigame.loseGame();
+        await game.ready();
+
+        game.update(game.cooldownDuration + 1);
+        
+        expect(game.world.children.contains(point), isTrue);
+        expect(game.cooldownTimerManager.coolDownTimers.containsKey(point), isFalse);
+      }
+    );
+
+    testWithGame<TalaCare>(
+      'Update method correctly handles timer updates', 
+      TalaCare.new,
+      (game) async {
+        await game.ready();
+
+        // Simulate minigame started
+        final level = game.children.query<HouseAdventure>().first;
+        final point = level.children.query<ActivityPoint>().first;
+        final cooldownProgress = game.cooldownDuration/2;
+        final timers = game.cooldownTimerManager.coolDownTimers;
+
+        game.startMinigame(point);
+        await game.ready();
+
+        // Simulate minigame lost
+        game.minigame.loseGame();
+        await game.ready();
+
+        game.update(cooldownProgress);
+
+        expect(game.world.children.contains(point), isFalse);
+        expect(timers.containsKey(point), isTrue);
+        expect(timers[point]?.progress, cooldownProgress/game.cooldownDuration);
+  
+        game.update(game.cooldownDuration - cooldownProgress);
+        
+        expect(game.world.children.contains(point), isTrue);
+        expect(timers.containsKey(point), isFalse);
+      }
+    );
+  });
 }

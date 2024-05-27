@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:talacare/components/clicker_minigame.dart';
 import 'package:talacare/components/transaparent_layer.dart';
 import 'package:talacare/helpers/time_limit.dart';
+import 'package:talacare/helpers/cooldown_timer_manager.dart';
 import 'package:talacare/screens/game_2.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/screens/game_1.dart';
@@ -45,6 +46,8 @@ class TalaCare extends FlameGame
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
+  late CooldownTimerManager cooldownTimerManager;
+  final double cooldownDuration = 10;
   late TransparentLayer transparentLayer;
   int totalTime = 0;
 
@@ -65,6 +68,8 @@ class TalaCare extends FlameGame
       transitionCountdown.update(dt);
     }
     checkRemainingTime();
+    cooldownTimerManager.update(dt);
+
     super.update(dt);
   }
 
@@ -73,6 +78,8 @@ class TalaCare extends FlameGame
     startTimestamp = DateTime.now();
     totalTime = 0;
     haveSentRecap = false;
+    cooldownTimerManager = CooldownTimerManager(cooldownDuration: cooldownDuration);
+
     if (!isWidgetTesting) {
       playerHealth = 4;
       score = 0;
@@ -225,8 +232,9 @@ class TalaCare extends FlameGame
     if (isVictory) {
       score += 1;
     } else {
-      // world.add(point);
-      // implement cooldown here
+      cooldownTimerManager.startCooldown(point, () {
+        world.add(point);
+      });
     }
   }
 
