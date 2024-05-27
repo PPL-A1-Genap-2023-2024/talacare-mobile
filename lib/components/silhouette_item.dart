@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:talacare/components/draggable_item.dart';
 import 'package:talacare/helpers/audio_manager.dart';
 import 'package:talacare/screens/game_2.dart';
@@ -40,8 +41,10 @@ class SilhouetteItem extends SpriteComponent
     if (other is DraggableItem && other.isDragged == false) {
       if (item.index == other.item.index) {
         world.instruction.text = "Sudah Cocok. Lanjutkan!";
-        // FlameAudio.play('puzzle_drop.mp3');
-        // AudioManager.getInstance().playSoundEffect(sfx);
+        if(!game.isWidgetTesting) {
+          FlameAudio.play('puzzle_drop.mp3');
+          AudioManager.getInstance().playSoundEffect(sfx);
+        }
 
         tint(Color.fromARGB(0, 255, 255, 255));
         remove(hitbox);

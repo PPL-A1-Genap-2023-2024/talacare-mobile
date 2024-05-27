@@ -134,6 +134,7 @@ void main() {
     'Time Limit Reached In Game Test',
     TalaCare.new,
     (game) async {
+      game.isWidgetTesting = true;
       await game.ready();
       game.remainingTime = 0;
       game.checkRemainingTime();

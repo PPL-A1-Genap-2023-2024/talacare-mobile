@@ -16,6 +16,7 @@ void main() {
         'Go back to game 1 when game 2 finish with full health',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
           final game_1 = game.children.query<HouseAdventure>().first;
           final player = game_1.player;
@@ -50,6 +51,7 @@ void main() {
         'Go back to game 1 when game 2 finish with progress maintained',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
           await game.ready();
           final game_1 = game.children.query<HouseAdventure>().first;
@@ -84,7 +86,8 @@ void main() {
       'HospitalPuzzle Timer Test Timer starts with 10 seconds and  decreases by 1 second each update, and back to 10 seconds if success drag each object',
       TalaCare.new,
       (game) async {
-         final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
+          game.isWidgetTesting = true;
+          final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
           await game.ready();
           final game_1 = game.children.query<HouseAdventure>().first;
           final player = game_1.player;
@@ -118,6 +121,7 @@ void main() {
         'Go back to game 1 when game 2 lose, health and speed adjusted and progress maintained',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
           await game.ready();
           final game_1 = game.children.query<HouseAdventure>().first;

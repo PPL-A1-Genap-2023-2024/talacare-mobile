@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:talacare/components/hud/progress.dart';
 import 'package:talacare/helpers/audio_manager.dart';
 import 'package:talacare/helpers/dialog_reason.dart';
@@ -83,8 +84,10 @@ class Hud extends PositionComponent with HasGameReference<TalaCare>, HasVisibili
       healthDurationChecker = healthDuration;
 
       if (game.playerHealth ==  1) {
-        // FlameAudio.play('health_notification.mp3');
-        // AudioManager.getInstance().playSoundEffect(sfx);
+        if(!game.isWidgetTesting) {
+          FlameAudio.play('health_notification.mp3');
+          AudioManager.getInstance().playSoundEffect(sfx);
+        }
         game.showConfirmation(DialogReason.lowBlood);
       }
     }

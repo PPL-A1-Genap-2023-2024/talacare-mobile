@@ -10,7 +10,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final ButtonSize size;
   final String? assetImagePath;
-  final isTesting;
+  final bool isTesting;
 
   const CustomButton({
     Key? key,

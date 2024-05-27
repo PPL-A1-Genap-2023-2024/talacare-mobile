@@ -20,6 +20,7 @@ void main() {
       'Map loads when game loads', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         expect(game.children.query<HouseAdventure>(), isNotEmpty);
       }
@@ -28,6 +29,7 @@ void main() {
       'Default level name is level 1', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         expect(game.children.query<HouseAdventure>().first.levelName, "Level-01");
       }
@@ -36,6 +38,7 @@ void main() {
       'Collision blocks on map is not empty', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         expect(game.children.query<HouseAdventure>().first.collisionBlocks, isNotEmpty);
       }
@@ -44,6 +47,7 @@ void main() {
       'Activity Spawn Points size is taken',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final numberOfActivityPoints = level.selectedActivity.length;
@@ -54,6 +58,7 @@ void main() {
       'Mother appears in the map',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         expect(level.children.query<Mother>().length, 1);
@@ -68,6 +73,7 @@ void main() {
       'Player stops at collision from the left',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -92,6 +98,7 @@ void main() {
       'Player stops at collision from the right',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -115,6 +122,7 @@ void main() {
       'Player stops at collision from the top',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -138,6 +146,7 @@ void main() {
       'Player stops at collision from the bottom',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -163,6 +172,7 @@ void main() {
       'Player collides with left wall when not moving',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -182,6 +192,7 @@ void main() {
       'Player collides with right wall when not moving',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -201,6 +212,7 @@ void main() {
       'Player collides with top wall when not moving',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -220,6 +232,7 @@ void main() {
       'Player collides with bottom wall when not moving',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -239,6 +252,7 @@ void main() {
       'Player collides with inner wall when not moving',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -262,6 +276,7 @@ void main() {
         'Change Level when enter hospital and say yes',
         TalaCare.new,
         (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
           final viewport = game.camera.viewport;
           final level = game.children.query<HouseAdventure>().first;
@@ -286,6 +301,7 @@ void main() {
         'Dont change Level and teleport player when enter hospital and say no',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
           final viewport = game.camera.viewport;
           final level = game.children.query<HouseAdventure>().first;
@@ -311,6 +327,7 @@ void main() {
         'Change Level when health is low',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
           final viewport = game.camera.viewport;
           Hud target = game.camera.viewport.children.query<Hud>().first;
@@ -338,6 +355,7 @@ void main() {
         'Get Victory Message after Collect all activity point',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
           final viewport = game.camera.viewport;
           game.score = 8;
@@ -354,6 +372,7 @@ void main() {
         'Play Again after Victory',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
           final viewport = game.camera.viewport;
           Vector2 playerSpawn = Vector2.zero();
@@ -396,6 +415,7 @@ void main() {
       'Player turns pale when health is 50% or below',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         for (int i = 4; i > 0; i--) {
           game.playerHealth = i;

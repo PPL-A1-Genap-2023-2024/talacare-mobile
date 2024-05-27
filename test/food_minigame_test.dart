@@ -17,6 +17,7 @@ void main() {
   group('Start Food Minigame Tests', () {
     testWithGame<TalaCare>('Minigame starts upon collision', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final viewport = game.camera.viewport;
@@ -38,6 +39,7 @@ void main() {
 
     testWithGame<TalaCare>('Minigame finish when score is 4', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final viewport = game.camera.viewport;
@@ -67,6 +69,7 @@ void main() {
 
     testWithGame<TalaCare>('Minigame finish when timer runs out', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final viewport = game.camera.viewport;
@@ -97,6 +100,7 @@ void main() {
     testWithGame<TalaCare>(
         'Dragging food to certain position and not releasing it', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;
@@ -121,6 +125,7 @@ void main() {
 
     testWithGame<TalaCare>(
         'Dragging and releasing food not on child', TalaCare.new, (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;
@@ -149,6 +154,7 @@ void main() {
 
     testWithGame<TalaCare>(
         'Dragging and releasing food on the child', TalaCare.new, (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;
@@ -184,6 +190,7 @@ void main() {
     testWithGame<TalaCare>(
         'Dragging and releasing good food on the child', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;
@@ -216,6 +223,7 @@ void main() {
     testWithGame<TalaCare>(
         'Dragging and releasing good food on the child', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;

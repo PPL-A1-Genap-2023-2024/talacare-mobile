@@ -8,6 +8,7 @@ import 'package:talacare/components/dpad_arrow.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   testWithGame<TalaCare>('Camera follows player when moving up', TalaCare.new, (game) async {
+    game.isWidgetTesting = true;
     await game.ready();
     game.player.position = Vector2(0, 0);
     game.camera.viewfinder.position = Vector2(0, 0);
@@ -17,6 +18,7 @@ void main() {
     expect(game.player.position, equals(game.camera.viewfinder.position));
   });
   testWithGame<TalaCare>('Camera follows player when moving down', TalaCare.new, (game) async {
+    game.isWidgetTesting = true;
     await game.ready();
     game.player.position = Vector2(0, 0);
     game.camera.viewfinder.position = Vector2(0, 0);
@@ -26,6 +28,7 @@ void main() {
     expect(game.player.position, equals(game.camera.viewfinder.position));
   });
   testWithGame<TalaCare>('Camera follows player when moving left', TalaCare.new, (game) async {
+    game.isWidgetTesting = true;
     await game.ready();
     game.player.position = Vector2(0, 0);
     game.camera.viewfinder.position = Vector2(0, 0);
@@ -35,6 +38,7 @@ void main() {
     expect(game.player.position, equals(game.camera.viewfinder.position));
   });
   testWithGame<TalaCare>('Camera follows player when moving right', TalaCare.new, (game) async {
+    game.isWidgetTesting = true;
     await game.ready();
     game.player.position = Vector2(0, 0);
     game.camera.viewfinder.position = Vector2(0, 0);

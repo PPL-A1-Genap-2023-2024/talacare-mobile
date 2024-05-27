@@ -20,11 +20,11 @@ class PauseButton extends StatelessWidget {
         alignment: Alignment.topRight,
         child: IconButton(
           key: _pauseButtonKey,
-          iconSize: 40,
+          iconSize: 20,
           splashColor: Colors.white,
-          icon: const Icon(
-            Icons.pause,
-            color: Colors.white,
+          icon: Image.asset (
+            "assets/images/Button/tombol_pause.png",
+            scale: 2,
           ),
           onPressed: () {
             FlameAudio.bgm.pause();

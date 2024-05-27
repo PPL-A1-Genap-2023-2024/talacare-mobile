@@ -23,6 +23,7 @@ void main() {
           'Verify that ActivityEvent On Tap also run a function in ClickerMinigame',
           TalaCare.new,
               (game) async {
+            game.isWidgetTesting = true;
             final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
             await game.ready();
             final level = game.children.query<HouseAdventure>().first;
@@ -51,6 +52,7 @@ void main() {
           'Check that updateProgress() work as expected',
           TalaCare.new,
               (game) async {
+            game.isWidgetTesting = true;
             final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
             await game.ready();
             final level = game.children.query<HouseAdventure>().first;
@@ -85,6 +87,7 @@ void main() {
         'Timer is working on load',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
           await game.ready();
           final level = game.children.query<HouseAdventure>().first;
@@ -109,6 +112,7 @@ void main() {
         'Timer stop when timeLimit reached 0',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           final intersection = {Vector2(0.0,0.0), Vector2(0.0,0.0)};
           await game.ready();
           final level = game.children.query<HouseAdventure>().first;

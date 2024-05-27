@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:talacare/components/draggable_food.dart';
+import 'package:talacare/helpers/audio_manager.dart';
 import 'package:talacare/helpers/eat_state.dart';
 import 'package:talacare/talacare.dart';
 
@@ -18,7 +21,7 @@ class PlayerEating extends SpriteGroupComponent<EatState>
   bool isReacting = false;
   PlayerEating({required this.minigame, required super.position});
 
-  // AudioSource sfx = AudioSource.uri(Uri.parse("asset:///assets/audio/puzzle_drop.mp3"));
+  AudioSource sfx = AudioSource.uri(Uri.parse("asset:///assets/audio/puzzle_drop.mp3"));
 
 
 
@@ -56,8 +59,10 @@ class PlayerEating extends SpriteGroupComponent<EatState>
         current = EatState.good;
         isReacting = true;
         minigame.instruction.text = "Pintar, adek, lanjut makan ya";
-        // FlameAudio.play('puzzle_drop.mp3');
-        // AudioManager.getInstance().playSoundEffect(sfx);
+        if(!game.isWidgetTesting) {
+          FlameAudio.play('puzzle_drop.mp3');
+          AudioManager.getInstance().playSoundEffect(sfx);
+        }
         tint(Color.fromARGB(0, 255, 255, 255));
         minigame.plate.removeItem(other);
         minigame.updateScore();

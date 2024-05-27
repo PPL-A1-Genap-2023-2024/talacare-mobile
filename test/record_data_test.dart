@@ -20,6 +20,7 @@ void main() {
   group('Timestamp Functionality Test', () {
     testWithGame<TalaCare>('Check Start and End Timestamp', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       await game.ready();
       game.update(1000);
       game.victory();
@@ -28,6 +29,7 @@ void main() {
     });
     testWithGame<TalaCare>('Check Time When The Game is Paused', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       await game.ready();
       game.lifecycleStateChange(AppLifecycleState.paused);
       game.lifecycleStateChange(AppLifecycleState.hidden);

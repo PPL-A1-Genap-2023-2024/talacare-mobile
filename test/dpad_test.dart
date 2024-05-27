@@ -11,6 +11,7 @@ void main() {
     TestWidgetsFlutterBinding.ensureInitialized();
 
     testWithGame<TalaCare>('Left Movement', TalaCare.new, (game) async {
+      game.isWidgetTesting = true;
       await game.ready();
       final DPadArrow leftButton = game.gameOne.dPad.leftButton;
       Vector2 initialPosition = Vector2(0,0);
@@ -24,6 +25,7 @@ void main() {
     });
 
     testWithGame<TalaCare>('Right Movement', TalaCare.new, (game) async {
+      game.isWidgetTesting = true;
       await game.ready();
       final DPadArrow rightButton = game.gameOne.dPad.rightButton;
       Vector2 initialPosition = Vector2(0,0);
@@ -39,6 +41,7 @@ void main() {
 
 
     testWithGame<TalaCare>('Down Movement', TalaCare.new, (game) async {
+      game.isWidgetTesting = true;
       await game.ready();
       final DPadArrow downButton = game.gameOne.dPad.downButton;
       Vector2 initialPosition = Vector2(0,0);
@@ -52,6 +55,7 @@ void main() {
     });
 
     testWithGame<TalaCare>('Up Movement', TalaCare.new, (game) async {
+      game.isWidgetTesting = true;
       await game.ready();
       final DPadArrow upButton = game.gameOne.dPad.upButton;
       Vector2 initialPosition = Vector2(0,0);
@@ -65,6 +69,7 @@ void main() {
     });
 
     testWithGame<TalaCare>('Tap Release', TalaCare.new, (game) async {
+      game.isWidgetTesting = true;
       await game.ready();
       final DPadArrow component = game.gameOne.dPad.upButton;
       Vector2 initialPosition = Vector2(0,0);
@@ -78,6 +83,7 @@ void main() {
     });
 
     testWithGame<TalaCare>('Tap Cancel', TalaCare.new, (game) async {
+      game.isWidgetTesting = true;
       await game.ready();
       final DPadArrow component = game.gameOne.dPad.upButton;
       Vector2 initialPosition = Vector2(0,0);

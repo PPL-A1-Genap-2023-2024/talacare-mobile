@@ -20,6 +20,7 @@ void main() {
       'ProgressBar initializes with 0 progress',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
@@ -37,6 +38,7 @@ void main() {
       'ProgressBar updates correctly on tap',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
@@ -58,6 +60,7 @@ void main() {
       'ProgressBar reaches 100% on completing progress',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;

@@ -50,7 +50,7 @@ class TalaCare extends FlameGame
   late TransparentLayer transparentLayer;
   int totalTime = 0;
 
-  final bool isWidgetTesting;
+  bool isWidgetTesting;
   final String email;
   int remainingTime;
   BuildContext? context;
@@ -79,10 +79,10 @@ class TalaCare extends FlameGame
     haveSentRecap = false;
     cooldownTimerManager = CooldownTimerManager(cooldownDuration: cooldownDuration);
 
+    playerHealth = 4;
+    score = 0;
+    status = GameStatus.playing;
     if (!isWidgetTesting) {
-      playerHealth = 4;
-      score = 0;
-      status = GameStatus.playing;
       await images.loadAllImages();
       checkingPlayedCharacter();
       currentGame = 1;
@@ -185,9 +185,7 @@ class TalaCare extends FlameGame
   }
 
   void checkingPlayedCharacter() {
-    if (player.character != playedCharacter) {
-      player = Player(character: playedCharacter);
-    }
+    player = Player(character: playedCharacter);
   }
 
   void changeDirection(Direction direction) {
@@ -299,7 +297,7 @@ class TalaCare extends FlameGame
 
   void exitToMainMenu(BuildContext? context) {
     if (context != null) {
-      FlameAudio.bgm.stop();
+      if(!isWidgetTesting)FlameAudio.bgm.stop();
       Navigator.of(context).pop();
     }
   }

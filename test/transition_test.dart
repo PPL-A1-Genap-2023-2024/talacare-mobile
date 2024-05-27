@@ -13,6 +13,7 @@ void main() {
         'Play transition when entering hospital voluntarily',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
           game.currentGame = 2;
           final player = game.player;
@@ -30,6 +31,7 @@ void main() {
         'Play transition when entering hospital because of low blood',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
           game.currentGame = 2;
           final player = game.player;
@@ -51,6 +53,7 @@ void main() {
         'Play transition when exiting hospital',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
           final player = game.player;
           game.switchGame();
