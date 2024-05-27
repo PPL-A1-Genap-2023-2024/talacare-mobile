@@ -210,7 +210,7 @@ void main() {
       foodMinigame.playerEating.onCollision({newPosition}, goodDraggableFood);
       expect(foodMinigame.score, 1);
       expect(foodMinigame.playerEating.current, EatState.good);
-      expect(foodMinigame.instruction.text, "Sudah Benar. Lanjutkan!");
+      expect(foodMinigame.instruction.text, "Pintar, adek, lanjut makan ya");
     });
 
     testWithGame<TalaCare>(
@@ -242,7 +242,7 @@ void main() {
       foodMinigame.playerEating.onCollision({newPosition}, goodDraggableFood);
       expect(foodMinigame.score, 0);
       expect(foodMinigame.playerEating.current, EatState.bad);
-      expect(foodMinigame.instruction.text, "Ayo Coba Lagi!");
+      expect(foodMinigame.instruction.text, "Makanannya tidak sehat");
     });
   });
 }

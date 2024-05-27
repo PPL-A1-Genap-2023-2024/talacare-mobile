@@ -11,7 +11,7 @@ class Hud extends PositionComponent with HasGameReference<TalaCare>, HasVisibili
     super.priority = 5,
   });
 
-  final int healthDuration = 10; // in second
+  final int healthDuration = 20; // in second
 
   late Timer countDown;
   late int healthDurationChecker;
@@ -32,8 +32,8 @@ class Hud extends PositionComponent with HasGameReference<TalaCare>, HasVisibili
 
     for (var i = 1; i <= game.playerHealth; i++) {
       final healthComponentSize = 48;
-      final gap = healthComponentSize;
-      final positionX = 0.toDouble();
+      final gap = healthComponentSize + 10;
+      final positionX = 10.toDouble();
       final positionY = game.canvasSize.y / healthComponentSize;
       await add(
         HealthComponent(
@@ -48,7 +48,7 @@ class Hud extends PositionComponent with HasGameReference<TalaCare>, HasVisibili
       final progressComponentSize = 30;
       final gap = progressComponentSize;
       final positionX = game.canvasSize.x / progressComponentSize;
-      final positionY = 0.toDouble();
+      final positionY = 10.toDouble();
       await add(
         ProgressComponent(
           progressNumber: i,

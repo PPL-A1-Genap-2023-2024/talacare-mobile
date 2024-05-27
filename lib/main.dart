@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:talacare/helpers/color_palette.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:flame/flame.dart';
 import 'package:flutter/foundation.dart';
@@ -55,7 +58,7 @@ class AuthenticationWrapper extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return  _buildLoadingWidget();
         } else if (snapshot.hasData && snapshot.data != null) {
           String email = snapshot.data!.email!;
           Future<bool> isAdmin = checkRole(http.Client(), email);
@@ -69,7 +72,7 @@ class AuthenticationWrapper extends StatelessWidget {
                   return HomePage(email: email);
                 }
               } else {
-                return CircularProgressIndicator();
+                return _buildLoadingWidget();
               }
             },
           );
@@ -79,6 +82,19 @@ class AuthenticationWrapper extends StatelessWidget {
       },
     );
   }
+}
+
+Widget _buildLoadingWidget() {
+  return SizedBox.expand(
+      child: Container(
+        color: AppColors.greenPrimary,
+        child: const Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(AppColors.plum),
+          ),
+        ),
+      ),
+    );
 }
 
 class TalaCareGame extends StatelessWidget {

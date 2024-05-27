@@ -42,7 +42,6 @@ class TalaCare extends FlameGame
   @override
   late World world;
   late Minigame minigame;
-  late AlignComponent eventAnchor;
   late AlignComponent confirmationAnchor;
   bool eventIsActive = false;
   bool confirmationIsActive = false;
@@ -55,10 +54,10 @@ class TalaCare extends FlameGame
   BuildContext? context;
   TalaCare(
       {this.isWidgetTesting = false,
-      this.email = '',
-      this.playedCharacter = 'tala',
-      this.remainingTime = 1,
-      this.context});
+        this.email = '',
+        this.playedCharacter = 'tala',
+        this.remainingTime = 1,
+        this.context});
 
   @override
   void update(double dt) {
@@ -188,28 +187,6 @@ class TalaCare extends FlameGame
   void changeDirection(Direction direction) {
     player.direction = direction;
   }
-
-  // Future<void> onActivityStart(ActivityPoint point) async {
-  //   if (!eventIsActive) {
-  //     world.remove(point);
-  //     eventAnchor = AlignComponent(
-  //         child: ActivityEvent(variant: point.variant),
-  //         alignment: Anchor.center);
-  //     // Set Priority
-  //     eventAnchor.priority = 10;
-  //     camera.viewport.add(eventAnchor);
-  //     eventIsActive = true;
-  //     score += 1;
-  //   }
-  // }
-  //
-  // void onActivityEnd(ActivityEvent event) {
-  //   if (eventIsActive) {
-  //     eventAnchor.remove(event);
-  //     camera.viewport.remove(eventAnchor);
-  //     eventIsActive = false;
-  //   }
-  // }
 
   void enableDarkBackground() {
     gameOne.hud.timerStarted = false;

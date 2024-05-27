@@ -253,10 +253,9 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 icon: Image.asset(
                   "assets/images/Button/tombol_keluar.png",
                 ),
-                onPressed: () async {
+                onPressed: () {
+                  logout();
                   AudioManager.getInstance().playSoundEffect();
-                  await logout();
-                  await Future.delayed(Duration(milliseconds: 500));
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) {

@@ -49,16 +49,13 @@ class PlayerEating extends SpriteGroupComponent<EatState>
     }
   }
 
-
-
-
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is DraggableFood && other.isDragged == false) {
       if (other.type == "good") {
         current = EatState.good;
         isReacting = true;
-        minigame.instruction.text = "Sudah Benar. Lanjutkan!";
+        minigame.instruction.text = "Pintar, adek, lanjut makan ya";
         // FlameAudio.play('puzzle_drop.mp3');
         // AudioManager.getInstance().playSoundEffect(sfx);
         tint(Color.fromARGB(0, 255, 255, 255));
@@ -67,7 +64,7 @@ class PlayerEating extends SpriteGroupComponent<EatState>
       } else {
         current = EatState.bad;
         isReacting = true;
-        minigame.instruction.text = "Ayo Coba Lagi!";
+        minigame.instruction.text = "Makanannya tidak sehat";
       }
       minigame.plate.nextWave();
     }
