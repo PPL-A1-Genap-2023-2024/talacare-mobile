@@ -103,7 +103,7 @@ class ClickerMinigame extends Minigame {
     if (progress >= 10){
       activity.done = true;
       Future.delayed(Duration(seconds: 1), () {
-        AudioManager.getInstance().playSoundEffect(AudioSource.uri(Uri.parse("asset:///assets/audio/all_matched.mp3")));
+        if(!game.isWidgetTesting)AudioManager.getInstance().playSoundEffect(AudioSource.uri(Uri.parse("asset:///assets/audio/all_matched.mp3")));
         finishGame();
         screen.remove(tapableSprite);
       });

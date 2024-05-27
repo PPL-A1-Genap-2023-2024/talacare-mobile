@@ -144,6 +144,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
       'Cooldown timer is set when minigame is lost', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
 
         // Simulate minigame started
@@ -169,6 +170,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
       'Cooldown timer is not set when minigame is won', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
 
         // Simulate minigame started
@@ -194,6 +196,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
       'ActivityPoint is re-added after cooldown', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
 
         // Simulate minigame started
@@ -222,6 +225,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
       'Update method correctly handles timer updates', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
 
         // Simulate minigame started
