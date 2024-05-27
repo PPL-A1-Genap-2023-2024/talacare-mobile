@@ -13,6 +13,7 @@ void main() {
         'Play transition when entering hospital voluntarily',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
           game.currentGame = 2;
           final player = game.player;
@@ -22,8 +23,7 @@ void main() {
           GameTransition transition = game.children.query<GameTransition>().first;
           expect(transition.nurseTransition, false);
           expect(player.direction, Direction.right);
-
-
+          expect(transition.mother.direction, Direction.right);
         }
     );
 
@@ -31,6 +31,7 @@ void main() {
         'Play transition when entering hospital because of low blood',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
           game.currentGame = 2;
           final player = game.player;
@@ -42,6 +43,7 @@ void main() {
           Vector2 initialNursePosition = Vector2.zero();
           transition.nurse.position.copyInto(initialNursePosition);
           expect(player.direction, Direction.right);
+          expect(transition.mother.direction, Direction.right);
           game.update(1);
           expect(transition.nurse.position.x, initialNursePosition.x+100);
         }
@@ -51,6 +53,7 @@ void main() {
         'Play transition when exiting hospital',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
           final player = game.player;
           game.switchGame();
@@ -59,6 +62,7 @@ void main() {
           GameTransition transition = game.children.query<GameTransition>().first;
           expect(transition.nurseTransition, false);
           expect(player.direction, Direction.left);
+          expect(transition.mother.direction, Direction.left);
         }
     );
   });

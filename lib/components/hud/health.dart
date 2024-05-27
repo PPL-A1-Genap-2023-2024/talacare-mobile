@@ -27,12 +27,12 @@ class HealthComponent extends SpriteGroupComponent<HeartState>
 
     final availableSprite = await game.loadSprite(
       'Overlays/health.png',
-      srcSize: Vector2.all(32),
+      srcSize: Vector2.all(48),
     );
 
     final unavailableSprite = await game.loadSprite(
       'Overlays/health_off.png',
-      srcSize: Vector2.all(32),
+      srcSize: Vector2.all(48),
     );
 
     sprites = {

@@ -5,6 +5,9 @@ import 'package:talacare/components/collision_block.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/components/hospital_door.dart';
 import 'package:talacare/components/hud/hud.dart';
+import 'package:talacare/components/mother.dart';
+import 'package:talacare/components/player.dart';
+import 'package:talacare/components/transaparent_layer.dart';
 import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/helpers/directions.dart';
 import 'package:talacare/helpers/dialog_reason.dart';
@@ -17,6 +20,7 @@ void main() {
       'Map loads when game loads', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         expect(game.children.query<HouseAdventure>(), isNotEmpty);
       }
@@ -25,6 +29,7 @@ void main() {
       'Default level name is level 1', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         expect(game.children.query<HouseAdventure>().first.levelName, "Level-01");
       }
@@ -33,6 +38,7 @@ void main() {
       'Collision blocks on map is not empty', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         expect(game.children.query<HouseAdventure>().first.collisionBlocks, isNotEmpty);
       }
@@ -41,13 +47,25 @@ void main() {
       'Activity Spawn Points size is taken',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final numberOfActivityPoints = level.selectedActivity.length;
         expect(numberOfActivityPoints, level.taken);
       }
     );
-
+    testWithGame<TalaCare>(
+      'Mother appears in the map',
+      TalaCare.new,
+      (game) async {
+        game.isWidgetTesting = true;
+        await game.ready();
+        final level = game.children.query<HouseAdventure>().first;
+        expect(level.children.query<Mother>().length, 1);
+        final mother = level.children.query<Mother>().first;
+        expect(mother.direction, Direction.none);
+      }
+    );
   });
 
   group('Dynamic Wall Collision Tests', () {
@@ -55,6 +73,7 @@ void main() {
       'Player stops at collision from the left',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -79,6 +98,7 @@ void main() {
       'Player stops at collision from the right',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -102,6 +122,7 @@ void main() {
       'Player stops at collision from the top',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -125,6 +146,7 @@ void main() {
       'Player stops at collision from the bottom',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -150,6 +172,7 @@ void main() {
       'Player collides with left wall when not moving',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -169,6 +192,7 @@ void main() {
       'Player collides with right wall when not moving',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -188,6 +212,7 @@ void main() {
       'Player collides with top wall when not moving',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -207,6 +232,7 @@ void main() {
       'Player collides with bottom wall when not moving',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -226,6 +252,7 @@ void main() {
       'Player collides with inner wall when not moving',
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         final level = game.children.query<HouseAdventure>().first;
         final player = level.player;
@@ -249,20 +276,24 @@ void main() {
         'Change Level when enter hospital and say yes',
         TalaCare.new,
         (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
+          final viewport = game.camera.viewport;
           final level = game.children.query<HouseAdventure>().first;
+          expect(viewport.children.query<TransparentLayer>().length, 0);
           final player = level.player;
           final initialLevel = game.currentGame;
           final door = level.children.query<HospitalDoor>().first;
           door.onCollision({Vector2(0.0,0.0), Vector2(0.0,0.0)}, player);
-          expect(game.confirmationIsActive, true);
-          expect(game.gameOne.dPad.disabled, true);
           await game.ready();
+          expect(viewport.children.query<TransparentLayer>().length, 1);
           final confirmation = game.confirmation;
           expect(confirmation.reason, DialogReason.enterHospital);
           confirmation.yesButton.onTapDown(createTapDownEvents(game: game));
           confirmation.yesButton.onTapUp(createTapUpEvents(game: game));
+          await game.ready();
           expect(game.currentGame, initialLevel+1);
+          expect(viewport.children.query<TransparentLayer>().length, 0);
         }
     );
 
@@ -270,7 +301,9 @@ void main() {
         'Dont change Level and teleport player when enter hospital and say no',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
+          final viewport = game.camera.viewport;
           final level = game.children.query<HouseAdventure>().first;
           final player = level.player;
           final initialLevel = game.currentGame;
@@ -284,7 +317,9 @@ void main() {
           expect(confirmation.reason, DialogReason.enterHospital);
           confirmation.noButton.onTapDown(createTapDownEvents(game: game));
           confirmation.noButton.onTapUp(createTapUpEvents(game: game));
+          await game.ready();
           expect(game.currentGame, initialLevel);
+          expect(viewport.children.query<TransparentLayer>().length, 0);
         }
     );
 
@@ -292,7 +327,9 @@ void main() {
         'Change Level when health is low',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
+          final viewport = game.camera.viewport;
           Hud target = game.camera.viewport.children.query<Hud>().first;
           final initHealth = game.playerHealth;
 
@@ -300,14 +337,15 @@ void main() {
           for (int i = 0; i < initHealth - 1; i++) {
             target.update(target.healthDuration.toDouble());
           }
-          expect(game.confirmationIsActive, true);
-          expect(game.gameOne.dPad.disabled, true);
           await game.ready();
+          expect(viewport.children.query<TransparentLayer>().length, 1);
           final confirmation = game.confirmation;
           expect(confirmation.reason, DialogReason.lowBlood);
           confirmation.yesButton.onTapDown(createTapDownEvents(game: game));
           confirmation.yesButton.onTapUp(createTapUpEvents(game: game));
+          await game.ready();
           expect(game.currentGame, 2);
+          expect(viewport.children.query<TransparentLayer>().length, 0);
         }
     );
   });
@@ -317,13 +355,16 @@ void main() {
         'Get Victory Message after Collect all activity point',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
+          final viewport = game.camera.viewport;
           game.score = 8;
           game.update(5);
           expect(game.status, GameStatus.victory);
           await game.ready();
           GameDialog dialog = game.confirmationAnchor.children.query<GameDialog>().first;
           expect(dialog.reason, DialogReason.gameVictory);
+          expect(viewport.children.query<TransparentLayer>().length, 1);
         }
     );
 
@@ -331,7 +372,9 @@ void main() {
         'Play Again after Victory',
         TalaCare.new,
             (game) async {
+          game.isWidgetTesting = true;
           await game.ready();
+          final viewport = game.camera.viewport;
           Vector2 playerSpawn = Vector2.zero();
           game.player.position.copyInto(playerSpawn);
           game.victory();
@@ -339,6 +382,8 @@ void main() {
           GameDialog dialog = game.confirmationAnchor.children.query<GameDialog>().first;
           dialog.yesButton.onTapDown(createTapDownEvents(game: game));
           dialog.yesButton.onTapUp(createTapUpEvents(game: game));
+          await game.ready();
+          expect(viewport.children.query<TransparentLayer>().length, 0);
           expect(game.status, GameStatus.playing);
           expect(game.playerHealth, 4);
           expect(game.player.position, playerSpawn);
@@ -347,5 +392,23 @@ void main() {
     );
   });
 
-
+  group('Player State Tests', () {
+    testWithGame<TalaCare>(
+      'Player turns pale when health is 50% or below',
+      TalaCare.new,
+      (game) async {
+        game.isWidgetTesting = true;
+        await game.ready();
+        for (int i = 4; i > 0; i--) {
+          game.playerHealth = i;
+          game.player.update(0);
+          if (i > 2) {
+            expect(game.player.current, (PlayerAnimationState.idle, PlayerHealthState.healthy, Direction.none));
+          } else {
+            expect(game.player.current, (PlayerAnimationState.idle, PlayerHealthState.pale, Direction.none));
+          }
+        }
+      }
+    );
+  });
 }

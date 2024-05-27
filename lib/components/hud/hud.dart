@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:talacare/components/hud/progress.dart';
 import 'package:talacare/helpers/audio_manager.dart';
 import 'package:talacare/helpers/dialog_reason.dart';
@@ -6,12 +7,12 @@ import 'package:talacare/talacare.dart';
 import 'package:talacare/components/hud/health.dart';
 import 'package:just_audio/just_audio.dart';
 
-class Hud extends PositionComponent with HasGameReference<TalaCare> {
+class Hud extends PositionComponent with HasGameReference<TalaCare>, HasVisibility {
   Hud({
     super.priority = 5,
   });
 
-  final int healthDuration = 10; // in second
+  final int healthDuration = 20; // in second
 
   late Timer countDown;
   late int healthDurationChecker;
@@ -32,8 +33,8 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
 
     for (var i = 1; i <= game.playerHealth; i++) {
       final healthComponentSize = 48;
-      final gap = healthComponentSize;
-      final positionX = 0.toDouble();
+      final gap = healthComponentSize + 10;
+      final positionX = 10.toDouble();
       final positionY = game.canvasSize.y / healthComponentSize;
       await add(
         HealthComponent(
@@ -48,7 +49,7 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
       final progressComponentSize = 30;
       final gap = progressComponentSize;
       final positionX = game.canvasSize.x / progressComponentSize;
-      final positionY = 0.toDouble();
+      final positionY = 10.toDouble();
       await add(
         ProgressComponent(
           progressNumber: i,
@@ -83,8 +84,10 @@ class Hud extends PositionComponent with HasGameReference<TalaCare> {
       healthDurationChecker = healthDuration;
 
       if (game.playerHealth ==  1) {
-        // FlameAudio.play('health_notification.mp3');
-        // AudioManager.getInstance().playSoundEffect(sfx);
+        if(!game.isWidgetTesting) {
+          FlameAudio.play('health_notification.mp3');
+          AudioManager.getInstance().playSoundEffect(sfx);
+        }
         game.showConfirmation(DialogReason.lowBlood);
       }
     }

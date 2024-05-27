@@ -59,6 +59,7 @@ class PauseMenu extends StatelessWidget {
                               onPressed: () {
                                 FlameAudio.bgm.stop();
                                 gameRef.haveSentRecap = true;
+                                gameRef.startTimestamp = DateTime.now();
                                 gameRef.sendRecap();
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {

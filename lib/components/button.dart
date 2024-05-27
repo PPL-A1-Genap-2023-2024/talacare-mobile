@@ -10,6 +10,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final ButtonSize size;
   final String? assetImagePath;
+  final bool isTesting;
 
   const CustomButton({
     Key? key,
@@ -17,6 +18,7 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     this.size = ButtonSize.medium,
     this.assetImagePath,
+    this.isTesting = false,
   }) : super(key: key);
 
   @override
@@ -130,7 +132,9 @@ class CustomButton extends StatelessWidget {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(24),
                     onTap: () async {
-                      await AudioManager.getInstance().playSoundEffect();
+                      if(!isTesting){
+                        await AudioManager.getInstance().playSoundEffect();
+                      }
                       onPressed();
                     }
                     // onTap: onPressed,

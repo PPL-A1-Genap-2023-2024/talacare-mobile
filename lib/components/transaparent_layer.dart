@@ -3,6 +3,7 @@ import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
 
 class TransparentLayer extends PositionComponent {
+
   @override
   void render(Canvas canvas) {
     final paint = BasicPalette.black.paint()

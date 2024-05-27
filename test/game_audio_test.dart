@@ -7,6 +7,7 @@ void main() {
   group('Game audio tests', () {
     testWithGame<TalaCare>('Background music should play in game', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       await game.ready();
     });
   });

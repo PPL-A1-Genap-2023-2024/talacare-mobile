@@ -13,6 +13,7 @@ void main() {
       'Initial game condition checks after game 2 starts', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         game.currentGame = 2;
         game.switchGame();
@@ -32,6 +33,7 @@ void main() {
       'Second wave of items appear after container is emptied once', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         game.currentGame = 2;
         game.switchGame();
@@ -55,6 +57,7 @@ void main() {
       'Silhouette, correct draggable, and progress must match at every point', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         game.currentGame = 2;
         game.switchGame();
@@ -81,6 +84,7 @@ void main() {
       'End game condition checks after all items have been matched', 
       TalaCare.new,
       (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         game.currentGame = 2;
         game.switchGame();

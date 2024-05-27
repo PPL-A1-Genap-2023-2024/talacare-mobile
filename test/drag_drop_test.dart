@@ -15,6 +15,7 @@ void main() {
     testWithGame<TalaCare>(
         'Dragging object to certain position and not releasing it',
         TalaCare.new, (game) async {
+      game.isWidgetTesting = true;    
       await game.ready();
       game.currentGame = 2;
       game.switchGame(reason: DialogReason.enterHospital);
@@ -36,6 +37,7 @@ void main() {
     testWithGame<TalaCare>(
         'Dragging and releasing object not on the objective', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       await game.ready();
       game.currentGame = 2;
       game.switchGame(reason: DialogReason.enterHospital);
@@ -61,6 +63,7 @@ void main() {
     testWithGame<TalaCare>(
         'Dragging and releasing object on the objective and in right sequence',
         TalaCare.new, (game) async {
+      game.isWidgetTesting = true;
       await game.ready();
       game.currentGame = 2;
       game.switchGame(reason: DialogReason.enterHospital);
@@ -89,6 +92,7 @@ void main() {
     testWithGame<TalaCare>(
         'Dragging and releasing object on the objective but not in right sequence',
         TalaCare.new, (game) async {
+      game.isWidgetTesting = true;
       await game.ready();
       game.currentGame = 2;
       game.switchGame(reason: DialogReason.enterHospital);
@@ -116,6 +120,7 @@ void main() {
     testWithGame<TalaCare>(
       'disableDragging sets isDraggable to false for all DraggableItems',
       TalaCare.new, (game) async {
+        game.isWidgetTesting = true;
         await game.ready();
         game.currentGame = 2;
         game.switchGame(reason: DialogReason.enterHospital);

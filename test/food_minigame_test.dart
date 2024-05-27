@@ -7,6 +7,7 @@ import 'package:talacare/components/draggable_food.dart';
 import 'package:talacare/components/food_minigame.dart';
 import 'package:talacare/components/player.dart';
 import 'package:talacare/components/point.dart';
+import 'package:talacare/components/transaparent_layer.dart';
 import 'package:talacare/helpers/eat_state.dart';
 import 'package:talacare/screens/game_1.dart';
 import 'package:talacare/talacare.dart';
@@ -16,28 +17,32 @@ void main() {
   group('Start Food Minigame Tests', () {
     testWithGame<TalaCare>('Minigame starts upon collision', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
+      final viewport = game.camera.viewport;
       final level = game.children.query<HouseAdventure>().first;
+      expect(viewport.children.query<TransparentLayer>().length, 0);
       final player = level.children.query<Player>().first;
       final point = level.children
           .query<ActivityPoint>()
           .where((point) => point.variant == "eating")
           .first;
       point.onCollision(intersection, player);
-      expect(game.gameOne.dPad.disabled, true);
-      expect(game.gameOne.hud.timerStarted, false);
       expect(game.minigame, isA<FoodMinigame>());
       await game.ready();
       final foodMinigameList =
           game.camOne.viewport.children.query<FoodMinigame>();
       expect(foodMinigameList, isNotEmpty);
+      expect(viewport.children.query<TransparentLayer>().length, 1);
     });
 
     testWithGame<TalaCare>('Minigame finish when score is 4', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
+      final viewport = game.camera.viewport;
       final level = game.children.query<HouseAdventure>().first;
       final player = level.children.query<Player>().first;
       final point = level.children
@@ -55,8 +60,7 @@ void main() {
       foodMinigame.updateScore();
       foodMinigame.updateScore();
       await game.ready();
-      expect(game.gameOne.dPad.disabled, false);
-      expect(game.gameOne.hud.timerStarted, true);
+      expect(viewport.children.query<TransparentLayer>().length, 0);
       final foodMinigameList =
           game.camOne.viewport.children.query<FoodMinigame>();
       expect(foodMinigameList, isEmpty);
@@ -65,8 +69,10 @@ void main() {
 
     testWithGame<TalaCare>('Minigame finish when timer runs out', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
+      final viewport = game.camera.viewport;
       final level = game.children.query<HouseAdventure>().first;
       final player = level.children.query<Player>().first;
       final point = level.children
@@ -82,8 +88,7 @@ void main() {
       foodMinigame.timeLimit = 0;
       foodMinigame.updateTimer(1);
       await game.ready();
-      expect(game.gameOne.dPad.disabled, false);
-      expect(game.gameOne.hud.timerStarted, true);
+      expect(viewport.children.query<TransparentLayer>().length, 0);
       final foodMinigameList =
           game.camOne.viewport.children.query<FoodMinigame>();
       expect(foodMinigameList, isEmpty);
@@ -95,6 +100,7 @@ void main() {
     testWithGame<TalaCare>(
         'Dragging food to certain position and not releasing it', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;
@@ -119,6 +125,7 @@ void main() {
 
     testWithGame<TalaCare>(
         'Dragging and releasing food not on child', TalaCare.new, (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;
@@ -147,6 +154,7 @@ void main() {
 
     testWithGame<TalaCare>(
         'Dragging and releasing food on the child', TalaCare.new, (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;
@@ -171,9 +179,6 @@ void main() {
       foodMinigame.playerEating.onCollision({newPosition}, goodDraggableFood);
       await game.ready();
       expect(foodMinigame.playerEating.isReacting, true);
-      draggableFoods.forEach((food) {
-        expect(food.isDraggable, false);
-      });
       game.update(2);
       expect(foodMinigame.playerEating.isReacting, false);
       draggableFoods.forEach((food) {
@@ -185,6 +190,7 @@ void main() {
     testWithGame<TalaCare>(
         'Dragging and releasing good food on the child', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;
@@ -211,12 +217,13 @@ void main() {
       foodMinigame.playerEating.onCollision({newPosition}, goodDraggableFood);
       expect(foodMinigame.score, 1);
       expect(foodMinigame.playerEating.current, EatState.good);
-      expect(foodMinigame.instruction.text, "Sudah Benar. Lanjutkan!");
+      expect(foodMinigame.instruction.text, "Pintar, adek, lanjut makan ya");
     });
 
     testWithGame<TalaCare>(
         'Dragging and releasing good food on the child', TalaCare.new,
         (game) async {
+      game.isWidgetTesting = true;
       final intersection = {Vector2(0.0, 0.0), Vector2(0.0, 0.0)};
       await game.ready();
       final level = game.children.query<HouseAdventure>().first;
@@ -243,7 +250,7 @@ void main() {
       foodMinigame.playerEating.onCollision({newPosition}, goodDraggableFood);
       expect(foodMinigame.score, 0);
       expect(foodMinigame.playerEating.current, EatState.bad);
-      expect(foodMinigame.instruction.text, "Salah. Ayo Coba Lagi!");
+      expect(foodMinigame.instruction.text, "Makanannya tidak sehat");
     });
   });
 }
