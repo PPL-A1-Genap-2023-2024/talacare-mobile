@@ -371,6 +371,24 @@ void main() {
           expect(game.score, 0);
         }
     );
+
+  testWithGame<TalaCare>(
+      'Go Home after Victory',
+      TalaCare.new,
+          (game) async {
+        await game.ready();
+        final viewport = game.camera.viewport;
+        Vector2 playerSpawn = Vector2.zero();
+        game.player.position.copyInto(playerSpawn);
+        game.victory();
+        await game.ready();
+        GameDialog dialog = game.confirmationAnchor.children.query<GameDialog>().first;
+        dialog.noButton.onTapDown(createTapDownEvents(game: game));
+        dialog.noButton.onTapUp(createTapUpEvents(game: game));
+        await game.ready();
+        expect(game.status, GameStatus.victory);
+      }
+    );
   });
 
   group('Player State Tests', () {
