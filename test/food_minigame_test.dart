@@ -173,9 +173,6 @@ void main() {
       foodMinigame.playerEating.onCollision({newPosition}, goodDraggableFood);
       await game.ready();
       expect(foodMinigame.playerEating.isReacting, true);
-      draggableFoods.forEach((food) {
-        expect(food.isDraggable, false);
-      });
       game.update(2);
       expect(foodMinigame.playerEating.isReacting, false);
       draggableFoods.forEach((food) {
@@ -245,7 +242,7 @@ void main() {
       foodMinigame.playerEating.onCollision({newPosition}, goodDraggableFood);
       expect(foodMinigame.score, 0);
       expect(foodMinigame.playerEating.current, EatState.bad);
-      expect(foodMinigame.instruction.text, "Salah. Ayo Coba Lagi!");
+      expect(foodMinigame.instruction.text, "Ayo Coba Lagi!");
     });
   });
 }

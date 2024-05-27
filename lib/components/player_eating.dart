@@ -67,7 +67,7 @@ class PlayerEating extends SpriteGroupComponent<EatState>
       } else {
         current = EatState.bad;
         isReacting = true;
-        minigame.instruction.text = "Salah. Ayo Coba Lagi!";
+        minigame.instruction.text = "Ayo Coba Lagi!";
       }
       minigame.plate.nextWave();
     }

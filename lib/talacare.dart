@@ -221,7 +221,7 @@ class TalaCare extends FlameGame
         minigame = ClickerMinigame(variant: point.variant, point: point);
         break;
     }
-    enableDarkBackground(); 
+    enableDarkBackground();
     camOne.viewport.add(minigame);
   }
 
