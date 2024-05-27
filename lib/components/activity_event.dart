@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:talacare/components/clicker_minigame.dart';
 import 'package:talacare/talacare.dart';
 import 'package:flutter/material.dart';
 
@@ -55,4 +54,3 @@ class ActivityEvent extends SpriteComponent with HasGameRef<TalaCare>, TapCallba
     return true;
   }
 }
-

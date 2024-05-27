@@ -281,10 +281,11 @@
  </layer>
  <objectgroup id="2" name="Spawnpoints">
   <object id="92" name="Hospital" type="Hospital" x="224" y="96" width="31.3333" height="31.6667"/>
-  <object id="5" name="Player" type="Player" x="272" y="864" width="22.6048" height="21.7354"/>
+  <object id="5" name="Player" type="Player" x="272" y="864" width="16" height="23"/>
+  <object id="106" name="Mother" type="Mother" x="375" y="625" width="20" height="29"/>
   <object id="34" name="Drawing" type="Activity" x="140.459" y="879.124" width="15" height="15"/>
   <object id="35" name="Building" type="Activity" x="129.079" y="483.107" width="15" height="15"/>
-  <object id="36" name="Drawing" type="Activity" x="138.183" y="624.216" width="15" height="15"/>
+  <object id="36" name="Drawing" type="Activity" x="237.516" y="567.549" width="15" height="15"/>
   <object id="37" name="Building" type="Activity" x="416.988" y="479.693" width="15" height="15"/>
   <object id="38" name="Drawing" type="Activity" x="393.09" y="360.205" width="15" height="15"/>
   <object id="39" name="Building" type="Activity" x="169.735" y="263.619" width="15" height="15"/>
@@ -296,7 +297,7 @@
   <object id="46" name="Building" type="Activity" x="374.187" y="176.172" width="15" height="15"/>
   <object id="47" name="Drawing" type="Activity" x="409.022" y="873.434" width="15" height="15"/>
   <object id="106" name="Eating" type="Activity" x="140.5" y="367" width="15" height="15"/>
-  <object id="107" name="Eating" type="Activity" x="236" y="581" width="15" height="15"/>
+  <object id="107" name="Eating" type="Activity" x="133.333" y="626.333" width="15" height="15"/>
   <object id="108" name="Eating" type="Activity" x="372" y="268" width="15" height="15"/>
  </objectgroup>
  <objectgroup id="3" name="Collisions">
@@ -336,5 +337,6 @@
   <object id="99" x="176" y="512" width="96" height="24.5455"/>
   <object id="100" x="112" y="304" width="32" height="23.4545"/>
   <object id="101" x="423.333" y="320" width="24.6667" height="22"/>
+  <object id="107" x="375" y="625" width="20" height="29"/>
  </objectgroup>
 </map>

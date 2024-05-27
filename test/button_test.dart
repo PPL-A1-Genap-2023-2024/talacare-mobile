@@ -78,6 +78,7 @@ void main() {
             body: CustomButton(
               key: Key("mediumButton"),
               text: 'Button',
+              isTesting: true,
               onPressed: (){
                 isPressed = true;
               }

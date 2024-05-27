@@ -6,8 +6,6 @@ import 'package:talacare/components/button.dart';
 import 'package:talacare/helpers/color_palette.dart';
 import 'package:talacare/helpers/text_styles.dart';
 
-import 'homepage.dart';
-
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -107,24 +105,6 @@ class _LoginPageState extends State<LoginPage> {
                               onPressed: () {
                                 signInWithGoogle();
                               })),
-                      Container(
-                          padding: const EdgeInsets.all(8.0),
-                          width: double.infinity,
-                          child: TextButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return HomePage();
-                                }));
-                              },
-                              style: ButtonStyle(
-                                foregroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        AppColors.textColor),
-                                textStyle: MaterialStateProperty.all<TextStyle>(
-                                    AppTextStyles.medium),
-                              ),
-                              child: Text('Masuk tanpa akun')))
                     ],
                   ),
                 ),

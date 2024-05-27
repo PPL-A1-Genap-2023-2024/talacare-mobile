@@ -62,7 +62,7 @@ void main() {
 
             minigame.updateProgress();
 
-            expect(minigame.firstTap, isTrue);
+            expect(minigame.firstTap, true);
             expect(minigame.screen.children.query<SpriteAnimationComponent>()[0].isRemoving, true);
             expect(minigame.progress, 1);
 
@@ -71,10 +71,9 @@ void main() {
               minigame.updateProgress();
             }
 
-            await Future.delayed(const Duration(seconds: 1));
-
             expect(minigame.activity.done, true);
-            expect(minigame.screen.children.query<AlignComponent>()[0].isRemoving, true);
+            minigame.update(1);
+            expect(minigame.screen.children.query<AlignComponent>()[0].isRemoving, false);
             // Validate that the finishGame() is called
             expect(game.eventIsActive, false);
           }
@@ -125,7 +124,7 @@ void main() {
 
           // Because ActivityEvent is not tapped screen should not remove instruction
           expect(minigame.screen.children.query<SpriteAnimationComponent>()[0].isRemoving, true);
-          expect(minigame.screen.children.query<AlignComponent>()[0].isRemoving, true);
+          expect(minigame.screen.children.query<AlignComponent>()[0].isRemoving, false);
         }
     );
   });

@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:ui';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
+import 'package:flame/text.dart';
 import 'package:talacare/components/circle_progress.dart';
 import 'package:talacare/components/plate.dart';
 import 'package:talacare/components/player_eating.dart';
+import 'package:talacare/helpers/color_palette.dart';
 import 'package:talacare/helpers/text_styles.dart';
 
 import 'minigame.dart';
@@ -33,8 +36,10 @@ class FoodMinigame extends Minigame {
     instruction = TextComponent(
         anchor: Anchor.center,
         position: Vector2(screen.size.x / 2, screen.size.y * 1 / 4),
-        text: "Pilih makanan yang sehat!",
-        textRenderer: TextPaint(style: AppTextStyles.h2));
+        text: "Adek mau makan apa?",
+        textRenderer: TextPaint(
+          style: AppTextStyles.h2.copyWith(color: AppColors.yellow)
+        ));
     playerEating = PlayerEating(
       minigame: this,
       position: Vector2(screen.size.x / 2, screen.size.y * 8 / 17),
@@ -51,7 +56,9 @@ class FoodMinigame extends Minigame {
         anchor: Anchor.topCenter,
         position: Vector2(screen.size.x / 2, screen.size.y * 1 / 14),
         text: "Sisa waktu: $timeLimit detik",
-        textRenderer: TextPaint(style: AppTextStyles.large));
+        textRenderer: TextPaint(
+            style: AppTextStyles.large.copyWith(color: AppColors.purple)
+        ));
     add(timerText);
 
     timerStarted = true;

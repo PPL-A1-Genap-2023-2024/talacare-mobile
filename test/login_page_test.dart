@@ -18,21 +18,6 @@ void main() {
       expect(find.byType(Image), findsNWidgets(1));
 
       expect(find.byType(CustomButton), findsOneWidget);
-
-      expect(find.byType(TextButton), findsOneWidget);
-    });
-
-    testWidgets('Navigate after without account button pressed',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: LoginPage(),
-      ));
-
-      await tester.tap(find.text('Masuk tanpa akun'));
-
-      await tester.pumpAndSettle();
-
-      // expect(find.byType(HomePage), findsOneWidget);
     });
   });
 }
