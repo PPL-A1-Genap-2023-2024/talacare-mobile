@@ -10,7 +10,7 @@ class NotificationUtilities {
     NotificationUtilities.getTimeZone()
         .then((location) => tz.setLocalLocation(location));
     AndroidInitializationSettings initializationSettingsAndroid =
-        const AndroidInitializationSettings('launch_background');
+        const AndroidInitializationSettings('splash_logo');
 
     var initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);

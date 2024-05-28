@@ -230,7 +230,7 @@ class HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
             /* Tombol Pengaturan Reminder */
             CustomButton(
-                text: "Reminder",
+                text: "Pengingat",
                 size: ButtonSize.medium,
                 onPressed: () async {
                   AudioManager.getInstance().playSoundEffect();
