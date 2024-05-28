@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:talacare/helpers/color_palette.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:flame/flame.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'package:talacare/screens/login_page.dart';

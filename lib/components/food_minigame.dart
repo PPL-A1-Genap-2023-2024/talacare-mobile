@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
-import 'package:flame/text.dart';
 import 'package:talacare/components/circle_progress.dart';
 import 'package:talacare/components/plate.dart';
 import 'package:talacare/components/player_eating.dart';

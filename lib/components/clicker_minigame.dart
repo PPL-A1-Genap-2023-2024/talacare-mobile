@@ -2,12 +2,9 @@ import 'dart:async';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/layout.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:talacare/components/activity_event.dart';
 import 'package:talacare/helpers/audio_manager.dart';
-import 'package:talacare/helpers/text_styles.dart';
-import 'package:talacare/components/activity_event.dart';
 import 'package:talacare/components/progress_bar.dart';
 
 import 'package:talacare/components/minigame.dart';

@@ -396,7 +396,6 @@ void main() {
       TalaCare.new,
           (game) async {
         await game.ready();
-        final viewport = game.camera.viewport;
         Vector2 playerSpawn = Vector2.zero();
         game.player.position.copyInto(playerSpawn);
         game.victory();

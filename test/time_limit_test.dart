@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talacare/components/game_dialog.dart';
 import 'package:talacare/helpers/dialog_reason.dart';
 import 'package:talacare/helpers/time_limit.dart';
-import 'package:talacare/main.dart';
 import 'package:talacare/screens/homepage.dart';
 import 'package:talacare/talacare.dart';
 
