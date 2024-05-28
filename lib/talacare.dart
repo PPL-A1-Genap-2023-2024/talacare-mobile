@@ -210,7 +210,7 @@ class TalaCare extends FlameGame
   }
 
   void startMinigame(ActivityPoint point) {
-    world.remove(point);
+    gameOne.remove(point);
     switch (point.variant) {
       case "eating":
         minigame = FoodMinigame(point: point);
@@ -230,7 +230,7 @@ class TalaCare extends FlameGame
       score += 1;
     } else {
       cooldownTimerManager.startCooldown(point, () {
-        world.add(point);
+        gameOne.add(point);
       });
     }
   }

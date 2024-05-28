@@ -154,7 +154,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
         game.startMinigame(point);
         await game.ready();
 
-        expect(game.world.children.contains(point), isFalse);
+        expect(game.gameOne.children.contains(point), isFalse);
         expect(game.minigame, isNotNull);
         await game.ready();
   
@@ -180,7 +180,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
         game.startMinigame(point);
         await game.ready();
 
-        expect(game.world.children.contains(point), isFalse);
+        expect(game.gameOne.children.contains(point), isFalse);
         expect(game.minigame, isNotNull);
         await game.ready();
   
@@ -206,7 +206,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
         game.startMinigame(point);
         await game.ready();
 
-        expect(game.world.children.contains(point), isFalse);
+        expect(game.gameOne.children.contains(point), isFalse);
         expect(game.minigame, isNotNull);
         await game.ready();
   
@@ -216,7 +216,7 @@ TestWidgetsFlutterBinding.ensureInitialized();
 
         game.update(game.cooldownDuration + 1);
         
-        expect(game.world.children.contains(point), isTrue);
+        expect(game.gameOne.children.contains(point), isTrue);
         expect(game.cooldownTimerManager.coolDownTimers.containsKey(point), isFalse);
       }
     );
@@ -243,13 +243,13 @@ TestWidgetsFlutterBinding.ensureInitialized();
 
         game.update(cooldownProgress);
 
-        expect(game.world.children.contains(point), isFalse);
+        expect(game.gameOne.children.contains(point), isFalse);
         expect(timers.containsKey(point), isTrue);
         expect(timers[point]?.progress, cooldownProgress/game.cooldownDuration);
   
         game.update(game.cooldownDuration - cooldownProgress);
         
-        expect(game.world.children.contains(point), isTrue);
+        expect(game.gameOne.children.contains(point), isTrue);
         expect(timers.containsKey(point), isFalse);
       }
     );
