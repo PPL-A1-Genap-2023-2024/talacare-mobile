@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:http/http.dart' as http;
 import 'package:talacare/config.dart';
 
@@ -13,7 +13,7 @@ Future<void> sendData(
   String date = formatDateTime(DateTime.now());
   String duration = formatMilliseconds(totalTime);
   try {
-    await client.post(
+    http.Response response = await client.post(
       url,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -21,8 +21,12 @@ Future<void> sendData(
       body: jsonEncode(
           <String, String>{'email': email, 'date': date, 'duration': duration}),
     );
-  } catch (e) {
-    log("Error occured while sending data: $e");
+    if (response.statusCode != 201) {
+      throw Exception();
+    }
+  } catch (error, stackTrace) {
+    await FirebaseCrashlytics.instance
+        .recordError(error, stackTrace, reason: 'Backend Error', fatal: true);
   }
 }
 
